@@ -1,4 +1,4 @@
-# $Id: CMakeLists.txt,v 1.3 2003/05/23 19:08:49 sebasfiorent Exp $
+# $Id: CMakeLists.txt,v 1.4 2004/06/07 23:21:27 nacholarrabide Exp $
 # SkullyDoo - Segmentador y visualizador de imagenes tridimensionales  
 # (C) 2002 Sebasti n Fiorentini / Ignacio Larrabide
 # Contact Info: sebasfiorent@yahoo.com.ar / nacholarrabide@yahoo.com
@@ -38,7 +38,7 @@ LINK_LIBRARIES (
 )
 
 #
-# Parte de uso de FLTK
+# Inclucion de librerias FLTK
 #
 
 INCLUDE (${CMAKE_ROOT}/Modules/FindFLTK.cmake)
@@ -48,12 +48,27 @@ INCLUDE_DIRECTORIES(
 LINK_LIBRARIES(
   ${FLTK_LIBRARY}
 )
+
+#
+# Inclucion  de libreria vtkFLTK
+#
+
+#INCLUDE(${CMAKE_ROOT}/Modules/FindvtkFLTK.cmake)
+
+#INCLUDE_DIRECTORIES(
+#  ${VTK_FLTK_INCLUDE_DIRS} 
+#)
+
+#LINK_LIBRARIES(
+#  ${VTK_FLTK_LIBRARY_DIRS}
+#)
+
 IF (WIN32)
   LINK_LIBRARIES(wsock32)
 ENDIF (WIN32)
 
 #
-# Parte de uso de VTK
+# Inclucion librerias VTK
 #
 
 INCLUDE (${CMAKE_ROOT}/Modules/FindVTK.cmake)
@@ -85,7 +100,7 @@ LINK_LIBRARIES(
 )
 
 #
-# Parte de uso de ITK
+# Inclucion de librerias ITK
 #
 
 
@@ -103,13 +118,15 @@ LINK_LIBRARIES(
 # General
 IF (WIN32)
 	SET (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /YX /GR /GX /Zm1000")
-	SET (CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /nodefaultlib:\"msvcrtd.lib\"")
+	SET (CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /nodefaultlib:\"library\"")
+# msvcrtd.lib ")
 ENDIF(WIN32)
 
 ADD_DEFINITIONS(-DTIXML_USE_STL)
 SUBDIRS(tinyxml)
 
 LINK_LIBRARIES(tinyxml)
+
 
 # Fuentes
 
@@ -140,6 +157,7 @@ SET(GUIBase_GUISRCS
   gui/TCLFilterConfigGUIBase.fl
   gui/TCLFilterPipelineConfigGUIBase.fl
   gui/MetricsGUIBase.fl
+  gui/DicomBrowserGUIBase.fl
 )
 
 IF (WIN32)
