@@ -1,5 +1,5 @@
 /*
-# $Id: VolumeLoaderGUI.cpp,v 1.2 2003/05/06 00:12:14 sebasfiorent Exp $
+# $Id: VolumeLoaderGUI.cpp,v 1.3 2003/05/23 18:58:03 sebasfiorent Exp $
 # SkullyDoo - Segmentador y visualizador de imagenes tridimensionales
 # (C) 2002 Sebasti n Fiorentini / Ignacio Larrabide
 # Contact Info: sebasfiorent@yahoo.com.ar / nacholarrabide@yahoo.com
@@ -135,17 +135,17 @@ void VolumeLoaderGUI::updateSample(){
 
 void VolumeLoaderGUI::guessDimensions(){
 	const char* result;
-	result=fl_input("Indice el valor maximo de alguna de las dimensiones","256");
+	result=fl_input(_("Enter the maximum value for one of the dimensions"),"256");
 	if (!result) return;
 	int maxval=atoi(result);
 	if (maxval<=0) {
-		fl_alert("El valor ingresado es inválido. Debe se un número");
+		fl_alert(_("The value entered must be a number"));
 		return;
 	}
 	clearGuessedDimensions();
 	unsigned long total=maxval*maxval*maxval;
 	unsigned long actual=0;
-	ProgressWindowGUI::Instance()->doStartEvent("Adivinando...");
+	ProgressWindowGUI::Instance()->doStartEvent(_("Guessing..."));
 	for (int gx=1;gx<maxval;gx++){
 		for (int gy=1;gy<maxval;gy++){
 			for (int gz=1;gz<maxval;gz++){
@@ -221,7 +221,7 @@ ImageModel::Pointer VolumeLoaderGUI::readVolume(){
 		imr->SetFilePrefix(fnamePrefix->value());
 		imr->SetImageRange(atoi(sliceStart->value()),atoi(sliceNum->value()));
 		imr->SetDataSpacing(spacing);
-		ProgressWindowGUI::Instance()->Observe(imr,"Cargando volumen",filename);
+		ProgressWindowGUI::Instance()->Observe(imr,_("Loading volume"),filename);
 		imr->SetOutput(temporal);
 		po=imr;
   	}
@@ -249,12 +249,12 @@ ImageModel::Pointer VolumeLoaderGUI::readVolume(){
 			imr->SetDataExtent(0,atoi(dimX->value())-1,0,atoi(dimY->value())-1,0,atoi(dimZ->value())-1);
 			*/
 		}
-		ProgressWindowGUI::Instance()->Observe(imr,"Cargando volumen",filename);
+		ProgressWindowGUI::Instance()->Observe(imr,_("Loading volume"),filename);
 		imr->SetOutput(temporal);
 		po=imr;
 	}
 	if (f==FORMAT_TIFF){
-		vtkTIFFReader* imr;
+		vtkTIFFReader* imr=vtkTIFFReader::New();
 		if (rbSliceFile->value()){
 			imr->SetNumberOfScalarComponents(1);
 			imr->SetDataExtent(0,0,0,0,0,atoi(sliceNum->value())-1);
@@ -267,7 +267,7 @@ ImageModel::Pointer VolumeLoaderGUI::readVolume(){
 			imr->SetFileName(filename.c_str());
 		}
 		imr->SetDataSpacing(spacing);
-		ProgressWindowGUI::Instance()->Observe(imr,"Cargando volumen",filename);
+		ProgressWindowGUI::Instance()->Observe(imr,_("Loading volume"),filename);
 		imr->SetOutput(temporal);
 		po=imr;
 	}
@@ -315,7 +315,7 @@ ImageModel::Pointer VolumeLoaderGUI::readVolume(){
 			}
 		}
 		imr->SetDataSpacing(spacing);
-		ProgressWindowGUI::Instance()->Observe(imr,"Cargando volumen",filename);
+		ProgressWindowGUI::Instance()->Observe(imr,_("Loading volume"),filename);
 		imr->SetOutput(temporal);
 		po=imr;
 	}
@@ -334,7 +334,7 @@ ImageModel::Pointer VolumeLoaderGUI::readVolume(){
 		}
 		if (cbConvertToFloat->value()){
 			vtkImageCast* ic=vtkImageCast::New();
-			ProgressWindowGUI::Instance()->Observe(ic,"Haciendo casting al tipo del voxel",filename);
+			ProgressWindowGUI::Instance()->Observe(ic,_("Casting voxel type"),filename);
 			ic->SetInput(uncasted);
 			ic->SetOutputScalarType(VTK_VoxelType);
 			ic->SetOutput(output->getInputVtkVolume());
@@ -412,7 +412,7 @@ void VolumeLoaderGUI::transform2DVolTo3DVol(vtkImageData* input,vtkImageData* ou
 	unsigned long copied=0;
 	unsigned long step=total/20;
 	//Copio
-	ProgressWindowGUI::Instance()->doStartEvent("Convirtiendo imagen 2D en volumen 3D");
+	ProgressWindowGUI::Instance()->doStartEvent(_("Converting 2D image into a volume"));
 	for (int y=0;y<idims[1];y++)
 		for (int x=0;x<idims[0];x++){
 			copied++;

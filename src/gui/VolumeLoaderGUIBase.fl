@@ -1,14 +1,5 @@
 # data file for the Fltk User Interface Designer (fluid)
-#***********************************************************************
-#* SkullyDoo - Segmentador y visualizador de imagenes tridimensionales  
-#* CVS Id: $Id: VolumeLoaderGUIBase.fl,v 1.1 2003/05/02 22:21:53 sebasfiorent Exp $														
-#* Donado a la comunidad Open Source									
-#* (c) 2002 Software del Centro http://www.softwaredelcentro.com.ar		
-#* Sebastián Fiorentini (sebas@softwaredelcentro.com.ar)				
-#* Ignacio Larrabide (nacho@softwaredelcentro.com.ar)					
-#* Argentina															
-#***********************************************************************
-version 1.0100 
+version 1.0104 
 header_name {.h} 
 code_name {.cxx}
 class VolumeLoaderGUIBase {open
@@ -16,11 +7,11 @@ class VolumeLoaderGUIBase {open
   Function {VolumeLoaderGUIBase()} {open
   } {
     Fl_Window window {
-      label {Opciones del archivo a cargar} open
+      label {Load Options} open
       xywh {378 57 383 499} type Double hotspot modal visible
     } {
       Fl_Choice comboFileFormats {
-        label {Formato:} open
+        label {Format:} open
         xywh {10 15 360 20} down_box BORDER_BOX align 5
       } {
         menuitem {} {
@@ -65,12 +56,12 @@ class VolumeLoaderGUIBase {open
         }
       }
       Fl_Input sepX {
-        label {Sep. X:}
+        label {X Spacing:}
         xywh {60 40 35 25} type Float
         code0 {o->value("1.5");}
       }
       Fl_Input sepY {
-        label {Sep. Y:}
+        label {Y Spacing:}
         xywh {195 40 35 25} type Float
         code0 {o->value("1.5");}
       }
@@ -80,17 +71,17 @@ class VolumeLoaderGUIBase {open
         code0 {o->value("3.2");}
       }
       Fl_Group {} {
-        label {El archivo seleccionado:} open
+        label {The selected file:} open
         xywh {10 85 360 175} box THIN_UP_BOX align 5
       } {
         Fl_Round_Button rbVolumeFile {
-          label {Contiene todo el volúmen}
+          label {Contains the entire volume}
           callback {grVolumeFileOptions->deactivate();
 dimZ->activate();}
           xywh {20 90 195 20} type Radio down_box ROUND_DOWN_BOX value 1
         }
         Fl_Round_Button rbSliceFile {
-          label {Es un solo corte}
+          label {It´s only a slice}
           callback {grVolumeFileOptions->activate();
 dimZ->deactivate();}
           xywh {240 90 115 20} type Radio down_box ROUND_DOWN_BOX
@@ -99,12 +90,12 @@ dimZ->deactivate();}
           xywh {15 110 350 145} box THIN_UP_BOX align 5 deactivate
         } {
           Fl_Input fnamePrefix {
-            label {Nombre de Archivo Prefijo:}
+            label {Prefix File name:}
             callback {updateSample();}
             xywh {20 130 340 25} align 5 when 1
           }
           Fl_Input editMask {
-            label {Máscara:}
+            label {Mask:}
             callback {updateSample();}
             xywh {85 165 70 25}
           }
@@ -113,17 +104,17 @@ dimZ->deactivate();}
             xywh {20 230 340 20} box BORDER_BOX labelsize 9
           }
           Fl_Input sliceSep {
-            label {Separacion:}
+            label {Spacing:}
             xywh {105 195 50 25} type Int
             code0 {o->value("1");}
           }
           Fl_Input sliceNum {
-            label {Cantidad:}
+            label {Count:}
             xywh {315 165 45 25} type Int
             code0 {o->value("0");}
           }
           Fl_Input sliceStart {
-            label {Offset Inicial:}
+            label {Initial Offset:}
             xywh {315 195 45 25} type Int
             code0 {o->value("1");}
           }
@@ -133,11 +124,11 @@ dimZ->deactivate();}
         xywh {10 262 360 188} box THIN_UP_BOX
       } {
         Fl_Group {} {
-          label Dimensiones open
+          label Dimensions open
           xywh {15 280 205 165} box THIN_UP_BOX align 5
         } {
           Fl_Button btnGuess {
-            label Adivinar
+            label Guess
             callback {guessDimensions();}
             xywh {45 420 145 20}
           }
@@ -159,7 +150,7 @@ dimZ->deactivate();}
           }
         }
         Fl_Group {} {
-          label {Tamaño Voxel} open
+          label {Voxel size} open
           xywh {240 282 115 113} box THIN_UP_BOX align 5
         } {
           Fl_Round_Button rb8bit {
@@ -184,7 +175,7 @@ dimZ->deactivate();}
           }
         }
         Fl_Group {} {
-          label {Formato (Endian)} open
+          label {Format (Endianess)} open
           xywh {240 415 115 30} box THIN_UP_BOX align 5
         } {
           Fl_Round_Button rbLE {
@@ -198,17 +189,17 @@ dimZ->deactivate();}
         }
       }
       Fl_Check_Button cbConvertToFloat {
-        label {Convertir a float}
+        label {Convert to float}
         xywh {20 455 135 25} down_box DOWN_BOX value 1
       }
       Fl_Return_Button btnLoad {
-        label Cargar
+        label Load
         callback {window->user_data((void*)1);
 window->hide();}
         xywh {170 455 90 25} shortcut 0xd
       }
       Fl_Button {} {
-        label Cancelar
+        label Cancel
         callback {window->user_data((void*)0);
 window->hide();}
         xywh {275 455 80 25}
