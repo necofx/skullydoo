@@ -1,0 +1,228 @@
+# data file for the Fltk User Interface Designer (fluid)
+#***********************************************************************
+#* SkullyDoo - Segmentador y visualizador de imagenes tridimensionales  
+#* CVS Id: $Id: VolumeLoaderGUIBase.fl,v 1.1 2003/05/02 22:21:53 sebasfiorent Exp $														
+#* Donado a la comunidad Open Source									
+#* (c) 2002 Software del Centro http://www.softwaredelcentro.com.ar		
+#* Sebastián Fiorentini (sebas@softwaredelcentro.com.ar)				
+#* Ignacio Larrabide (nacho@softwaredelcentro.com.ar)					
+#* Argentina															
+#***********************************************************************
+version 1.0100 
+header_name {.h} 
+code_name {.cxx}
+class VolumeLoaderGUIBase {open
+} {
+  Function {VolumeLoaderGUIBase()} {open
+  } {
+    Fl_Window window {
+      label {Opciones del archivo a cargar} open
+      xywh {378 57 383 499} type Double hotspot modal visible
+    } {
+      Fl_Choice comboFileFormats {
+        label {Formato:} open
+        xywh {10 15 360 20} down_box BORDER_BOX align 5
+      } {
+        menuitem {} {
+          label BMP
+          callback {fileFormatChanged();}
+          xywh {0 0 100 20}
+        }
+        menuitem {} {
+          label JPEG
+          callback {fileFormatChanged();}
+          xywh {10 10 100 20}
+        }
+        menuitem {} {
+          label TIFF
+          callback {fileFormatChanged();}
+          xywh {20 20 100 20}
+        }
+        menuitem {} {
+          label PNG
+          callback {fileFormatChanged();}
+          xywh {30 30 100 20}
+        }
+        menuitem {} {
+          label PPM
+          callback {fileFormatChanged();}
+          xywh {40 40 100 20}
+        }
+        menuitem {} {
+          label RAW
+          callback {fileFormatChanged();}
+          xywh {50 50 100 20}
+        }
+        menuitem {} {
+          label {VOLUME-16}
+          callback {fileFormatChanged();}
+          xywh {60 60 100 20}
+        }
+        menuitem {} {
+          label {HUMAN-PROJECT (Ge SIGNA)}
+          callback {fileFormatChanged();}
+          xywh {70 70 100 20}
+        }
+      }
+      Fl_Input sepX {
+        label {Sep. X:}
+        xywh {60 40 35 25} type Float
+        code0 {o->value("1.5");}
+      }
+      Fl_Input sepY {
+        label {Sep. Y:}
+        xywh {195 40 35 25} type Float
+        code0 {o->value("1.5");}
+      }
+      Fl_Input sepZ {
+        label {Sep. Z:}
+        xywh {335 40 35 25} type Float
+        code0 {o->value("3.2");}
+      }
+      Fl_Group {} {
+        label {El archivo seleccionado:} open
+        xywh {10 85 360 175} box THIN_UP_BOX align 5
+      } {
+        Fl_Round_Button rbVolumeFile {
+          label {Contiene todo el volúmen}
+          callback {grVolumeFileOptions->deactivate();
+dimZ->activate();}
+          xywh {20 90 195 20} type Radio down_box ROUND_DOWN_BOX value 1
+        }
+        Fl_Round_Button rbSliceFile {
+          label {Es un solo corte}
+          callback {grVolumeFileOptions->activate();
+dimZ->deactivate();}
+          xywh {240 90 115 20} type Radio down_box ROUND_DOWN_BOX
+        }
+        Fl_Group grVolumeFileOptions {open
+          xywh {15 110 350 145} box THIN_UP_BOX align 5 deactivate
+        } {
+          Fl_Input fnamePrefix {
+            label {Nombre de Archivo Prefijo:}
+            callback {updateSample();}
+            xywh {20 130 340 25} align 5 when 1
+          }
+          Fl_Input editMask {
+            label {Máscara:}
+            callback {updateSample();}
+            xywh {85 165 70 25}
+          }
+          Fl_Box lblsample {
+            label label
+            xywh {20 230 340 20} box BORDER_BOX labelsize 9
+          }
+          Fl_Input sliceSep {
+            label {Separacion:}
+            xywh {105 195 50 25} type Int
+            code0 {o->value("1");}
+          }
+          Fl_Input sliceNum {
+            label {Cantidad:}
+            xywh {315 165 45 25} type Int
+            code0 {o->value("0");}
+          }
+          Fl_Input sliceStart {
+            label {Offset Inicial:}
+            xywh {315 195 45 25} type Int
+            code0 {o->value("1");}
+          }
+        }
+      }
+      Fl_Group grRawFileOptions {open
+        xywh {10 262 360 188} box THIN_UP_BOX
+      } {
+        Fl_Group {} {
+          label Dimensiones open
+          xywh {15 280 205 165} box THIN_UP_BOX align 5
+        } {
+          Fl_Button btnGuess {
+            label Adivinar
+            callback {guessDimensions();}
+            xywh {45 420 145 20}
+          }
+          Fl_Browser guessedDimensions {
+            callback {assignGuessed();}
+            xywh {25 330 185 85} type Hold
+          }
+          Fl_Input dimX {
+            label {X:}
+            xywh {25 300 35 25} type Int align 5
+          }
+          Fl_Input dimY {
+            label {Y:}
+            xywh {100 300 35 25} type Int align 5
+          }
+          Fl_Input dimZ {
+            label {Z:}
+            xywh {175 300 35 25} type Int align 5
+          }
+        }
+        Fl_Group {} {
+          label {Tamaño Voxel} open
+          xywh {240 282 115 113} box THIN_UP_BOX align 5
+        } {
+          Fl_Round_Button rb8bit {
+            label {8-bits}
+            callback {invalidateGuessedDims();}
+            xywh {245 290 70 25} type Radio down_box ROUND_DOWN_BOX value 1
+          }
+          Fl_Round_Button rb12bit {
+            label {12-bits}
+            callback {invalidateGuessedDims();}
+            xywh {245 315 70 25} type Radio down_box ROUND_DOWN_BOX
+          }
+          Fl_Round_Button rb16bit {
+            label {16-bits}
+            callback {invalidateGuessedDims();}
+            xywh {245 340 75 25} type Radio down_box ROUND_DOWN_BOX
+          }
+          Fl_Round_Button rb24bit {
+            label {24-bits (RGB)}
+            callback {invalidateGuessedDims();}
+            xywh {245 365 105 25} type Radio down_box ROUND_DOWN_BOX
+          }
+        }
+        Fl_Group {} {
+          label {Formato (Endian)} open
+          xywh {240 415 115 30} box THIN_UP_BOX align 5
+        } {
+          Fl_Round_Button rbLE {
+            label LE
+            xywh {245 420 45 20} type Radio down_box ROUND_DOWN_BOX value 1
+          }
+          Fl_Round_Button rbBE {
+            label BE
+            xywh {295 420 45 20} type Radio down_box ROUND_DOWN_BOX
+          }
+        }
+      }
+      Fl_Check_Button cbConvertToFloat {
+        label {Convertir a float}
+        xywh {20 455 135 25} down_box DOWN_BOX value 1
+      }
+      Fl_Return_Button btnLoad {
+        label Cargar
+        callback {window->user_data((void*)1);
+window->hide();}
+        xywh {170 455 90 25} shortcut 0xd
+      }
+      Fl_Button {} {
+        label Cancelar
+        callback {window->user_data((void*)0);
+window->hide();}
+        xywh {275 455 80 25}
+      }
+    }
+  }
+  Function {updateSample()} {open return_type {virtual void}
+  } {}
+  Function {guessDimensions()} {open return_type {virtual void}
+  } {}
+  Function {invalidateGuessedDims()} {open return_type {virtual void}
+  } {}
+  Function {assignGuessed()} {open return_type {virtual void}
+  } {}
+  Function {fileFormatChanged()} {open selected return_type {virtual void}
+  } {}
+} 

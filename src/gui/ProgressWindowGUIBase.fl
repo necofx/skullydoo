@@ -1,0 +1,30 @@
+# data file for the Fltk User Interface Designer (fluid)
+#***********************************************************************
+#* SkullyDoo - Segmentador y visualizador de imagenes tridimensionales  
+#* CVS Id: $Id: ProgressWindowGUIBase.fl,v 1.1 2003/05/02 22:21:53 sebasfiorent Exp $														
+#* Donado a la comunidad Open Source									
+#* (c) 2002 Software del Centro http://www.softwaredelcentro.com.ar		
+#* Sebastián Fiorentini (sebas@softwaredelcentro.com.ar)				
+#* Ignacio Larrabide (nacho@softwaredelcentro.com.ar)					
+#* Argentina															
+#***********************************************************************
+version 1.0100 
+header_name {.h} 
+code_name {.cxx}
+class ProgressWindowGUIBase {open
+} {
+  Function {ProgressWindowGUIBase()} {open
+  } {
+    Fl_Window window {
+      label {Progreso...} open selected
+      xywh {287 164 321 100} type Double modal visible
+    } {
+      Fl_Progress progressBar {
+        xywh {0 85 320 15} align 80
+      }
+      Fl_Box statusText {
+        xywh {0 0 320 85} align 128
+      }
+    }
+  }
+} 

@@ -1,0 +1,39 @@
+# data file for the Fltk User Interface Designer (fluid)
+version 1.0100 
+header_name {.h} 
+code_name {.cxx}
+class AboutGUIBase {open
+} {
+  Function {AboutGUIBase()} {open
+  } {
+    Fl_Window window {
+      label Acerca open
+      xywh {192 121 343 340} type Double modal visible
+    } {
+      Fl_Group {} {open
+        image {./images/about.gif} xywh {15 5 300 225} box PLASTIC_UP_FRAME align 16
+      } {}
+      Fl_Return_Button {} {
+        label {&Cerrar}
+        callback {window->hide();} selected
+        xywh {125 305 100 25}
+      }
+      Fl_Box {} {
+        label {SkullyDoo fué realizado por:}
+        xywh {15 235 190 15}
+      }
+      Fl_Box {} {
+        label {Ignacio Larrabide (nacho@@softwaredelcentro.com.ar)}
+        xywh {20 250 310 15} labelfont 5 labelsize 10 labelcolor 176 align 20
+      }
+      Fl_Box {} {
+        label {Sebastián Fiorentini (sebas@@softwaredelcentro.com.ar)}
+        xywh {20 265 330 15} labelfont 5 labelsize 10 labelcolor 176 align 20
+      }
+      Fl_Box {} {
+        label {http://www.softwaredelcentro.com.ar}
+        xywh {15 280 320 20} box PLASTIC_DOWN_FRAME labelfont 5 labelcolor 217
+      }
+    }
+  }
+} 

@@ -1,0 +1,41 @@
+# data file for the Fltk User Interface Designer (fluid)
+version 1.0100 
+header_name {.h} 
+code_name {.cxx}
+class MetricsGUIBase {open
+} {
+  Function {MetricsGUIBase()} {open
+  } {
+    Fl_Window window {
+      label Metricas open selected
+      xywh {232 198 384 170} type Double modal visible
+    } {
+      Fl_Button {} {
+        label Cerrar
+        callback {window->hide();}
+        xywh {135 140 125 20}
+      }
+      Fl_Group {} {
+        label {Razon de aspecto} open
+        xywh {10 20 365 55} box BORDER_BOX labelfont 1 labelsize 9 align 5
+      } {
+        Fl_Input ipromrazonradiotriangulos {
+          label {Indicador proemdio triangulos:}
+          xywh {210 25 160 20}
+        }
+        Fl_Input iminimorazonradiotriangulos {
+          label {Indicador minimo triangulos:}
+          xywh {210 50 160 20}
+        }
+      }
+      Fl_Input itriangulos {
+        label {Cantidad triangulos:}
+        xywh {210 85 160 20}
+      }
+      Fl_Input ipuntos {
+        label {Cantidad puntos:}
+        xywh {210 110 160 20}
+      }
+    }
+  }
+} 

@@ -1,0 +1,761 @@
+# data file for the Fltk User Interface Designer (fluid)
+version 1.0100 
+header_name {.h} 
+code_name {.cxx}
+class DesktopGUIBase {open
+} {
+  Function {DesktopGUIBase()} {open
+  } {
+    Fl_Window window {
+      label {Skully-Doo!} open
+      xywh {25 38 660 500} type Double resizable
+      code0 {\#include "gui/vtkFlRenderWindowInteractor.h"}
+      code1 {\#include "common/Types.h"}
+      code2 {\#include "tcl/TCLFilter.h"}
+      code3 {o->size_range(660,500);} visible
+    } {
+      Fl_Pack {} {open
+        xywh {0 0 665 500}
+      } {
+        Fl_Menu_Bar menu {
+          xywh {0 0 660 25}
+        } {
+          submenu {} {
+            label {&Archivo} open
+            xywh {5 5 100 20}
+          } {
+            menuitem {} {
+              label {&Cargar Imagen 3D}
+              callback {load3DImage();}
+              xywh {5 5 100 20} shortcut 0x4006f
+            }
+            menuitem {} {
+              label {Cargar Superficie}
+              callback {loadSurface();}
+              xywh {0 0 100 20} divider
+            }
+            menuitem {} {
+              label {&Grabar Imagen 3D}
+              callback {save3DImage();}
+              xywh {0 0 100 20}
+            }
+            menuitem {} {
+              label {Grabar Superficie}
+              callback {saveSurface();}
+              xywh {0 0 100 20} divider
+            }
+            submenu {} {
+              label {&Importar} open
+              xywh {0 0 100 20}
+            } {
+              menuitem {} {
+                label {Imagen 3D}
+                callback {import3DImage();}
+                xywh {0 0 100 20}
+              }
+              menuitem {} {
+                label {Superficie .SUR}
+                callback {importSURSurface();}
+                xywh {0 0 100 20}
+              }
+            }
+            submenu {} {
+              label {&Exportar} open
+              xywh {5 5 100 20} divider
+            } {
+              menuitem {} {
+                label {Superfice .SUR}
+                callback {exportSURSurface();}
+                xywh {10 10 100 20}
+              }
+            }
+            menuitem {} {
+              label {Grabar Snapshot}
+              callback {takeScreenSnapshot();}
+              xywh {0 0 100 20} shortcut 0x40070 divider
+            }
+            menuitem {} {
+              label {&Salir}
+              callback {quit();}
+              xywh {0 0 100 20} shortcut 0x40078
+            }
+          }
+          submenu {} {
+            label {&Vista} open
+            xywh {0 0 100 20}
+          } {
+            submenu imageViewMenu {
+              label {Imagen 3D} open
+              xywh {0 0 100 20}
+            } {
+              menuitem imageViewMenuXYItem {
+                label {Corte XY}
+                callback {setCutPlaneVisibility(PLANE_XY,o->value());}
+                xywh {0 0 100 20} type Toggle
+              }
+              menuitem imageViewMenuXZItem {
+                label {Corte XZ}
+                callback {setCutPlaneVisibility(PLANE_XZ,o->value());}
+                xywh {0 0 100 20} type Toggle
+              }
+              menuitem imageViewMenuYZItem {
+                label {Corte YZ}
+                callback {setCutPlaneVisibility(PLANE_YZ,o->value());}
+                xywh {0 0 100 20} type Toggle divider
+              }
+              menuitem {} {
+                label {Plug In's...}
+                callback {editImageSceneFilters();}
+                xywh {10 10 100 20}
+              }
+            }
+            submenu surfaceViewMenu {
+              label Superficie open
+              xywh {0 0 100 20}
+            } {
+              menuitem {} {
+                label {Plug In's...}
+                callback {editSurfaceSceneFilters();}
+                xywh {10 10 100 20}
+              }
+            }
+          }
+          submenu {} {
+            label {&Filtros} open
+            xywh {0 0 100 20}
+          } {
+            submenu filterImage3DMenu {
+              label {&Imagen 3D} open
+              xywh {0 0 100 20}
+            } {
+              menuitem {} {
+                label {Filtros aplicados...}
+                callback {editImageFilters();}
+                xywh {0 0 100 20} divider
+              }
+            }
+            submenu filterSurfaceMenu {
+              label {&Superficie} open
+              xywh {0 0 100 20}
+            } {
+              menuitem {} {
+                label {Filtros aplicados...}
+                callback {editSurfaceFilters();}
+                xywh {0 0 100 20} divider
+              }
+            }
+          }
+          submenu {} {
+            label {&Ayuda} open
+            xywh {0 0 100 20}
+          } {
+            menuitem {} {
+              label {Acerca...}
+              callback {showAbout();}
+              xywh {0 0 100 20}
+            }
+          }
+        }
+        Fl_Pack {} {open
+          xywh {0 25 660 30} type HORIZONTAL box UP_FRAME
+        } {
+          Fl_Group toolBar {open
+            xywh {0 25 535 30}
+          } {
+            Fl_Button btnResetCamera {
+              callback {resetCamera();}
+              tooltip {Resetear la camara de la visualización} image {./images/resetcam.gif} xywh {505 30 25 20}
+            }
+            Fl_Button {} {
+              callback {load3DImage();}
+              tooltip Cargar image {./images/open.gif} xywh {5 30 25 20}
+            }
+            Fl_Button {} {
+              callback {save3DImage();}
+              tooltip Grabar image {./images/save.gif} xywh {35 30 25 20}
+            }
+            Fl_Button {} {
+              callback {takeScreenSnapshot();}
+              tooltip {Grabar imagen de lo que se esta visualizando} image {./images/snapshot.gif} xywh {475 30 25 20}
+            }
+            Fl_Group grImageToolbar {open
+              xywh {85 30 385 20}
+            } {
+              Fl_Button imageViewXYButton {
+                label XY
+                callback {setCutPlaneVisibility(PLANE_XY,o->value());}
+                xywh {85 30 25 20} type Toggle labelfont 1 labelsize 10
+              }
+              Fl_Button imageViewXZButton {
+                label XZ
+                callback {setCutPlaneVisibility(PLANE_XZ,o->value());}
+                xywh {115 30 25 20} type Toggle labelfont 1 labelsize 10
+              }
+              Fl_Button imageViewYZButton {
+                label YZ
+                callback {setCutPlaneVisibility(PLANE_YZ,o->value());}
+                xywh {145 30 25 20} type Toggle labelfont 1 labelsize 10
+              }
+              Fl_Button btnShowLUTBar {
+                callback {showLUTBar(o->value());}
+                tooltip {Mostrar barra de colores} image {./images/palette.gif} xywh {175 30 25 20} type Toggle
+              }
+              Fl_Button btnShowContour {
+                callback {showContour(o->value());}
+                tooltip {Marcar contorno con el color de la selección} image {./images/pencil.gif} xywh {445 30 25 20} type Toggle
+              }
+              Fl_Choice cbImageLUT {
+                callback {changeImageLUT();}
+                xywh {205 30 65 20} down_box BORDER_BOX align 20
+              } {
+                menuitem {} {
+                  label Grises
+                  image {./images/gama-grises.gif} xywh {25 25 100 20}
+                }
+                menuitem {} {
+                  label {Rojo-Cyan}
+                  image {./images/gama-RojoCyan.gif} xywh {35 35 100 20}
+                }
+                menuitem {} {
+                  label {Rojo-Magenta-Blanco}
+                  image {./images/gama-nRojoMagentab.gif} xywh {85 85 100 20}
+                }
+                menuitem {} {
+                  label {Rojo-Amarillo-Blanco}
+                  image {./images/gama-nRojoAmarillob.gif} xywh {65 65 100 20}
+                }
+                menuitem {} {
+                  label {Rojo-Azul-Blanco}
+                  image {./images/gama-nRojoAzulb.gif} xywh {75 75 100 20}
+                }
+                menuitem {} {
+                  label {Azul-Cyan-Blanco}
+                  image {./images/gama-nAzulCyanb.gif} xywh {55 55 100 20}
+                }
+                menuitem {} {
+                  label {Azul-Cyan-Verde-Amarillo}
+                  image {./images/gama-nAzulCyanVerdeAmarillob.gif} xywh {45 45 100 20}
+                }
+                menuitem {} {
+                  label Rainbow
+                  image {./images/gama-rainbow.gif} xywh {25 25 100 20}
+                }
+              }
+              Fl_Input imageLUTLevels {
+                label Niv
+                callback {changeImageLUT();}
+                xywh {295 30 55 20} type Int labelsize 12 when 8 textsize 11
+                code0 {o->value("16");}
+              }
+              Fl_Input imageLUTStart {
+                label Primero
+                callback {changeImageLUT();}
+                xywh {400 30 35 20} type Int labelsize 12 when 8 textsize 11
+                code0 {o->value("0");}
+              }
+            }
+          }
+          Fl_Group {} {open
+            xywh {535 25 125 30} resizable
+          } {}
+        }
+        Fl_Pack {} {
+          xywh {0 55 660 25} type HORIZONTAL
+        } {
+          Fl_Group grTabBar {
+            xywh {0 55 285 25}
+          } {
+            Fl_Button btnImage3DTab {
+              label {Imagen 3D}
+              callback {showDesktopTab(0);}
+              xywh {0 60 75 20} type Radio value 1 labeltype EMBOSSED_LABEL
+            }
+            Fl_Button btnSegmentationTab {
+              label {Segmentación}
+              callback {showDesktopTab(1);}
+              xywh {75 60 105 20} type Radio labeltype EMBOSSED_LABEL
+            }
+            Fl_Button btnSurfacesTab {
+              label Superficies
+              callback {showDesktopTab(2);}
+              xywh {180 60 105 20} type Radio labeltype EMBOSSED_LABEL
+            }
+          }
+          Fl_Group {} {open
+            xywh {285 55 375 25} resizable
+          } {}
+        }
+        Fl_Group {} {open
+          xywh {0 80 665 405} resizable
+        } {
+          Fl_Pack grImage {open
+            xywh {0 80 660 405} type HORIZONTAL resizable
+          } {
+            Fl_Group {} {
+              xywh {0 80 170 405}
+            } {
+              Fl_Group {} {
+                xywh {0 80 170 400}
+              } {
+                Fl_Group grSeedSelection {
+                  label {Selección}
+                  xywh {5 100 160 90} box PLASTIC_UP_FRAME labelsize 11 align 5
+                } {
+                  Fl_Value_Slider seedX {
+                    label {X:}
+                    callback {seedFocusChanged();}
+                    xywh {25 105 135 15} type {Horz Knob} align 4 step 1
+                  }
+                  Fl_Value_Slider seedY {
+                    label {Y:}
+                    callback {seedFocusChanged();}
+                    xywh {25 120 135 15} type {Horz Knob} align 4 step 1
+                  }
+                  Fl_Value_Slider seedZ {
+                    label {Z:}
+                    callback {seedFocusChanged();}
+                    xywh {25 135 135 15} type {Horz Knob} align 4 step 1
+                  }
+                  Fl_Value_Input seedIntensity {
+                    label {Intensidad:}
+                    xywh {85 155 75 15} deactivate
+                  }
+                  Fl_Value_Input seedGradient {
+                    label {Gradiente:}
+                    xywh {85 170 75 15} deactivate
+                  }
+                }
+                Fl_Menu_Button {} {
+                  label {Reconstruir Superficie}
+                  xywh {5 460 160 20} labelsize 12
+                } {
+                  menuitem {} {
+                    label {Marching Cubes}
+                    callback {createMarchingCubesSurface();}
+                    xywh {25 25 100 20}
+                  }
+                  menuitem {} {
+                    label {Flat Contour}
+                    callback {createFlatContourSurface();}
+                    xywh {25 25 100 20}
+                  }
+                }
+                Fl_Group grImage3D {
+                  xywh {5 195 165 245} labelsize 10 hide resizable
+                } {
+                  Fl_Browser browserImages {
+                    callback {imageSelected();}
+                    xywh {5 200 160 80} type Hold align 5 resizable
+                  }
+                  Fl_Group grImageProperties {open
+                    xywh {5 280 165 160}
+                  } {
+                    Fl_Button btnRenameImage {
+                      label Renombrar
+                      callback {renameImage();}
+                      image {./images/rename.gif} xywh {5 285 75 35} labelsize 11
+                    }
+                    Fl_Button btnDeleteImage {
+                      label Borrar
+                      callback {deleteImage();}
+                      image {./images/erase.gif} xywh {95 285 70 35} labelsize 11 align 16
+                    }
+                    Fl_Button {} {
+                      label {Filtros...}
+                      callback {editImageFilters();}
+                      xywh {5 330 160 30} labelsize 12
+                    }
+                  }
+                }
+                Fl_Group grSegmentation {open
+                  xywh {5 195 165 260} labelsize 10 align 5 hide
+                } {
+                  Fl_Choice comboSegMethods {
+                    label {Metodo:}
+                    callback {segmentationMethodChanged();}
+                    xywh {10 205 160 20} down_box BORDER_BOX labelsize 10 align 5
+                  } {}
+                  Fl_Group {} {
+                    xywh {10 230 160 195} resizable
+                  } {
+                    Fl_Group grVG {
+                      xywh {10 230 160 195} hide
+                    } {
+                      Fl_Browser browserVGSeeds {
+                        label {Semillas:}
+                        callback {VGSeedSelected();}
+                        xywh {10 275 130 80} type Hold labelsize 10 align 5 when 3 resizable
+                      }
+                      Fl_Button btnVGaddSeed {
+                        label {@+}
+                        callback {VGAddSeed();}
+                        xywh {145 275 25 20}
+                      }
+                      Fl_Button btnVGremoveSeed {
+                        label {@1+}
+                        callback {VGRemoveSeed();}
+                        xywh {145 300 25 20} deactivate
+                      }
+                      Fl_Group grVGConfig {
+                        label {Configuración de semilla} open
+                        xywh {10 375 160 45} box BORDER_BOX labelsize 10 align 5 deactivate
+                      } {
+                        Fl_Input VGDelta {
+                          label {Umbral:}
+                          callback {VGUpdateConfig();}
+                          xywh {15 390 45 20} type Float labelsize 10 align 5 when 1
+                        }
+                        Fl_Choice VGType {
+                          label {Tipo:}
+                          callback {VGUpdateConfig();} open
+                          xywh {70 390 95 20} down_box BORDER_BOX labelsize 10 align 5
+                        } {
+                          menuitem {} {
+                            label Semilla
+                            user_data {(void*)0}
+                            xywh {30 30 100 20}
+                          }
+                          menuitem {} {
+                            label Vecino
+                            user_data {(void*)1}
+                            xywh {30 30 100 20}
+                          }
+                          menuitem {} {
+                            label Gradiente
+                            user_data {(void*)2}
+                            xywh {30 30 100 20}
+                          }
+                        }
+                      }
+                      Fl_Input VGRadius {
+                        label {Radio:}
+                        xywh {15 240 45 20} type Int labelsize 10 align 5 textsize 12
+                        code0 {o->value("2");}
+                      }
+                      Fl_Input VGStretchRadius {
+                        label {Radio estiramiento:}
+                        xywh {75 240 95 20} type Int labelsize 10 align 5 textsize 12
+                        code0 {o->value("7");}
+                      }
+                    }
+                    Fl_Group grFM {
+                      xywh {10 230 160 185} hide
+                    } {
+                      Fl_Input FMSigma {
+                        label {Sigma:}
+                        xywh {55 245 110 25} type Float
+                        code0 {o->value("1.0");}
+                      }
+                      Fl_Browser browserFMSeeds {
+                        label {Semillas:}
+                        callback {FMSeedSelected();}
+                        xywh {10 295 130 120} type Hold labelsize 10 align 5 when 3 resizable
+                      }
+                      Fl_Button btnFMaddSeed {
+                        label {@+}
+                        callback {FMAddSeed();}
+                        xywh {145 295 25 20}
+                      }
+                      Fl_Button btnFMremoveSeed {
+                        label {@1+}
+                        callback {FMRemoveSeed();}
+                        xywh {145 325 25 20} deactivate
+                      }
+                    }
+                    Fl_Group grAC {
+                      xywh {10 230 160 185} hide
+                    } {
+                      Fl_Input ACTimeStep {
+                        label {TimeStep:}
+                        xywh {15 315 50 20} type Float labelsize 10 align 5
+                        code0 {o->value("0.01");}
+                      }
+                      Fl_Input ACBinaryImageName {
+                        label {Imagen Binaria:}
+                        xywh {15 245 75 20} labelsize 10 align 5
+                      }
+                      Fl_Input ACBinaryObjVal {
+                        label {Valor obj. bin:}
+                        xywh {95 245 70 20} type Int labelsize 10 align 5
+                        code0 {o->value("255");}
+                      }
+                      Fl_Input ACRadius {
+                        label {Radio:}
+                        xywh {15 280 50 20} type Float labelsize 10 align 5
+                        code0 {o->value("2.5");}
+                      }
+                      Fl_Input ACRigX {
+                        label {Rig X:}
+                        xywh {75 280 40 20} type Float labelsize 10 align 5
+                        code0 {o->value("0.0001");}
+                      }
+                      Fl_Input ACRigY {
+                        label {Rig Y:}
+                        xywh {125 280 40 20} type Float labelsize 10 align 5
+                        code0 {o->value("0.04");}
+                      }
+                      Fl_Input ACXResolution {
+                        label {Res.X:}
+                        xywh {15 350 45 20} type Float labelsize 10 align 5
+                      }
+                      Fl_Input ACYResolution {
+                        label {Res.Y:}
+                        xywh {70 350 45 20} type Float labelsize 10 align 5
+                      }
+                      Fl_Input ACZResolution {
+                        label {Res.Z::}
+                        xywh {125 350 40 20} type Float labelsize 10 align 5
+                      }
+                      Fl_Input ACIterations {
+                        label {Iteraciones max:}
+                        xywh {75 315 50 20} type Int labelsize 10 align 5
+                        code0 {o->value("150");}
+                      }
+                      Fl_Group {} {open
+                        xywh {10 375 160 40} resizable
+                      } {}
+                    }
+                  }
+                  Fl_Button btnSegmentate {
+                    label Segmentar
+                    callback {doSegmentation();}
+                    xywh {30 430 125 20} box UP_FRAME align 32
+                  }
+                }
+              }
+            }
+            Fl_Group {} {
+              xywh {170 80 490 405} resizable
+            } {
+              Fl_Group {} {
+                xywh {170 80 490 35}
+              } {
+                Fl_Group {} {
+                  xywh {170 80 440 35}
+                } {
+                  Fl_Group {} {open
+                    xywh {175 85 420 20} box THIN_DOWN_FRAME
+                  } {
+                    Fl_Box {} {
+                      label {Rango colores:}
+                      xywh {180 90 75 10} labelsize 10 align 20
+                    }
+                    Fl_Box lblColorRange {
+                      xywh {260 90 125 10} labelsize 9 align 80
+                    }
+                    Fl_Box {} {
+                      label {Dimensiones:}
+                      xywh {400 90 75 10} labelsize 9 align 20
+                    }
+                    Fl_Box lblDimensions {
+                      xywh {460 90 125 10} labelsize 9 align 80
+                    }
+                  }
+                }
+                Fl_Group grI2Resizable {open
+                  xywh {610 80 50 35} color 97 resizable
+                } {}
+              }
+              Fl_Box vtk3D {
+                xywh {175 115 480 365} box FLAT_BOX color 67 resizable
+                class vtkFlRenderWindowInteractor
+              }
+            }
+          }
+          Fl_Pack grSurfaces {
+            xywh {0 80 660 405} type HORIZONTAL hide
+          } {
+            Fl_Group {} {
+              xywh {0 80 170 405}
+            } {
+              Fl_Browser browserSurfaces {
+                label {Superficies:}
+                callback {surfaceSelected();}
+                xywh {5 100 160 90} type Hold align 5 resizable
+              }
+              Fl_Group grSurfaceProperties {
+                xywh {5 195 160 260}
+              } {
+                Fl_Group {} {
+                  label Propiedades open
+                  xywh {10 285 155 110} box PLASTIC_UP_FRAME labelsize 10 align 5
+                } {
+                  Fl_Check_Button cbVisibleSurface {
+                    label Visible
+                    callback {changeVisibleSurfaceProperty();}
+                    xywh {90 320 55 15} down_box DOWN_BOX labelsize 11
+                  }
+                  Fl_Check_Button cbWireframeSurface {
+                    label Wireframe
+                    callback {changeWireframeSurfaceProperty();}
+                    xywh {15 320 70 15} down_box DOWN_BOX labelsize 11
+                  }
+                  Fl_Button btnSurfaceColor {
+                    label Color
+                    callback {changeColorSurfaceProperty();}
+                    xywh {15 300 50 15} labelsize 11 align 5
+                  }
+                  Fl_Slider sliderSurfaceTransparency {
+                    label Transparencia
+                    callback {changeTransparencySurfaceProperty();}
+                    xywh {90 300 70 15} type Horizontal labelsize 11 align 5 when 4 step 0.01
+                  }
+                  Fl_Group {} {
+                    label Textura open
+                    xywh {15 350 145 40} box PLASTIC_UP_FRAME labelsize 10 align 5
+                  } {
+                    Fl_Button btnSetSurfaceTexture {
+                      label Asignar
+                      callback {setSurfaceTexture();}
+                      xywh {25 360 55 20} labelsize 10
+                    }
+                    Fl_Button btnClearSurfaceTexture {
+                      label Eliminar
+                      callback {clearSurfaceTexture();}
+                      xywh {90 360 65 20} labelsize 10
+                    }
+                  }
+                }
+                Fl_Button {} {
+                  label Borrar
+                  callback {deleteSurface();}
+                  image {./images/erase.gif} xywh {95 195 70 35} labelsize 10
+                }
+                Fl_Button {} {
+                  label Renombrar
+                  callback {renameSurface();}
+                  image {./images/rename.gif} xywh {5 195 70 35} labelsize 10
+                }
+                Fl_Button {} {
+                  label Info
+                  callback {getMetrics();}
+                  image {./images/report.gif} xywh {5 235 160 35} labelsize 10
+                }
+                Fl_Button {} {
+                  label {Filtros...}
+                  callback {editSurfaceFilters();}
+                  xywh {10 405 155 35} labelsize 11
+                }
+              }
+            }
+            Fl_Group {} {
+              xywh {170 80 490 405} resizable
+            } {
+              Fl_Group {} {open
+                xywh {170 80 490 5}
+              } {}
+              Fl_Box vtkSurfaces {
+                xywh {175 90 480 390} box FLAT_BOX color 60 resizable
+                class vtkFlRenderWindowInteractor
+              }
+            }
+          }
+        }
+        Fl_Box statusBar {
+          xywh {0 485 660 15} box THIN_DOWN_FRAME align 84
+        }
+      }
+    }
+  }
+  Function {quit()} {open return_type {virtual void}
+  } {}
+  Function {resetCamera()} {open return_type {virtual void}
+  } {}
+  Function {seedFocusChanged()} {open return_type {virtual void}
+  } {}
+  Function {imageSelected()} {open return_type {virtual void}
+  } {}
+  Function {deleteImage()} {open return_type {virtual void}
+  } {}
+  Function {editImageFilters()} {open return_type {virtual void}
+  } {}
+  Function {setCutPlaneVisibility(PlaneType plane,bool visibility)} {open return_type {virtual void}
+  } {}
+  Function {editImageSceneFilters()} {open return_type {virtual void}
+  } {}
+  Function {VGSeedSelected()} {open return_type {virtual void}
+  } {}
+  Function {VGAddSeed()} {open return_type {virtual void}
+  } {}
+  Function {VGRemoveSeed()} {open return_type {virtual void}
+  } {}
+  Function {VGUpdateConfig()} {open return_type {virtual void}
+  } {}
+  Function {segmentationMethodChanged()} {open return_type {virtual void}
+  } {}
+  Function {doSegmentation()} {open return_type {virtual void}
+  } {}
+  Function {createMarchingCubesSurface()} {open return_type {virtual void}
+  } {}
+  Function {createFlatContourSurface()} {open return_type {virtual void}
+  } {}
+  Function {deleteSurface()} {open return_type {virtual void}
+  } {}
+  Function {renameSurface()} {open return_type {virtual void}
+  } {}
+  Function {editSurfaceFilters()} {open return_type {virtual void}
+  } {}
+  Function {editSurfaceSceneFilters()} {return_type {virtual void}
+  } {}
+  Function {changeWireframeSurfaceProperty()} {return_type {virtual void}
+  } {}
+  Function {changeVisibleSurfaceProperty()} {return_type {virtual void}
+  } {}
+  Function {changeColorSurfaceProperty()} {return_type {virtual void}
+  } {}
+  Function {changeTransparencySurfaceProperty()} {return_type {virtual void}
+  } {}
+  Function {surfaceSelected()} {return_type {virtual void}
+  } {}
+  Function {FMSeedSelected()} {open return_type {virtual void}
+  } {}
+  Function {FMAddSeed()} {open return_type {virtual void}
+  } {}
+  Function {FMRemoveSeed()} {open return_type {virtual void}
+  } {}
+  Function {setSurfaceTexture()} {open return_type {virtual void}
+  } {}
+  Function {clearSurfaceTexture()} {open return_type {virtual void}
+  } {}
+  Function {getMetrics()} {open return_type {virtual void}
+  } {}
+  Function {renameImage()} {open return_type {virtual void}
+  } {}
+  Function {load3DImage()} {open return_type {virtual void}
+  } {}
+  Function {save3DImage()} {open return_type {virtual void}
+  } {}
+  Function {loadSurface()} {open return_type {virtual void}
+  } {}
+  Function {saveSurface()} {open return_type {virtual void}
+  } {}
+  Function {import3DImage()} {open return_type {virtual void}
+  } {}
+  Function {importSURSurface()} {open return_type {virtual void}
+  } {}
+  Function {exportSURSurface()} {open return_type {virtual void}
+  } {}
+  Function {takeScreenSnapshot()} {open return_type {virtual void}
+  } {}
+  Function {changeImageLUT()} {open return_type {virtual void}
+  } {}
+  Function {showLUTBar(bool show)} {open return_type {virtual void}
+  } {}
+  Function {showDesktopTab(int tab)} {open return_type {virtual void}
+  } {}
+  Function {showContour(bool show)} {open return_type {virtual void}
+  } {}
+  Function {showAbout()} {open selected return_type {virtual void}
+  } {}
+} 
+
+Function {makeSplashScreen()} {open
+} {
+  Fl_Window {} {open
+    xywh {300 134 255 320} type Double modal noborder visible
+  } {
+    Fl_Box {} {
+      image {./images/splash.gif} xywh {0 0 255 320}
+    }
+  }
+} 
