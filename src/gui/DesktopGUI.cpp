@@ -1,5 +1,5 @@
 /*
-# $Id: DesktopGUI.cpp,v 1.2 2003/05/06 00:12:14 sebasfiorent Exp $
+# $Id: DesktopGUI.cpp,v 1.3 2003/05/23 19:18:58 sebasfiorent Exp $
 # SkullyDoo - Segmentador y visualizador de imagenes tridimensionales  
 # (C) 2002 Sebasti n Fiorentini / Ignacio Larrabide
 # Contact Info: sebasfiorent@yahoo.com.ar / nacholarrabide@yahoo.com
@@ -74,11 +74,11 @@
 #include <vtkPointData.h>
 #include <vtkProperty.h>
 
+#include <FL/x.H>
 #ifdef _WIN32
 #include "win32/resource.h"
 #endif
 #if !defined(WIN32) && !defined(__APPLE__)
-#include <FL/x.H>
 #include "images/skull.xpm"
 #endif
 
@@ -137,7 +137,7 @@ DesktopGUI::DesktopGUI():DesktopGUIBase(),vtkInteractorStyleSwitch(){
 		TCLFilter::Pointer filter=(*ifit);
 		std::string fname=filter->getName();
 		if (fname.length()>40) fname=fname.substr(0,40);
-		fname=std::string("&Filtros/&Imagen 3D/")+fname;
+		fname=std::string(_("&Filters/&3D Image/"))+fname;
 		int idx=menu->add(fname.c_str(),0,(Fl_Callback*)imageFilterCallback,filter.GetPointer());
 	}
 	// Inicializo el combo de filtros PolyDataToPolyData
@@ -146,7 +146,7 @@ DesktopGUI::DesktopGUI():DesktopGUIBase(),vtkInteractorStyleSwitch(){
 		TCLFilter::Pointer filter=(*ifit);
 		std::string fname=filter->getName();
 		if (fname.length()>40) fname=fname.substr(0,40);
-		fname=std::string("&Filtros/&Superficie/")+fname;
+		fname=std::string(_("&Filters/&Surface/"))+fname;
 		int idx=menu->add(fname.c_str(),0,(Fl_Callback*)surfaceFilterCallback,filter.GetPointer());
 	}
 	//
@@ -157,9 +157,9 @@ DesktopGUI::DesktopGUI():DesktopGUIBase(),vtkInteractorStyleSwitch(){
 	smMap[grVG]=VoxelGrowSegmentation::New();
 	smMap[grFM]=FastMarchingSegmentation::New();
 	smMap[grAC]=ActiveContourSegmentation::New();
-	comboSegMethods->add("Voxel Grow",0,0,grVG);
-	comboSegMethods->add("Fast Marching",0,0,grFM);
-	comboSegMethods->add("Contornos Activos",0,0,grAC);
+	comboSegMethods->add(_("VoxelGrow"),0,0,grVG);
+	comboSegMethods->add(_("FastMarching"),0,0,grFM);
+	comboSegMethods->add(_("Active Contours"),0,0,grAC);
 	vtkObject::GlobalWarningDisplayOff();
 	showDesktopTab(0);
 }
@@ -578,8 +578,8 @@ void DesktopGUI::doSegmentation(){
 	SegmentationMethod::Pointer sm=smMap[currentSegmentationPanel];
 	if (!sm.GetPointer()) return;
 	char defname[255];
-	sprintf(defname,"Segmentacion %d",lastImageNumber);
-	const char* rl=fl_input("Ingrese la etiqueta de la segmentacion",defname);
+	sprintf(defname,_("Segmentation no.%d"),lastImageNumber);
+	const char* rl=fl_input(_("Enter a segmentation label"),defname);
 	if (!rl) return;
 	updateSegmentationMethodParams();
 	Segmentation::Pointer seg=sm->segmentate(vol);
@@ -608,7 +608,7 @@ void DesktopGUI::createMarchingCubesSurface(){
 	if (!vol.GetPointer()) return;
 	char defcolor[255];
 	sprintf(defcolor,"%4.2f",currentSeed.intensity);
-	const char* rl=fl_input("Ingrese el color de corte",defcolor);
+	const char* rl=fl_input(_("Enter cut color"),defcolor);
 	if (!rl) return;
 	float cutcolor=atof(rl);
 	
@@ -621,7 +621,7 @@ void DesktopGUI::createMarchingCubesSurface(){
 	mc->ComputeGradientsOff();
 	mc->ComputeScalarsOn();
 	mc->ComputeNormalsOn();
-	ProgressWindowGUI::Instance()->Observe(mc,"Construyendo superificie por Marching Cubes",vol->getLabel());
+	ProgressWindowGUI::Instance()->Observe(mc,_("Building surface using Marching Cubes Algorithm"),vol->getLabel());
 	mc->Update();
 	//Desconecto la salida y la entrada
 	vtkPolyData* fakeP=vtkPolyData::New();
@@ -638,7 +638,7 @@ void DesktopGUI::createMarchingCubesSurface(){
 void DesktopGUI::createFlatContourSurface(){
 	ImageModel::Pointer vol=getSelectedImage();
 	if (!vol.GetPointer()) return;
-	const char* rl=fl_input("Ingrese el color de afuera","0.0");
+	const char* rl=fl_input(_("Enter outside color"),"0.0");
 	if (!rl) return;
 	float cutcolor=atof(rl);
 	SurfaceModel::Pointer surface=SurfaceModel::New();
@@ -646,7 +646,7 @@ void DesktopGUI::createFlatContourSurface(){
 	FlatContour* fc=new FlatContour();
 	fc->SetInput(vol->getFilteredVtkVolume());
 	fc->setOutsideValue(cutcolor);
-	ProgressWindowGUI::Instance()->Observe(fc,"Construyendo superificie por Flat Contour",vol->getLabel());
+	ProgressWindowGUI::Instance()->Observe(fc,_("Building surface using FlatContour Algorithm"),vol->getLabel());
 	fc->SetOutput(surface->getInputPolyData());
 	fc->Update();
 	//Desconecto la salida y la entrada
@@ -724,7 +724,7 @@ void DesktopGUI::changeColorSurfaceProperty(){
 	vtkActor* a=pipeline->getSurfaceSegment(sm)->getSurfaceActor();
 	a->GetProperty()->GetColor(origrgb);
 	double rgb[]={origrgb[0],origrgb[1],origrgb[2]};
-	if (fl_color_chooser("Seleccione el color de la superficie",rgb[0],rgb[1],rgb[2])){
+	if (fl_color_chooser(_("Select surface color"),rgb[0],rgb[1],rgb[2])){
 		origrgb[0]=rgb[0];
 		origrgb[1]=rgb[1];
 		origrgb[2]=rgb[2];
@@ -837,7 +837,7 @@ void DesktopGUI::setSurfaceTexture(){
 	SurfaceModel::Pointer sm=getSelectedSurface();
 	if (sm.GetPointer()==0) return;
 	char* fname="";
-	fname=fl_file_chooser("Seleccione con textura","Imagenes (*.{bmp,jpg,jpeg,png})","");
+	fname=fl_file_chooser(_("Select texture image"),_("Images (*.{bmp,jpg,jpeg,png})"),"");
 	if (!fname) return;
 	std::string filename=fname;
 	std::string extension;
@@ -850,7 +850,7 @@ void DesktopGUI::setSurfaceTexture(){
 	if (extension=="bmp"){
 		vtkBMPReader* bmpr=vtkBMPReader::New();
 		bmpr->SetFileName(fname);
-		ProgressWindowGUI::Instance()->Observe(bmpr,"Leyendo textura...",sm->getLabel());
+		ProgressWindowGUI::Instance()->Observe(bmpr,_("Reading texture image..."),sm->getLabel());
 		bmpr->SetOutput(timg);
 		bmpr->Update();
 		bmpr->Delete();
@@ -859,7 +859,7 @@ void DesktopGUI::setSurfaceTexture(){
 	if (extension=="jpeg" || extension=="jpg"){
 		vtkJPEGReader* jpr=vtkJPEGReader::New();
 		jpr->SetFileName(fname);
-		ProgressWindowGUI::Instance()->Observe(jpr,"Leyendo textura...",sm->getLabel());
+		ProgressWindowGUI::Instance()->Observe(jpr,_("Reading texture image..."),sm->getLabel());
 		jpr->SetOutput(timg);
 		jpr->Update();
 		jpr->Delete();
@@ -868,7 +868,7 @@ void DesktopGUI::setSurfaceTexture(){
 	if (extension=="png"){
 		vtkPNGReader* pnr=vtkPNGReader::New();
 		pnr->SetFileName(fname);
-		ProgressWindowGUI::Instance()->Observe(pnr,"Leyendo textura...",sm->getLabel());
+		ProgressWindowGUI::Instance()->Observe(pnr,_("Reading texture image..."),sm->getLabel());
 		pnr->SetOutput(timg);
 		pnr->Update();
 		pnr->Delete();
@@ -896,7 +896,7 @@ void DesktopGUI::getMetrics(){
 void DesktopGUI::renameImage(){
 	ImageModel::Pointer i=getSelectedImage();
 	if (!i.GetPointer()) return;
-	const char* newname=fl_input("Ingrese el nuevo nombre de la imagen",i->getLabel().c_str());
+	const char* newname=fl_input(_("Enter the image´s new name"),i->getLabel().c_str());
 	if (!newname) return;
 	i->setLabel(newname);
 	browserImages->text(browserImages->value(),newname);
@@ -906,7 +906,7 @@ void DesktopGUI::renameImage(){
 void DesktopGUI::renameSurface(){
 	SurfaceModel::Pointer s=getSelectedSurface();
 	if (!s.GetPointer()) return;
-	const char* newname=fl_input("Ingrese el nuevo nombre de la superficie",s->getLabel().c_str());
+	const char* newname=fl_input(_("Enter the surface´s new name"),s->getLabel().c_str());
 	if (!newname) return;
 	s->setLabel(newname);
 	browserSurfaces->text(browserSurfaces->value(),newname);
@@ -923,11 +923,11 @@ void DesktopGUI::editSurfaceSceneFilters(){
 }
 
 void DesktopGUI::load3DImage(){
-	const char* fcr=fl_file_chooser("Cargar Imagen 3D","Imagenes 3D(*.{spb,spt,sp})",lastImageVolumeFile.c_str(),0);
+	const char* fcr=fl_file_chooser(_("Load 3D Image"),_("3D Images(*.{spb,spt,sp})"),lastImageVolumeFile.c_str(),0);
 	if (!fcr) return;
 	vtkStructuredPointsReader* dsr=vtkStructuredPointsReader::New();
 	dsr->SetFileName(fcr);
-	ProgressWindowGUI::Instance()->doStartEvent("Leyendo imagen 3D...");
+	ProgressWindowGUI::Instance()->doStartEvent(_("Reading 3D Image..."));
 	ImageModel::Pointer vol=ImageModel::New();
 	vol->setLabel(fl_filename_name(fcr));
 	dsr->SetOutput(vtkStructuredPoints::SafeDownCast(vol->getInputVtkVolume()));
@@ -941,7 +941,7 @@ void DesktopGUI::save3DImage(){
 	ImageModel::Pointer vol=getSelectedImage();
 	if (!vol.GetPointer()) return;
 	char* fname="";
-	fname=fl_file_chooser("Grabar Imagen 3D:","Imagenes 3D (*.{spb,spt})","");
+	fname=fl_file_chooser(_("Save 3D Image"),_("3D Images (*.{spb,spt})"),"");
 	if (!fname) return;
 	std::string filename=fl_filename_name(fname);
 	std::string extension;
@@ -955,21 +955,21 @@ void DesktopGUI::save3DImage(){
 	if (extension=="spt") spw->SetFileTypeToASCII();	
 	else
 		spw->SetFileTypeToBinary();
-	ProgressWindowGUI::Instance()->doStartEvent("Grabando imagen 3D...");
+	ProgressWindowGUI::Instance()->doStartEvent(_("Saving 3D Image..."));
 	spw->Write();
 	ProgressWindowGUI::Instance()->doEndEvent();
 	spw->Delete();
 }
 
 void DesktopGUI::loadSurface(){
-	const char* fcr=fl_file_chooser("Cargar Superficie","Superficies (*.{pdb,pdt,pd})","",0);
+	const char* fcr=fl_file_chooser(_("Load Surface"),_("Surfaces (*.{pdb,pdt,pd})"),"",0);
 	if (!fcr) return;
 	vtkPolyDataReader* dsr=vtkPolyDataReader::New();
 	SurfaceModel::Pointer surface=SurfaceModel::New();
 	surface->setLabel(fl_filename_name(fcr));
 	dsr->SetFileName(fcr);
 	dsr->SetOutput(surface->getInputPolyData());
-	ProgressWindowGUI::Instance()->doStartEvent("Leyendo superficie...");
+	ProgressWindowGUI::Instance()->doStartEvent(_("Reading surface..."));
 	dsr->Update();
 	ProgressWindowGUI::Instance()->doEndEvent();
 	addSurface(surface);
@@ -980,7 +980,7 @@ void DesktopGUI::saveSurface(){
 	SurfaceModel::Pointer sm=getSelectedSurface();
 	if (sm.GetPointer()==0) return;
 	char* fname="";
-	fname=fl_file_chooser("Grabar Superficie","Superficie (*.{pdb,pdt})","");
+	fname=fl_file_chooser(_("Save Surface"),_("Surfaces (*.{pdb,pdt})"),"");
 	if (!fname) return;
 	std::string filename=fl_filename_name(fname);
 	std::string extension;
@@ -995,14 +995,14 @@ void DesktopGUI::saveSurface(){
 		spw->SetFileTypeToBinary();
 	spw->SetInput(sm->getFilteredPolyData());
 	spw->SetFileName(fname);
-	ProgressWindowGUI::Instance()->doStartEvent("Grabando superficie...");
+	ProgressWindowGUI::Instance()->doStartEvent(_("Saving surface..."));
 	spw->Write();
 	ProgressWindowGUI::Instance()->doEndEvent();
 	spw->Delete();
 }
 
 void DesktopGUI::import3DImage(){
-	const char* fcr=fl_file_chooser("Seleccione el archivo","*.*",lastImageVolumeFile.c_str(),0);
+	const char* fcr=fl_file_chooser(_("Select file"),"*.*",lastImageVolumeFile.c_str(),0);
 	if (!fcr) return;
 	VolumeLoaderGUI* vlg=new VolumeLoaderGUI(fcr);
 	bool ok=vlg->execute();
@@ -1015,7 +1015,7 @@ void DesktopGUI::import3DImage(){
 }
 
 void DesktopGUI::importSURSurface(){
-	const char* fcr=fl_file_chooser("Importar .SUR","*.sur","",0);
+	const char* fcr=fl_file_chooser(_("Import .SUR"),"*.sur","",0);
 	if (!fcr) return;
 	SurfaceModel::Pointer surface=SurfaceModel::New();
 	if (SURFormatIO::read(fcr,surface->getInputPolyData())){
@@ -1028,17 +1028,17 @@ void DesktopGUI::exportSURSurface(){
 	SurfaceModel::Pointer sm=getSelectedSurface();
 	if (sm.GetPointer()==0) return;
 	char* fname="";
-	fname=fl_file_chooser("Exportar .SUR","*.sur","");
+	fname=fl_file_chooser(_("Export .SUR"),"*.sur","");
 	if (!fname) return;
 	if (!SURFormatIO::write(fname,sm->getFilteredPolyData())){
-		std::string error=std::string("Error al grabar el archivo ")+fname;
+		std::string error=std::string(_("Error saving file "))+fname;
 		fl_alert(error.c_str());
 	}
 }
 
 void DesktopGUI::takeScreenSnapshot(){
 	char* fname="";
-	fname=fl_file_chooser("Exportar .jpeg :","JPG (*.{jpeg,jpg})","");
+	fname=fl_file_chooser(_("Exportar .JPG"),_("Imagenes JPG (*.{jpeg,jpg})"),"");
 	if (!fname) return;
 	vtkWindowToImageFilter* w2i=vtkWindowToImageFilter::New();
 	if (btnSurfacesTab->value()) w2i->SetInput(vtkSurfaces->GetRenderWindow());
@@ -1068,7 +1068,7 @@ void DesktopGUI::applyImageToImageFilter(TCLFilter::Pointer selected){
 	filter->setFileName(selected->getFileName());
 	bool ok=filter->initialize();
 	if (!ok){
-		fl_alert("Fallo al inicializar el filtro. Error:\n [%s]",filter->getTCLError().c_str());
+		fl_alert(_("Failed to initialize filter. Error description:\n [%s]"),filter->getTCLError().c_str());
 		filterpipeline->disablePredefinedObjects();
 		return;
 	}
@@ -1081,11 +1081,11 @@ void DesktopGUI::applyImageToImageFilter(TCLFilter::Pointer selected){
 	filterpipeline->setFilters(prevFilters);
 	TCLFilterPipeline::ExecStatus status=filterpipeline->execute();
 	if (status==TCLFilterPipeline::EXEC_ERROR){
-		fl_alert("Error TCL:\n%s",filterpipeline->getErrorMessage().c_str());
+		fl_alert(_("TCL Error:\n%s"),filterpipeline->getErrorMessage().c_str());
 		ok=false;
 	}
 	if (status==TCLFilterPipeline::EXEC_MISSED_OUTPUT){
-		fl_alert("Se esperaba la salida con tipo %s, y no se encontró. Verifique los scripts (variable filter_output)",filterpipeline->getOutputType().c_str());
+		fl_alert(_("Expected Output with type %s. Check scripts (filter_output variable)"),filterpipeline->getOutputType().c_str());
 		ok=false;
 	}
 	filterpipeline->disablePredefinedObjects();
@@ -1110,7 +1110,7 @@ void DesktopGUI::applyPolyDataToPolyDataFilter(TCLFilter::Pointer selected){
 	filter->setFileName(selected->getFileName());
 	bool ok=filter->initialize();
 	if (!ok){
-		fl_alert("Fallo al inicializar el filtro. Error:\n [%s]",filter->getTCLError().c_str());
+		fl_alert(_("Failed to initialize filter. Error:\n [%s]"),filter->getTCLError().c_str());
 		filterpipeline->disablePredefinedObjects();
 		return;
 	}
@@ -1123,11 +1123,11 @@ void DesktopGUI::applyPolyDataToPolyDataFilter(TCLFilter::Pointer selected){
 	filterpipeline->setFilters(prevFilters);
 	TCLFilterPipeline::ExecStatus status=filterpipeline->execute();
 	if (status==TCLFilterPipeline::EXEC_ERROR){
-		fl_alert("Error TCL:\n%s",filterpipeline->getErrorMessage().c_str());
+		fl_alert(_("TCL Error:\n%s"),filterpipeline->getErrorMessage().c_str());
 		ok=false;
 	}
 	if (status==TCLFilterPipeline::EXEC_MISSED_OUTPUT){
-		fl_alert("Se esperaba la salida con tipo %s, y no se encontró. Verifique los scripts (variable filter_output)",filterpipeline->getOutputType().c_str());
+		fl_alert(_("Expected output with type %s. Check scripts (filter_output variable)"),filterpipeline->getOutputType().c_str());
 		ok=false;
 	}
 	filterpipeline->disablePredefinedObjects();

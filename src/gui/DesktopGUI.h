@@ -1,5 +1,5 @@
 /*
-# $Id: DesktopGUI.h,v 1.2 2003/05/06 00:12:14 sebasfiorent Exp $
+# $Id: DesktopGUI.h,v 1.3 2003/05/23 19:18:58 sebasfiorent Exp $
 # SkullyDoo - Segmentador y visualizador de imagenes tridimensionales  
 # (C) 2002 Sebasti n Fiorentini / Ignacio Larrabide
 # Contact Info: sebasfiorent@yahoo.com.ar / nacholarrabide@yahoo.com
@@ -23,6 +23,9 @@
 
 #ifndef _DesktopGUIBase_h_
 #define _DesktopGUIBase_h_
+#ifdef _MSC_VER
+	#pragma warning  ( disable : 4786 )
+#endif
 
 #include "pipeline/Pipeline.h"
 #include "segmentation/SegmentationMethod.h"

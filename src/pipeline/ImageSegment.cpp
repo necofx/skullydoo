@@ -1,5 +1,5 @@
 /*
-# $Id: ImageSegment.cpp,v 1.2 2003/05/06 00:12:14 sebasfiorent Exp $
+# $Id: ImageSegment.cpp,v 1.3 2003/05/23 19:18:59 sebasfiorent Exp $
 # SkullyDoo - Segmentador y visualizador de imagenes tridimensionales  
 # (C) 2002 Sebasti n Fiorentini / Ignacio Larrabide
 # Contact Info: sebasfiorent@yahoo.com.ar / nacholarrabide@yahoo.com
@@ -222,6 +222,9 @@ void ImageSegment::inputLUTChanged(){
 	textureXY->SetLookupTable(lut);
 	textureXZ->SetLookupTable(lut);
 	textureYZ->SetLookupTable(lut);
+	aXY->Modified();
+	aXZ->Modified();
+	aYZ->Modified();
 }
 
 void ImageSegment::focusSeed(VoxelModel focus){
@@ -256,6 +259,10 @@ void ImageSegment::focusSeed(VoxelModel focus){
 	pYZ->SetPoint1(origin[0]+(focus.x*spacing[0]),bounds[3],bounds[4]);
 	pYZ->SetPoint2(origin[0]+(focus.x*spacing[0]),bounds[2],bounds[5]);
 	pYZ->SetOrigin(origin[0]+(focus.x*spacing[0]),bounds[2],bounds[4]);
+
+	aXY->Modified();
+	aXZ->Modified();
+	aYZ->Modified();
 }
 
 VoxelModel ImageSegment::getFocusedSeed(){

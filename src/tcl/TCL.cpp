@@ -1,5 +1,5 @@
 /*
-# $Id: TCL.cpp,v 1.1 2003/05/02 22:21:59 sebasfiorent Exp $
+# $Id: TCL.cpp,v 1.2 2003/05/23 19:18:59 sebasfiorent Exp $
 # SkullyDoo - Segmentador y visualizador de imagenes tridimensionales  
 # (C) 2002 Sebasti n Fiorentini / Ignacio Larrabide
 # Contact Info: sebasfiorent@yahoo.com.ar / nacholarrabide@yahoo.com
@@ -80,7 +80,7 @@ void EmptyDelete_TCL_Command(ClientData cd){
 int TCL_ShowProgress(ClientData clientData,Tcl_Interp *interp,int argc,char *argv[]){
 	char respuesta[1024];
 	if (argc < 3){
-		sprintf("Faltan parametros. Uso:\n %s Objeto Mensaje_Progreso",argv[0]);
+		sprintf(_("Missing parameters. Use:\n %s Object Progress_Message"),argv[0]);
 		Tcl_SetResult(interp, (char *) respuesta, TCL_VOLATILE);
 		return TCL_ERROR;
 	}
@@ -89,13 +89,13 @@ int TCL_ShowProgress(ClientData clientData,Tcl_Interp *interp,int argc,char *arg
 	TCL* tcl=TCL::Instance();
 	vtkObject* vtkvar=tcl->getVtkVariable(objname);
 	if (!vtkvar){
-		sprintf(respuesta,"El objeto %s no existe!",objname.c_str());
+		sprintf(respuesta,_("The object %s doesn´t exist!"),objname.c_str());
 		Tcl_SetResult(interp, (char *) respuesta, TCL_VOLATILE);
 		return TCL_ERROR;
 	}
 	vtkProcessObject* vtkprocessobj=vtkProcessObject::SafeDownCast(vtkvar);
 	if (!vtkprocessobj){
-		sprintf(respuesta,"El objeto %s no es un filtro de procesamiento!",objname.c_str());
+		sprintf(respuesta,_("The object %s isn´t a processing filter!"),objname.c_str());
 		Tcl_SetResult(interp, (char *) respuesta, TCL_VOLATILE);
 		return TCL_ERROR;
 	}
@@ -107,7 +107,7 @@ int TCL_ShowProgress(ClientData clientData,Tcl_Interp *interp,int argc,char *arg
 int TCL_NativeFilterSetParam(ClientData clientData,Tcl_Interp *interp,int argc,char *argv[]){
 	char respuesta[1024];
 	if (argc < 4){
-		sprintf(respuesta,"Faltan parametros. Uso:\n %s Filtro Parametro Valor",argv[0]);
+		sprintf(respuesta,_("Missing parameters. Use:\n %s Filter Parameter Value"),argv[0]);
 		Tcl_SetResult(interp, (char *) respuesta, TCL_VOLATILE);
 		return TCL_ERROR;
 	}
@@ -117,7 +117,7 @@ int TCL_NativeFilterSetParam(ClientData clientData,Tcl_Interp *interp,int argc,c
 	TCLNativeFilter::Pointer filter;
 	filter=TCLGlobals::NativeFiltersMap[filtername];
 	if (!filter.GetPointer()){
-		sprintf(respuesta,"El filtro nativo %s no existe!",filtername.c_str());
+		sprintf(respuesta,_("The native filter %s doesn´t exists!"),filtername.c_str());
 		Tcl_SetResult(interp, (char *) respuesta, TCL_VOLATILE);
 		return TCL_ERROR;
 	}
@@ -129,7 +129,7 @@ int TCL_NativeFilterSetParam(ClientData clientData,Tcl_Interp *interp,int argc,c
 int TCL_NativeFilterGetParam(ClientData clientData,Tcl_Interp *interp,int argc,char *argv[]){
 	char respuesta[1024];
 	if (argc < 3){
-		sprintf(respuesta,"Faltan parametros. Uso:\n %s Filtro Parametro",argv[0]);
+		sprintf(respuesta,_("Missing parameters. Use:\n %s Filter Parameter"),argv[0]);
 		Tcl_SetResult(interp, (char *) respuesta, TCL_VOLATILE);
 		return TCL_ERROR;
 	}
@@ -138,7 +138,7 @@ int TCL_NativeFilterGetParam(ClientData clientData,Tcl_Interp *interp,int argc,c
 	TCLNativeFilter::Pointer filter;
 	filter=TCLGlobals::NativeFiltersMap[filtername];
 	if (!filter.GetPointer()){
-		sprintf(respuesta,"El filtro nativo %s no existe!",filtername.c_str());
+		sprintf(respuesta,_("The native filter %s doesn´t exists!"),filtername.c_str());
 		Tcl_SetResult(interp, (char *) respuesta, TCL_VOLATILE);
 		return TCL_ERROR;
 	}
@@ -151,7 +151,7 @@ int TCL_NativeFilterGetParam(ClientData clientData,Tcl_Interp *interp,int argc,c
 int TCL_NativeFilterClearParams(ClientData clientData,Tcl_Interp *interp,int argc,char *argv[]){
 	char respuesta[1024];
 	if (argc < 2){
-		sprintf(respuesta,"Faltan parametros. Uso:\n %s Filtro",argv[0]);
+		sprintf(respuesta,_("Missing parameters. Use:\n %s Filter"),argv[0]);
 		Tcl_SetResult(interp, (char *) respuesta, TCL_VOLATILE);
 		return TCL_ERROR;
 	}
@@ -159,7 +159,7 @@ int TCL_NativeFilterClearParams(ClientData clientData,Tcl_Interp *interp,int arg
 	TCLNativeFilter::Pointer filter;
 	filter=TCLGlobals::NativeFiltersMap[filtername];
 	if (!filter.GetPointer()){
-		sprintf(respuesta,"El filtro nativo %s no existe!",filtername.c_str());
+		sprintf(respuesta,_("The native filter %s dosen´t exists!"),filtername.c_str());
 		Tcl_SetResult(interp, (char *) respuesta, TCL_VOLATILE);
 		return TCL_ERROR;
 	}
@@ -171,7 +171,7 @@ int TCL_NativeFilterClearParams(ClientData clientData,Tcl_Interp *interp,int arg
 int TCL_NativeFilterExecute(ClientData clientData,Tcl_Interp *interp,int argc,char *argv[]){
 	char respuesta[1024];
 	if (argc < 2){
-		sprintf(respuesta,"Faltan parametros. Uso:\n %s Filtro",argv[0]);
+		sprintf(respuesta,_("Missing parameters. Use:\n %s Filter"),argv[0]);
 		Tcl_SetResult(interp, (char *) respuesta, TCL_VOLATILE);
 		return TCL_ERROR;
 	}
@@ -179,7 +179,7 @@ int TCL_NativeFilterExecute(ClientData clientData,Tcl_Interp *interp,int argc,ch
 	TCLNativeFilter::Pointer filter;
 	filter=TCLGlobals::NativeFiltersMap[filtername];
 	if (!filter.GetPointer()){
-		sprintf(respuesta,"El filtro nativo %s no existe!",filtername.c_str());
+		sprintf(respuesta,_("The native filter %s dosen´t exists!"),filtername.c_str());
 		Tcl_SetResult(interp, (char *) respuesta, TCL_VOLATILE);
 		return TCL_ERROR;
 	}

@@ -1,5 +1,5 @@
 /*
-# $Id: GradientGrowth.cpp,v 1.2 2003/05/06 00:12:14 sebasfiorent Exp $
+# $Id: GradientGrowth.cpp,v 1.3 2003/05/23 19:18:59 sebasfiorent Exp $
 # SkullyDoo - Segmentador y visualizador de imagenes tridimensionales  
 # (C) 2002 Sebasti n Fiorentini / Ignacio Larrabide
 # Contact Info: sebasfiorent@yahoo.com.ar / nacholarrabide@yahoo.com
@@ -48,7 +48,7 @@ GradientGrowth::~GradientGrowth(){
 void GradientGrowth::setInputGradientImage(vtkImageData* image){
 	igCalculator->SetInput(image);
 	igCalculator->SetDimensionality(3);
-	ProgressWindowGUI::Instance()->Observe(igCalculator,"Calculando gradiente","unknown");
+	ProgressWindowGUI::Instance()->Observe(igCalculator,_("Calculating gradient"),"unknown");
 	igCalculator->Update();
 	gradientImage=igCalculator->GetOutput();
 	float spacing[3];

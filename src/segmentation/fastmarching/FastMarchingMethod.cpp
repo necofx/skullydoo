@@ -1,5 +1,5 @@
 /*
-# $Id: FastMarchingMethod.cpp,v 1.2 2003/05/06 00:12:14 sebasfiorent Exp $
+# $Id: FastMarchingMethod.cpp,v 1.3 2003/05/23 19:18:59 sebasfiorent Exp $
 # SkullyDoo - Segmentador y visualizador de imagenes tridimensionales
 # (C) 2002 Sebasti n Fiorentini / Ignacio Larrabide
 # Contact Info: sebasfiorent@yahoo.com.ar / nacholarrabide@yahoo.com
@@ -59,7 +59,7 @@ void FastMarchingMethod::computeTimeCrossingMap(){
   // specify the size of the output image
   detection_filter->SetOutputSize( input->GetBufferedRegion().GetSize() );
   // update the marcher
-  ProgressWindowGUI::Instance()->Observe(detection_filter,"Haciendo FastMarching...","unknown");
+  ProgressWindowGUI::Instance()->Observe(detection_filter,_("Executing FastMarching Segmentation..."),"unknown");
   detection_filter->Update();
 }
 
@@ -67,7 +67,7 @@ void FastMarchingMethod::computeEdgePotentialMap(){
 	DerivativeFilterType::Pointer deriv = DerivativeFilterType::New();
 	deriv->SetInput(input);
 	deriv->SetSigma(sigma);
-	ProgressWindowGUI::Instance()->Observe(deriv,"Calculando mapa de potenciales de fast marching","unknown");
+	ProgressWindowGUI::Instance()->Observe(deriv,_("Computing image potential-map"),"unknown");
 	deriv->Update();
 	
 	edge_potential->SetLargestPossibleRegion(input->GetLargestPossibleRegion());

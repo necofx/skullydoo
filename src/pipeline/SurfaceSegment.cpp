@@ -1,5 +1,5 @@
 /*
-# $Id: SurfaceSegment.cpp,v 1.2 2003/05/06 00:12:14 sebasfiorent Exp $
+# $Id: SurfaceSegment.cpp,v 1.3 2003/05/23 19:18:59 sebasfiorent Exp $
 # SkullyDoo - Segmentador y visualizador de imagenes tridimensionales  
 # (C) 2002 Sebasti n Fiorentini / Ignacio Larrabide
 # Contact Info: sebasfiorent@yahoo.com.ar / nacholarrabide@yahoo.com
@@ -73,7 +73,7 @@ void SurfaceSegment::setInput(SurfaceModel::Pointer input){
 void SurfaceSegment::setTexture(vtkImageData* texture){
 	vtkTextureMapToSphere* tmap=vtkTextureMapToSphere::New();
 	tmap->SetInput(input->getFilteredPolyData());
-	ProgressWindowGUI::Instance()->Observe(tmap,"Generando coordenadas de textura",input->getLabel());
+	ProgressWindowGUI::Instance()->Observe(tmap,_("Generating texture coordinates"),input->getLabel());
 	vtkDataSetMapper* mapper=vtkDataSetMapper::New();
     mapper->SetInput(tmap->GetOutput());
     mapper->SetScalarModeToUseCellData();

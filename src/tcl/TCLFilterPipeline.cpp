@@ -1,5 +1,5 @@
 /*
-# $Id: TCLFilterPipeline.cpp,v 1.1 2003/05/02 22:21:59 sebasfiorent Exp $
+# $Id: TCLFilterPipeline.cpp,v 1.2 2003/05/23 19:18:59 sebasfiorent Exp $
 # SkullyDoo - Segmentador y visualizador de imagenes tridimensionales  
 # (C) 2002 Sebasti n Fiorentini / Ignacio Larrabide
 # Contact Info: sebasfiorent@yahoo.com.ar / nacholarrabide@yahoo.com
@@ -116,7 +116,7 @@ TCLFilterPipeline::ExecStatus TCLFilterPipeline::execute(){
 			passDataToFinalOutput(input);
 			return EXEC_OK;
 		}
-		executionError="Faltan filtros. Y el tipo de entrada/salida no es el mismo";
+		executionError=_("Some filters are missing and the input/output type doesn´t match");
 		return EXEC_MISSED_OUTPUT;
 	}
 	enablePredefinedObjects();

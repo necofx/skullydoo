@@ -1,5 +1,5 @@
 /*
-# $Id: Application.cpp,v 1.1 2003/05/02 22:21:58 sebasfiorent Exp $
+# $Id: Application.cpp,v 1.2 2003/05/23 19:18:59 sebasfiorent Exp $
 # SkullyDoo - Segmentador y visualizador de imagenes tridimensionales  
 # (C) 2002 Sebasti n Fiorentini / Ignacio Larrabide
 # Contact Info: sebasfiorent@yahoo.com.ar / nacholarrabide@yahoo.com
@@ -26,12 +26,12 @@
 #include <itkExceptionObject.h>
 #include <iostream>
 #include <tcl.h>
-#include "tcl/TCL.h"
-#include "tcl/TCLGlobals.h"
 #include <FL/fl_ask.H>
 #include <FL/Fl.H>
 #include <FL/Fl_Double_Window.H>
 #include "gui/DesktopGUI.h"
+#include "tcl/TCL.h"
+#include "tcl/TCLGlobals.h"
 
 void hideSplash(void* d){
 	Fl_Window* w=(Fl_Window*)d;

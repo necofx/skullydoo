@@ -1,5 +1,5 @@
 /*
-# $Id: TCLFilterPipelineConfigGUI.cpp,v 1.1 2003/05/02 22:21:53 sebasfiorent Exp $
+# $Id: TCLFilterPipelineConfigGUI.cpp,v 1.2 2003/05/23 19:18:58 sebasfiorent Exp $
 # SkullyDoo - Segmentador y visualizador de imagenes tridimensionales  
 # (C) 2002 Sebasti n Fiorentini / Ignacio Larrabide
 # Contact Info: sebasfiorent@yahoo.com.ar / nacholarrabide@yahoo.com
@@ -124,7 +124,7 @@ void TCLFilterPipelineConfigGUI::addFilter(){
 	f->setFileName(selected->getFileName());
 	bool ok=f->initialize();
 	if (!ok){
-		fl_alert("Fallo al inicializar el filtro. Error:\n [%s]",f->getTCLError().c_str());
+		fl_alert(_("Failed to initialize filter. Error:\n [%s]"),f->getTCLError().c_str());
 		return;
 	}
 	filters.push_back(f);
@@ -196,11 +196,11 @@ bool TCLFilterPipelineConfigGUI::configure(){
 	if (needReExecution){
 		TCLFilterPipeline::ExecStatus status=filterpipeline->execute();
 		if (status==TCLFilterPipeline::EXEC_ERROR){
-			fl_alert("Error TCL:\n%s",filterpipeline->getErrorMessage().c_str());
+			fl_alert(_("TCL Error:\n%s"),filterpipeline->getErrorMessage().c_str());
 			ok=false;
 		}
 		if (status==TCLFilterPipeline::EXEC_MISSED_OUTPUT){
-			fl_alert("Se esperaba la salida con tipo %s, y no se encontró. Verifique los scripts (variable filter_output)",filterpipeline->getOutputType().c_str());
+			fl_alert(_("Expected output with type %s. Check scripts (filter_output variable)"),filterpipeline->getOutputType().c_str());
 			ok=false;
 		}
 	}

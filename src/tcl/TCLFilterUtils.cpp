@@ -1,5 +1,5 @@
 /*
-# $Id: TCLFilterUtils.cpp,v 1.2 2003/05/06 00:12:14 sebasfiorent Exp $
+# $Id: TCLFilterUtils.cpp,v 1.3 2003/05/23 19:18:59 sebasfiorent Exp $
 # SkullyDoo - Segmentador y visualizador de imagenes tridimensionales  
 # (C) 2002 Sebasti n Fiorentini / Ignacio Larrabide
 # Contact Info: sebasfiorent@yahoo.com.ar / nacholarrabide@yahoo.com
@@ -52,12 +52,13 @@ TCLFilter::Vector TCLFilterUtils::hasOutputType(std::string type, TCLFilter::Vec
 
 TCLFilter::Vector TCLFilterUtils::getAvailableFilters(std::string dir){
 	char path[1024];
+	int i;
 	fl_filename_absolute(path,1024,dir.c_str());
 	dirent	**files;	// Files in in directory
-        int num_files = fl_filename_list(path, &files);
+    int num_files = fl_filename_list(path, &files);
 	TCLFilter::Vector result;
         if (num_files > 0) {
-		for (int i = 0; i < num_files; i ++){
+		for (i = 0; i < num_files; i ++){
 			std::string fname=files[i]->d_name;
 			std::string lowercasefname=fname;
 			std::transform(fname.begin(),fname.end(),lowercasefname.begin(),tolower);
@@ -67,7 +68,7 @@ TCLFilter::Vector TCLFilterUtils::getAvailableFilters(std::string dir){
 				result.push_back(f);
 			}
 		}
-		for (int i = num_files; i > 0;) {
+		for (i = num_files; i > 0;) {
 			free((void*)(files[--i]));
 		}
 		free((void*)files);

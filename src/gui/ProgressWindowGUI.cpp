@@ -1,5 +1,5 @@
 /*
-# $Id: ProgressWindowGUI.cpp,v 1.1 2003/05/02 22:21:53 sebasfiorent Exp $
+# $Id: ProgressWindowGUI.cpp,v 1.2 2003/05/23 19:18:58 sebasfiorent Exp $
 # SkullyDoo - Segmentador y visualizador de imagenes tridimensionales  
 # (C) 2002 Sebasti n Fiorentini / Ignacio Larrabide
 # Contact Info: sebasfiorent@yahoo.com.ar / nacholarrabide@yahoo.com
@@ -22,12 +22,12 @@
 */
 
 #include "ProgressWindowGUI.h"
+#include "common/Object.h"
 #include <FL/Enumerations.H>
 #include <FL/fl_draw.H>
 #include <itkCommand.h>
 #include <vtkCallbackCommand.h>
 #include <vector>
-
 #include <time.h>
 
 
@@ -62,7 +62,6 @@ std::string ProgressWindowGUI::description="";
 ProgressWindowGUI::ProgressWindowGUI(){
 	progressBar->minimum(0);
 	progressBar->maximum(100.0);
-	log.open("progress.log",ios::out | ios::app | ios::ate);
 }
 
 ProgressWindowGUI* ProgressWindowGUI::Instance(){
@@ -143,8 +142,6 @@ void ProgressWindowGUI::Update(itk::ProcessObject* caller,const itk::EventObject
 	if (instancename=="") instancename="unknown";
 	float amount;
 	if (event.CheckEvent(&itk::StartEvent())){
-		log << "Start ["<<(clock()*1000)/CLK_TCK<<"] "<<instancename << "->" <<msgMap[caller]<<"\n";
-		log.flush();
 		doStartEvent(msgMap[caller]);
 	}
 	else
@@ -154,8 +151,6 @@ void ProgressWindowGUI::Update(itk::ProcessObject* caller,const itk::EventObject
 	}
 	else
 	if (event.CheckEvent(&itk::EndEvent())){
-		log << "End ["<<(clock()*1000)/CLK_TCK<<"] "<<instancename << "->" <<msgMap[caller]<<"\n";
-		log.flush();
 		doEndEvent();
 	}
 }
@@ -171,20 +166,16 @@ void ProgressWindowGUI::Update(vtkProcessObject* caller,unsigned long event,void
 		doProgressEvent(amount);
 		break;
 	case vtkCommand::StartEvent:
-		log << "Start ["<<(clock()*1000)/CLK_TCK<<"] "<<instancename << "->" <<msgMap[caller]<<"\n";
-		log.flush();
 		doStartEvent(msgMap[caller]);
 		break;
 	case vtkCommand::EndEvent:
-		log << "End ["<<(clock()*1000)/CLK_TCK<<"] "<<instancename << "->" <<msgMap[caller]<<"\n";
-		log.flush();
 		doEndEvent();
 	}
 }
 
 void RenderTimeOut(void* d){
 	if (!renderShown){
-		ProgressWindowGUI::Instance()->doStartEvent("Renderizando...");
+		ProgressWindowGUI::Instance()->doStartEvent(_("Renderizing..."));
 		renderShown=true;
 		Fl::check();
 	}

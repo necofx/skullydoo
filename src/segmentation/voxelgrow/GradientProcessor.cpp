@@ -1,5 +1,5 @@
 /*
-# $Id: GradientProcessor.cpp,v 1.1 2003/05/02 22:21:59 sebasfiorent Exp $
+# $Id: GradientProcessor.cpp,v 1.2 2003/05/23 19:18:59 sebasfiorent Exp $
 # SkullyDoo - Segmentador y visualizador de imagenes tridimensionales  
 # (C) 2002 Sebasti n Fiorentini / Ignacio Larrabide
 # Contact Info: sebasfiorent@yahoo.com.ar / nacholarrabide@yahoo.com
@@ -34,7 +34,7 @@ GradientProcessor::~GradientProcessor(){
 
 void GradientProcessor::initialize(){
 	gradient->SetInput(input);
-	ProgressWindowGUI::Instance()->Observe(gradient,"Calculando gradiente de imagen","unknown");
+	ProgressWindowGUI::Instance()->Observe(gradient,_("Calculating image gradient"),"unknown");
 	gradient->SetDimensionality(3);
 	gradient->Update();
 }

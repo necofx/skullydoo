@@ -1,5 +1,5 @@
 /*
-# $Id: SURFormatIO.cpp,v 1.2 2003/05/06 00:12:14 sebasfiorent Exp $
+# $Id: SURFormatIO.cpp,v 1.3 2003/05/23 19:18:59 sebasfiorent Exp $
 # SkullyDoo - Segmentador y visualizador de imagenes tridimensionales  
 # (C) 2002 Sebasti n Fiorentini / Ignacio Larrabide
 # Contact Info: sebasfiorent@yahoo.com.ar / nacholarrabide@yahoo.com
@@ -25,13 +25,11 @@
 #include "gui/ProgressWindowGUI.h"
 #include <vtkCell.h>
 #include <vtkCellArray.h>
-#include <fstream>
-#include <iostream>
+#include <stdlib.h>
 
 bool SURFormatIO::write(std::string filename,vtkPolyData* polydata){
-	ofstream output;
-	output.open(filename.c_str());
-	if (!output.good()) return false;
+	FILE* output=fopen(filename.c_str(),"w");
+	if (!output) return false;
 	STRVector eg;
 	STRVector ig;
 	STRVector cg;
@@ -45,7 +43,7 @@ bool SURFormatIO::write(std::string filename,vtkPolyData* polydata){
 	sprintf(holder,"%6.10f %6.10f %6.10f %6.10f %6.10f %6.10f",bounds[0],bounds[1],bounds[2],bounds[3],bounds[4],bounds[5]);
 	fv.push_back(holder);
 	// 
-	ProgressWindowGUI::Instance()->doStartEvent("Grabando archivo .SUR");
+	ProgressWindowGUI::Instance()->doStartEvent(_("Saving .SUR file"));
 	//Elementos (triangulos)
 	eg.push_back("*ELEMENT GROUPS");
 	eg.push_back(" 1");
@@ -95,7 +93,7 @@ bool SURFormatIO::write(std::string filename,vtkPolyData* polydata){
 		if (lnum%100==0){
 			ProgressWindowGUI::Instance()->doProgressEvent(((float)lnum/(float)nol)*0.33+0.66);
 		}
-		output << *e << std::endl;
+		fputs((*e).c_str(),output);
 	}
 	
 	for (e=ig.begin();e!=ig.end();e++){
@@ -103,7 +101,7 @@ bool SURFormatIO::write(std::string filename,vtkPolyData* polydata){
 		if (lnum%100==0){
 			ProgressWindowGUI::Instance()->doProgressEvent(((float)lnum/(float)nol)*0.33+0.66);
 		}
-		output << *e << std::endl;
+		fputs((*e).c_str(),output);
 	}
 	
 	for (e=cg.begin();e!=cg.end();e++){
@@ -111,7 +109,7 @@ bool SURFormatIO::write(std::string filename,vtkPolyData* polydata){
 		if (lnum%100==0){
 			ProgressWindowGUI::Instance()->doProgressEvent(((float)lnum/(float)nol)*0.33+0.66);
 		}
-		output << *e << std::endl;
+		fputs((*e).c_str(),output);
 	}
 	
 	for (e=fv.begin();e!=fv.end();e++){
@@ -119,26 +117,28 @@ bool SURFormatIO::write(std::string filename,vtkPolyData* polydata){
 		if (lnum%100==0){
 			ProgressWindowGUI::Instance()->doProgressEvent(((float)lnum/(float)nol)*0.33+0.66);
 		}
-		output << *e << std::endl;
+		fputs((*e).c_str(),output);
 	}
 	ProgressWindowGUI::Instance()->doEndEvent();
-
-	return (output.good());
+	bool ok=!(ferror(output));
+	fclose(output);
+	return ok;
 }
 
 bool SURFormatIO::read(std::string filename,vtkPolyData* output){
-	ifstream input;
-	input.open(filename.c_str());
-	if (!input.good()) return false;
+	FILE* input=fopen(filename.c_str(),"r");
+	if (!input) return false;
 	
 	STRVector eg;
 	STRVector ig;
 	STRVector cg;
 	STRVector fv;
 	std::string linea;
+	char* clinea=new char[255];
 	int grupo=-1;
-	while(!input.eof()){
-		std::getline(input,linea);
+	while(!feof(input)){
+		fgets(clinea,255,input);
+		linea=clinea;
 		if (linea.find("*ELEMENT GROUPS")!=std::string::npos) grupo=1;
 		else
 		if (linea.find("*INCIDENCE")!=std::string::npos) grupo=2;
@@ -160,7 +160,8 @@ bool SURFormatIO::read(std::string filename,vtkPolyData* output){
 				}
 			}
 	}
-	input.close();
+	fclose(input);
+	delete(clinea);
 	vtkCellArray* polys=vtkCellArray::New();
 	vtkPoints* points=vtkPoints::New();
 	output->SetPoints(points);
