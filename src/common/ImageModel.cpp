@@ -1,5 +1,5 @@
 /*
-# $Id: ImageModel.cpp,v 1.1 2003/05/02 22:21:52 sebasfiorent Exp $
+# $Id: ImageModel.cpp,v 1.2 2003/05/03 17:55:02 sebasfiorent Exp $
 # SkullyDoo - Segmentador y visualizador de imagenes tridimensionales  
 # (C) 2002 Sebasti n Fiorentini / Ignacio Larrabide
 # Contact Info: sebasfiorent@yahoo.com.ar / nacholarrabide@yahoo.com
@@ -22,6 +22,7 @@
 */
 
 #include  "ImageModel.h"
+#include <vtkPointData.h>
 #include <vtkStructuredPoints.h>
 #include <vtkWindowLevelLookupTable.h>
 
