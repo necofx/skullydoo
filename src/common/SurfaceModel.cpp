@@ -1,5 +1,5 @@
 /*
-# $Id: SurfaceModel.cpp,v 1.1 2003/05/02 22:21:52 sebasfiorent Exp $
+# $Id: SurfaceModel.cpp,v 1.2 2003/05/23 19:16:48 sebasfiorent Exp $
 # SkullyDoo - Segmentador y visualizador de imagenes tridimensionales  
 # (C) 2002 Sebasti n Fiorentini / Ignacio Larrabide
 # Contact Info: sebasfiorent@yahoo.com.ar / nacholarrabide@yahoo.com
@@ -25,7 +25,7 @@
 
 SurfaceModel::SurfaceModel():Object(){
 	inputPolys=vtkPolyData::New();
-	label="Unnamed";
+	label=_("Unnamed");
 	scenepipeline=TCLFilterPipeline::New();
 	scenepipeline->setInputOutputType("SurfaceScene","SurfaceScene");
 	fp=TCLPolyDataToPolyDataFilterPipeline::New();

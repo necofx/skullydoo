@@ -1,5 +1,5 @@
 /*
-# $Id: Object.h,v 1.2 2003/05/06 00:12:14 sebasfiorent Exp $
+# $Id: Object.h,v 1.3 2003/05/23 19:16:48 sebasfiorent Exp $
 # SkullyDoo - Segmentador y visualizador de imagenes tridimensionales  
 # (C) 2002 Sebasti n Fiorentini / Ignacio Larrabide
 # Contact Info: sebasfiorent@yahoo.com.ar / nacholarrabide@yahoo.com
@@ -23,12 +23,16 @@
 
 #ifndef __Object_h
 #define __Object_h
-
+#ifdef _MSC_VER
+	#pragma warning  ( disable : 4786 )
+#endif
 
 #include <iostream>
 #include <typeinfo>
 
 #include "SmartPointer.h"
+
+#define _(String) String
 
 #define NewMacro(x) \
 	protected: \
