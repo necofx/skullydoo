@@ -1,4 +1,4 @@
-# $Id: CMakeLists.txt,v 1.2 2003/05/06 00:12:13 sebasfiorent Exp $
+# $Id: CMakeLists.txt,v 1.3 2003/05/23 19:08:49 sebasfiorent Exp $
 # SkullyDoo - Segmentador y visualizador de imagenes tridimensionales  
 # (C) 2002 Sebasti n Fiorentini / Ignacio Larrabide
 # Contact Info: sebasfiorent@yahoo.com.ar / nacholarrabide@yahoo.com
@@ -21,9 +21,6 @@
 
 # Makefile del codigo fuente
 
-IF (WIN32)
-  INCLUDE (${CMAKE_ROOT}/Templates/CMakeWindowsSystemConfig.cmake)
-ENDIF (WIN32)
 
 #
 # Parte de uso de TCL
@@ -40,17 +37,6 @@ LINK_LIBRARIES (
   ${TK_LIBRARY}
 )
 
-LINK_LIBRARIES (
-  vtkImagingTCL
-  vtkGraphicsTCL
-  vtkIOTCL
-  vtkFilteringTCL 
-  vtkCommonTCL  
-  vtkPatentedTCL
-  vtkHybridTCL
-  vtkRenderingTCL
-)
-
 #
 # Parte de uso de FLTK
 #
@@ -63,7 +49,7 @@ LINK_LIBRARIES(
   ${FLTK_LIBRARY}
 )
 IF (WIN32)
-	LINK_LIBRARIES(wsock32)
+  LINK_LIBRARIES(wsock32)
 ENDIF (WIN32)
 
 #
@@ -88,6 +74,14 @@ LINK_LIBRARIES(
   vtkpng
   vtkjpeg
   vtkzlib
+  vtkImagingTCL
+  vtkGraphicsTCL
+  vtkIOTCL
+  vtkFilteringTCL 
+  vtkCommonTCL  
+  vtkPatentedTCL
+  vtkHybridTCL
+  vtkRenderingTCL
 )
 
 #
@@ -99,11 +93,8 @@ INCLUDE (${CMAKE_ROOT}/Modules/FindITK.cmake)
 IF (USE_ITK_FILE)
   INCLUDE(${USE_ITK_FILE})
 ENDIF (USE_ITK_FILE)
-#LINK_DIRECTORIES(
-#  ${ITK_BINARY_PATH}
-#)
+
 LINK_LIBRARIES(
-#  VXLNumerics
   ITKCommon
   ITKBasicFilters
   ITKIO
@@ -111,8 +102,8 @@ LINK_LIBRARIES(
 
 # General
 IF (WIN32)
-#	SET (CMAKE_CXX_FLAGS "/YX /GR /GX /Zm1000")
-	SET (CMAKE_EXTRA_LINK_FLAGS "/nodefaultlib:\"msvcrtd.lib\"")
+	SET (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /YX /GR /GX /Zm1000")
+	SET (CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /nodefaultlib:\"msvcrtd.lib\"")
 ENDIF(WIN32)
 
 ADD_DEFINITIONS(-DTIXML_USE_STL)
@@ -121,12 +112,10 @@ SUBDIRS(tinyxml)
 LINK_LIBRARIES(tinyxml)
 
 # Fuentes
-SET (PROJECT_SRC ${SkullyDoo_SOURCE_DIR}/src)
-SET (PROJECT_BIN ${SkullyDoo_BINARY_DIR}/src)
 
 INCLUDE_DIRECTORIES( 
-  ${PROJECT_SRC}
-  ${PROJECT_BIN}
+  ${SkullyDoo_SOURCE_DIR}/src
+  ${SkullyDoo_BINARY_DIR}/src
 )
 
 SOURCE_GROUP(GUI "[.]fl$")
@@ -141,7 +130,6 @@ AUX_SOURCE_DIRECTORY(segmentation SkullyDoo_SRCS)
 AUX_SOURCE_DIRECTORY(segmentation/activecontour SkullyDoo_SRCS)
 AUX_SOURCE_DIRECTORY(segmentation/fastmarching SkullyDoo_SRCS)
 AUX_SOURCE_DIRECTORY(segmentation/voxelgrow SkullyDoo_SRCS)
-
 AUX_SOURCE_DIRECTORY(tcl SkullyDoo_SRCS)
 
 SET(GUIBase_GUISRCS
@@ -155,16 +143,18 @@ SET(GUIBase_GUISRCS
 )
 
 IF (WIN32)
-SET(SkullyDoo_SRCS  
-  win32/Skully-Doo.rc
-)
+  SET(SkullyDoo_SRCS  
+    ${SkullyDoo_SRCS}
+    win32/Skully-Doo.rc
+  )
 ENDIF (WIN32)
 
+# Construyo el Ejecutable
 
 IF (WIN32)
-	ADD_EXECUTABLE(SkullyDoo WIN32 SkullyDoo_SRCS)
+	ADD_EXECUTABLE(SkullyDoo WIN32 ${SkullyDoo_SRCS})
 ELSE (WIN32)
-	ADD_EXECUTABLE(SkullyDoo SkullyDoo_SRCS)
+	ADD_EXECUTABLE(SkullyDoo ${SkullyDoo_SRCS})
 ENDIF (WIN32)
 
 FLTK_WRAP_UI(SkullyDoo GUIBase_GUISRCS)
