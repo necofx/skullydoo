@@ -23,15 +23,15 @@ class AboutGUIBase {open
         xywh {15 235 190 15}
       }
       Fl_Box {} {
-        label {Ignacio Larrabide (nacho@@softwaredelcentro.com.ar)}
+        label {Ignacio Larrabide (nacholarrabide@@yahoo.com)}
         xywh {20 250 310 15} labelfont 5 labelsize 10 labelcolor 176 align 20
       }
       Fl_Box {} {
-        label {Sebastián Fiorentini (sebas@@softwaredelcentro.com.ar)}
+        label {Sebastián Fiorentini (sebasfiorent@@yahoo.com.ar)}
         xywh {20 265 330 15} labelfont 5 labelsize 10 labelcolor 176 align 20
       }
       Fl_Box {} {
-        label {http://www.softwaredelcentro.com.ar}
+        label {http://www.skullydoo.com.ar}
         xywh {15 280 320 20} box PLASTIC_DOWN_FRAME labelfont 5 labelcolor 217
       }
     }
