@@ -1,20 +1,20 @@
 /*
-# $Id: VolumeLoaderGUI.cpp,v 1.1 2003/05/02 22:21:53 sebasfiorent Exp $
-# SkullyDoo - Segmentador y visualizador de imagenes tridimensionales  
+# $Id: VolumeLoaderGUI.cpp,v 1.2 2003/05/06 00:12:14 sebasfiorent Exp $
+# SkullyDoo - Segmentador y visualizador de imagenes tridimensionales
 # (C) 2002 Sebasti n Fiorentini / Ignacio Larrabide
 # Contact Info: sebasfiorent@yahoo.com.ar / nacholarrabide@yahoo.com
 # Argentina
 ############################# GPL LICENSE ####################################
-#   This program is free software; you can redistribute it and/or modify      
-#   it under the terms of the GNU General Public License as published by      
-#   the Free Software Foundation; either version 2 of the License, or         
-#   (at your option) any later version.                                       
-#                                                                             
-#   This program is distributed in the hope that it will be useful,           
-#   but WITHOUT ANY WARRANTY; without even the implied warranty of            
-#   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the             
-#   GNU General Public License for more details.                              
-#                                                                             
+#   This program is free software; you can redistribute it and/or modify
+#   it under the terms of the GNU General Public License as published by
+#   the Free Software Foundation; either version 2 of the License, or
+#   (at your option) any later version.
+#
+#   This program is distributed in the hope that it will be useful,
+#   but WITHOUT ANY WARRANTY; without even the implied warranty of
+#   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#   GNU General Public License for more details.
+#
 #    You should have received a copy of the GNU General Public License
 #    along with this program; if not, write to the Free Software
 #    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
@@ -27,6 +27,7 @@
 #include <FL/filename.H>
 #include "gui/ProgressWindowGUI.h"
 #include "common/Types.h"
+#include <vtkPointData.h>
 #include <vtkImageCast.h>
 #include <vtkImageSource.h>
 #include <vtkImageReader.h>
@@ -252,12 +253,29 @@ ImageModel::Pointer VolumeLoaderGUI::readVolume(){
 		imr->SetOutput(temporal);
 		po=imr;
 	}
-	if (f==FORMAT_BMP || f==FORMAT_PPM || f==FORMAT_TIFF || f==FORMAT_RAW){
+	if (f==FORMAT_TIFF){
+		vtkTIFFReader* imr;
+		if (rbSliceFile->value()){
+			imr->SetNumberOfScalarComponents(1);
+			imr->SetDataExtent(0,0,0,0,0,atoi(sliceNum->value())-1);
+			imr->SetFilePattern(editMask->value());
+			imr->SetFilePrefix(fnamePrefix->value());
+			imr->SetFileNameSliceOffset(atoi(sliceStart->value()));
+			imr->SetFileNameSliceSpacing(atoi(sliceSep->value()));
+		}
+		else{
+			imr->SetFileName(filename.c_str());
+		}
+		imr->SetDataSpacing(spacing);
+		ProgressWindowGUI::Instance()->Observe(imr,"Cargando volumen",filename);
+		imr->SetOutput(temporal);
+		po=imr;
+	}
+	if (f==FORMAT_BMP || f==FORMAT_PPM || f==FORMAT_RAW){
 		vtkImageReader* imr;
 		if (f!=FORMAT_RAW){
 			if (f==FORMAT_BMP) imr=vtkBMPReader::New();
 			if (f==FORMAT_PPM) imr=vtkPNMReader::New();
-			if (f==FORMAT_TIFF) imr=vtkTIFFReader::New();
 			if (rbSliceFile->value()){
 				imr->SetNumberOfScalarComponents(1);
 				imr->SetDataExtent(0,0,0,0,0,atoi(sliceNum->value())-1);

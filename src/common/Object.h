@@ -1,7 +1,7 @@
 /*
-# $Id: Object.h,v 1.1 2003/05/02 22:21:52 sebasfiorent Exp $
+# $Id: Object.h,v 1.2 2003/05/06 00:12:14 sebasfiorent Exp $
 # SkullyDoo - Segmentador y visualizador de imagenes tridimensionales  
-# (C) 2002 Sebasti n Fiorentini / Ignacio Larrabide
+# (C) 2002 Sebasti n Fiorentini / Ignacio Larrabide
 # Contact Info: sebasfiorent@yahoo.com.ar / nacholarrabide@yahoo.com
 # Argentina
 ############################# GPL LICENSE ####################################
@@ -31,12 +31,12 @@
 #include "SmartPointer.h"
 
 #define NewMacro(x) \
-	protected:\
-	x();\
-	public:\
-	typedef SmartPointer<x> Pointer;\
-	static Pointer New(void) { \
-		Pointer smartPtr; \
+	protected: \
+	x(); \
+	public: \
+	typedef SmartPointer<x> Pointer; \
+	static Pointer New(void) {  \
+		Pointer smartPtr;  \
 		x *rawPtr = new x; \
 		smartPtr = rawPtr; \
 		rawPtr->UnRegister(); \
@@ -44,8 +44,8 @@
 	}
 
 #define NewCopyMacro(x) \
-	protected:\
-	x(x& other);\
+	protected: \
+	x(x& other); \
 	static Pointer NewCopy(x::Pointer other) { \
 		Pointer smartPtr; \
 		x *rawPtr = new x; \

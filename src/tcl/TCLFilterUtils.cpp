@@ -1,7 +1,7 @@
 /*
-# $Id: TCLFilterUtils.cpp,v 1.1 2003/05/02 22:21:59 sebasfiorent Exp $
+# $Id: TCLFilterUtils.cpp,v 1.2 2003/05/06 00:12:14 sebasfiorent Exp $
 # SkullyDoo - Segmentador y visualizador de imagenes tridimensionales  
-# (C) 2002 Sebasti n Fiorentini / Ignacio Larrabide
+# (C) 2002 Sebasti n Fiorentini / Ignacio Larrabide
 # Contact Info: sebasfiorent@yahoo.com.ar / nacholarrabide@yahoo.com
 # Argentina
 ############################# GPL LICENSE ####################################
@@ -54,20 +54,23 @@ TCLFilter::Vector TCLFilterUtils::getAvailableFilters(std::string dir){
 	char path[1024];
 	fl_filename_absolute(path,1024,dir.c_str());
 	dirent	**files;	// Files in in directory
-    int num_files = fl_filename_list(path, &files);
+        int num_files = fl_filename_list(path, &files);
 	TCLFilter::Vector result;
-    if (num_files > 0) {
-		for (int i = 0, num_dirs = 0; i < num_files; i ++){
+        if (num_files > 0) {
+		for (int i = 0; i < num_files; i ++){
 			std::string fname=files[i]->d_name;
-			std::transform(fname.begin(),fname.end(),fname.begin(),tolower);
-			if (fl_filename_match(fname.c_str(),"*.xml")){
+			std::string lowercasefname=fname;
+			std::transform(fname.begin(),fname.end(),lowercasefname.begin(),tolower);
+			if (fl_filename_match(lowercasefname.c_str(),"*.xml")){
 				TCLFilter::Pointer f=TCLFilter::New();
 				f->setFileName(std::string(path)+fname);
 				result.push_back(f);
 			}
-			free(files[i]);
 		}
-		free(files);
-    }
+		for (int i = num_files; i > 0;) {
+			free((void*)(files[--i]));
+		}
+		free((void*)files);
+	}
 	return result;
 }

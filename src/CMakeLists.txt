@@ -1,6 +1,6 @@
-# $Id: CMakeLists.txt,v 1.1 2003/05/02 22:21:52 sebasfiorent Exp $
+# $Id: CMakeLists.txt,v 1.2 2003/05/06 00:12:13 sebasfiorent Exp $
 # SkullyDoo - Segmentador y visualizador de imagenes tridimensionales  
-# (C) 2002 Sebasti n Fiorentini / Ignacio Larrabide
+# (C) 2002 Sebasti n Fiorentini / Ignacio Larrabide
 # Contact Info: sebasfiorent@yahoo.com.ar / nacholarrabide@yahoo.com
 # Argentina
 ############################# GPL LICENSE ####################################
@@ -47,7 +47,6 @@ LINK_LIBRARIES (
   vtkFilteringTCL 
   vtkCommonTCL  
   vtkPatentedTCL
-  vtkParallelTCL
   vtkHybridTCL
   vtkRenderingTCL
 )
@@ -86,7 +85,6 @@ LINK_LIBRARIES(
   vtkFiltering
   vtkCommon
   vtkPatented
-  vtkParallel
   vtkpng
   vtkjpeg
   vtkzlib
@@ -105,7 +103,7 @@ ENDIF (USE_ITK_FILE)
 #  ${ITK_BINARY_PATH}
 #)
 LINK_LIBRARIES(
-  VXLNumerics
+#  VXLNumerics
   ITKCommon
   ITKBasicFilters
   ITKIO

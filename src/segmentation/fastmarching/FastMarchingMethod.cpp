@@ -1,20 +1,20 @@
 /*
-# $Id: FastMarchingMethod.cpp,v 1.1 2003/05/02 22:21:59 sebasfiorent Exp $
-# SkullyDoo - Segmentador y visualizador de imagenes tridimensionales  
+# $Id: FastMarchingMethod.cpp,v 1.2 2003/05/06 00:12:14 sebasfiorent Exp $
+# SkullyDoo - Segmentador y visualizador de imagenes tridimensionales
 # (C) 2002 Sebasti n Fiorentini / Ignacio Larrabide
 # Contact Info: sebasfiorent@yahoo.com.ar / nacholarrabide@yahoo.com
 # Argentina
 ############################# GPL LICENSE ####################################
-#   This program is free software; you can redistribute it and/or modify      
-#   it under the terms of the GNU General Public License as published by      
-#   the Free Software Foundation; either version 2 of the License, or         
-#   (at your option) any later version.                                       
-#                                                                             
-#   This program is distributed in the hope that it will be useful,           
-#   but WITHOUT ANY WARRANTY; without even the implied warranty of            
-#   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the             
-#   GNU General Public License for more details.                              
-#                                                                             
+#   This program is free software; you can redistribute it and/or modify
+#   it under the terms of the GNU General Public License as published by
+#   the Free Software Foundation; either version 2 of the License, or
+#   (at your option) any later version.
+#
+#   This program is distributed in the hope that it will be useful,
+#   but WITHOUT ANY WARRANTY; without even the implied warranty of
+#   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#   GNU General Public License for more details.
+#
 #    You should have received a copy of the GNU General Public License
 #    along with this program; if not, write to the Free Software
 #    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
@@ -26,7 +26,7 @@
 #include "itkImageRegionIterator.h"
 #include "itkExceptionObject.h"
 #include "itkFastMarchingImageFilter.h"
-#include "vnl/vnl_math.h"
+#include <math.h>
 #include "gui/ProgressWindowGUI.h"
 
 FastMarchingMethod::FastMarchingMethod():Object(){
@@ -54,7 +54,7 @@ void FastMarchingMethod::setSigma(double sigma){
 
 void FastMarchingMethod::computeTimeCrossingMap(){
   // connect edge potential map
-  detection_filter->SetSpeedImage(edge_potential);
+  detection_filter->SetInput(edge_potential);
   detection_filter->SetTrialPoints( trialPoints );
   // specify the size of the output image
   detection_filter->SetOutputSize( input->GetBufferedRegion().GetSize() );
@@ -89,14 +89,14 @@ void FastMarchingMethod::computeEdgePotentialMap(){
 			accum += vnl_math_sqr( grad[j] );
 		}
 		
-		accum = vnl_math_sqrt( accum );
+		accum = sqrt( accum );
 		//    mapIter.Set( 1.0 / ( 1.0 + accum ) );
 		mapIter.Set( exp( -1.0 * accum ) );
-		
+
 		++derivIter;
 		++mapIter;
-		
-    } 
+
+    }
 }
 
 FastMarchingMethod::itkImageType* FastMarchingMethod::getOutput(){

@@ -1,5 +1,5 @@
 /*
-# $Id: ImageSegment.cpp,v 1.1 2003/05/02 22:21:58 sebasfiorent Exp $
+# $Id: ImageSegment.cpp,v 1.2 2003/05/06 00:12:14 sebasfiorent Exp $
 # SkullyDoo - Segmentador y visualizador de imagenes tridimensionales  
 # (C) 2002 Sebasti n Fiorentini / Ignacio Larrabide
 # Contact Info: sebasfiorent@yahoo.com.ar / nacholarrabide@yahoo.com
@@ -26,6 +26,7 @@
 #include <vtkPlaneSource.h>
 #include <vtkTexture.h>
 #include <vtkPolyDataMapper.h>
+#include <vtkProperty.h>
 
 ImageSegment::ImageSegment():PipelineSegment(){
 	visible=false;

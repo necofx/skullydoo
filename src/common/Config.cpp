@@ -1,7 +1,7 @@
 /*
-# $Id: Config.cpp,v 1.1 2003/05/02 22:21:52 sebasfiorent Exp $
+# $Id: Config.cpp,v 1.2 2003/05/06 00:12:14 sebasfiorent Exp $
 # SkullyDoo - Segmentador y visualizador de imagenes tridimensionales  
-# (C) 2002 Sebasti n Fiorentini / Ignacio Larrabide
+# (C) 2002 Sebasti n Fiorentini / Ignacio Larrabide
 # Contact Info: sebasfiorent@yahoo.com.ar / nacholarrabide@yahoo.com
 # Argentina
 ############################# GPL LICENSE ####################################
@@ -28,17 +28,23 @@
 #define ELEM_FILTERDIR "FilterDirectory"
 
 Config* Config::instance=0;
-const std::string Config::CONFIG_FILENAME="./config.xml";
+const std::string Config::CONFIG_FILENAME="config.xml";
 
 Config::Config(){
 	char path[1024];
 	fl_filename_absolute(path,1024,CONFIG_FILENAME.c_str());
 	if (!dom.LoadFile(CONFIG_FILENAME.c_str())){
-		std::string xml="<?xml version=\"1.0\" encoding=\"iso-8859-1\"?>\n"\
-						"<Config>\n"\
-						"<FilterDirectory>./filters/</FilterDirectory>\n"\
+		std::string spath;
+		fl_filename_absolute(path,1024,"./");
+		spath=path;
+		std::string xml="<?xml version=\"1.0\" encoding=\"iso-8859-1\"?>\n" \
+						"<Config>\n" \
+						"<FilterDirectory>";
+		xml=xml+spath;
+		xml=xml+"filters/</FilterDirectory>\n" \
 						"</Config>\n";
 		dom.Parse(xml.c_str());
+		save();		
 	}
 	root=dom.FirstChildElement();
 }

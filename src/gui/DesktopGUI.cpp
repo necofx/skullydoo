@@ -1,7 +1,7 @@
 /*
-# $Id: DesktopGUI.cpp,v 1.1 2003/05/02 22:21:53 sebasfiorent Exp $
+# $Id: DesktopGUI.cpp,v 1.2 2003/05/06 00:12:14 sebasfiorent Exp $
 # SkullyDoo - Segmentador y visualizador de imagenes tridimensionales  
-# (C) 2002 Sebasti n Fiorentini / Ignacio Larrabide
+# (C) 2002 Sebasti n Fiorentini / Ignacio Larrabide
 # Contact Info: sebasfiorent@yahoo.com.ar / nacholarrabide@yahoo.com
 # Argentina
 ############################# GPL LICENSE ####################################
@@ -71,6 +71,8 @@
 #include <vtkPolyDataReader.h>
 #include <vtkPolyDataWriter.h>
 #include <vtkWindowedSincPolyDataFilter.h>
+#include <vtkPointData.h>
+#include <vtkProperty.h>
 
 #ifdef _WIN32
 #include "win32/resource.h"
@@ -99,16 +101,23 @@ DesktopGUI* DesktopGUI::Instance(){
 	return instance;
 }
 
-DesktopGUI::DesktopGUI():DesktopGUIBase(),vtkInteractorStyleTrackball(){
+DesktopGUI::DesktopGUI():DesktopGUIBase(),vtkInteractorStyleSwitch(){
 	fl_register_images();
+#if (VTK_MAJOR_VERSION == 4 && VTK_MINOR_VERSION == 0)
 	this->TrackballMode=VTKIS_TRACK;
+#else
+	this->SetCurrentStyleToTrackballActor();
+#endif
+
 	win3D=vtkRenderWindow::New();
 	vtkRenderer* rr=vtkRenderer::New();
 	win3D->AddRenderer(rr);
 	rr->Delete();
 	vtk3D->SetRenderWindow(win3D);
 	vtkCellPicker* cp=vtkCellPicker::New();
+#if (VTK_MAJOR_VERSION == 4 && VTK_MINOR_VERSION == 0)
 	vtk3D->SetInteractorStyle(this);
+#endif
 	vtk3D->SetPicker(cp);
 	vtk3D->Initialize();
 	cp->Delete();
@@ -117,11 +126,10 @@ DesktopGUI::DesktopGUI():DesktopGUIBase(),vtkInteractorStyleTrackball(){
 	winSurfaces->AddRenderer(renSurfaces);
 	ProgressWindowGUI::Instance()->Observe(winSurfaces);
 	vtkSurfaces->SetRenderWindow(winSurfaces);
-	vtkInteractorStyleTrackball* ist=vtkInteractorStyleTrackball::New();
-	ist->SetTrackballModeToTrackball();
-	vtkSurfaces->SetInteractorStyle(ist);
+#if (VTK_MAJOR_VERSION == 4 && VTK_MINOR_VERSION == 0)
+	vtkSurfaces->SetInteractorStyle(this);
+#endif
 	vtkSurfaces->Initialize();
-	ist->Delete();
 	// Filtros de imagen
 	i2ifilters=TCLFilterUtils::hasOutputType("ImageData",TCLFilterUtils::hasInputType("ImageData",TCLFilterUtils::getAvailableFilters(Config::Instance()->getFiltersDirectory())));
 	TCLFilter::Vector::iterator ifit;
@@ -754,11 +762,46 @@ void DesktopGUI::FMRemoveSeed(){
 	if (browserFMSeeds->size()==0) btnFMremoveSeed->deactivate();
 }
 
+#if (VTK_MAJOR_VERSION == 4 && VTK_MINOR_VERSION > 0)
+void DesktopGUI::OnChar(){
+}
+void DesktopGUI::OnLeftButtonDown(){
+	vtkInteractorStyleSwitch::OnLeftButtonDown();
+	/** Must see how to do with VTK 4.x
+	if (!ctrl || !shift) vtkInteractorStyleSwitch::OnLeftButtonDown();
+	else{
+		if (Interactor==vtk3D && CurrentRenderer){
+			ImageModel::Pointer img=getSelectedImage();
+			if (!img.GetPointer()) return;
+			float spacing[3];
+			float origin[3];
+			int extents[6];
+			img->getFilteredVtkVolume()->GetSpacing(spacing);
+			img->getFilteredVtkVolume()->GetOrigin(origin);
+			img->getFilteredVtkVolume()->GetExtent(extents);
+			vtk3D->GetPicker()->Pick(X,Y,0.0,CurrentRenderer);
+			float position[3];
+			vtk3D->GetPicker()->GetPickPosition(position);
+			int spos[3]={(int)(position[0]/spacing[0]+origin[0]),(int)(position[1]/spacing[1]+origin[1]),(int)(position[2]/spacing[2]+origin[2])};
+			if (spos[0]>=extents[0] && spos[0]<=extents[1] &&
+				spos[1]>=extents[2] && spos[1]<=extents[3] &&
+				spos[2]>=extents[4] && spos[2]<=extents[5]){
+					VoxelModel selSeed;
+					selSeed.x=spos[0];
+					selSeed.y=spos[1];
+					selSeed.z=spos[2];
+					focusSeed(selSeed);
+				}
+		}
+	}
+	*/
+}
+#else
 void DesktopGUI::OnChar(int ctrl, int shift, char keycode, int repeatcount){
 }
 
 void DesktopGUI::OnLeftButtonDown(int ctrl, int shift, int X, int Y){
-	if (!ctrl || !shift) vtkInteractorStyleTrackball::OnLeftButtonDown(ctrl,shift,X,Y);
+	if (!ctrl || !shift) vtkInteractorStyleSwitch::OnLeftButtonDown(ctrl,shift,X,Y);
 	else{
 		this->UpdateInternalState(ctrl, shift, X, Y);
 		this->FindPokedCamera(X, Y);
@@ -788,6 +831,7 @@ void DesktopGUI::OnLeftButtonDown(int ctrl, int shift, int X, int Y){
 		}
 	}
 }
+#endif
 
 void DesktopGUI::setSurfaceTexture(){
 	SurfaceModel::Pointer sm=getSelectedSurface();

@@ -1,20 +1,20 @@
 /*
-# $Id: ImageModel.cpp,v 1.2 2003/05/03 17:55:02 sebasfiorent Exp $
-# SkullyDoo - Segmentador y visualizador de imagenes tridimensionales  
+# $Id: ImageModel.cpp,v 1.3 2003/05/06 00:12:14 sebasfiorent Exp $
+# SkullyDoo - Segmentador y visualizador de imagenes tridimensionales
 # (C) 2002 Sebasti n Fiorentini / Ignacio Larrabide
 # Contact Info: sebasfiorent@yahoo.com.ar / nacholarrabide@yahoo.com
 # Argentina
 ############################# GPL LICENSE ####################################
-#   This program is free software; you can redistribute it and/or modify      
-#   it under the terms of the GNU General Public License as published by      
-#   the Free Software Foundation; either version 2 of the License, or         
-#   (at your option) any later version.                                       
-#                                                                             
-#   This program is distributed in the hope that it will be useful,           
-#   but WITHOUT ANY WARRANTY; without even the implied warranty of            
-#   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the             
-#   GNU General Public License for more details.                              
-#                                                                             
+#   This program is free software; you can redistribute it and/or modify
+#   it under the terms of the GNU General Public License as published by
+#   the Free Software Foundation; either version 2 of the License, or
+#   (at your option) any later version.
+#
+#   This program is distributed in the hope that it will be useful,
+#   but WITHOUT ANY WARRANTY; without even the implied warranty of
+#   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#   GNU General Public License for more details.
+#
 #    You should have received a copy of the GNU General Public License
 #    along with this program; if not, write to the Free Software
 #    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
@@ -22,9 +22,10 @@
 */
 
 #include  "ImageModel.h"
-#include <vtkPointData.h>
 #include <vtkStructuredPoints.h>
 #include <vtkWindowLevelLookupTable.h>
+#include <vtkPointData.h>
+#include <vtkCell.h>
 
 ImageModel::ImageModel(){
 	inputvolume=vtkStructuredPoints::New();
@@ -117,7 +118,7 @@ vtkLookupTable* ImageModel::getLookupTable(){
 
 void ImageModel::setLUTGamma(int gamma,int startColor,int numOfCols){
 	lutGamma=gamma;
-	float aux;
+	int aux;
 	int i;
 	int first=startColor;
 	int last=startColor+numOfCols;
@@ -150,7 +151,7 @@ void ImageModel::setLUTGamma(int gamma,int startColor,int numOfCols){
 			lut->SetTableValue(first+i+aux,1,0,(float)(i)/aux,1.0);
 		}
 		//  #voy del cyan al blanco
-		for (int i=0;i<aux;i++) {
+		for (i=0;i<aux;i++) {
 			lut->SetTableValue(first+i+aux*2,1,(float)(i)/aux,1,1.0);
 		}
 		break;

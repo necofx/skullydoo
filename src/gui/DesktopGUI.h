@@ -1,5 +1,5 @@
 /*
-# $Id: DesktopGUI.h,v 1.1 2003/05/02 22:21:53 sebasfiorent Exp $
+# $Id: DesktopGUI.h,v 1.2 2003/05/06 00:12:14 sebasfiorent Exp $
 # SkullyDoo - Segmentador y visualizador de imagenes tridimensionales  
 # (C) 2002 Sebasti n Fiorentini / Ignacio Larrabide
 # Contact Info: sebasfiorent@yahoo.com.ar / nacholarrabide@yahoo.com
@@ -14,7 +14,7 @@
 #   but WITHOUT ANY WARRANTY; without even the implied warranty of            
 #   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the             
 #   GNU General Public License for more details.                              
-#                                                                             
+#
 #    You should have received a copy of the GNU General Public License
 #    along with this program; if not, write to the Free Software
 #    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
@@ -31,12 +31,12 @@
 #include "DesktopGUIBase.h"
 #include <vtkRenderer.h>
 #include <vtkRenderWindow.h>
-#include <vtkInteractorStyleTrackball.h>
+#include <vtkInteractorStyleSwitch.h>
 #include <string>
 #include <map>
 
 
-class DesktopGUI:protected DesktopGUIBase,protected vtkInteractorStyleTrackball{
+class DesktopGUI:protected DesktopGUIBase,protected vtkInteractorStyleSwitch{
 protected:
 	typedef std::map<Fl_Group*,SegmentationMethod::Pointer> SMMapType;
 	typedef std::map<int,VoxelModel> SeedsMapType;
@@ -96,13 +96,13 @@ protected:
 	virtual void editImageSceneFilters();
 
 	virtual void segmentationMethodChanged();
-	
+
 	virtual void VGSeedSelected();
 
 	virtual void VGAddSeed();
 
 	virtual void VGRemoveSeed();
-	
+
 	virtual void VGUpdateConfig();
 
 	virtual void doSegmentation();
@@ -112,11 +112,11 @@ protected:
 	virtual void createFlatContourSurface();
 
 	virtual void surfaceSelected();
-	
+
 	virtual void deleteSurface();
 
 	virtual void editSurfaceFilters();
-	
+
 	virtual void changeVisibleSurfaceProperty();
 
 	virtual void changeWireframeSurfaceProperty();
@@ -167,10 +167,13 @@ protected:
 
 	virtual void showAbout();
 	//Del interactor
+#if (VTK_MAJOR_VERSION == 4 && VTK_MINOR_VERSION > 0)
+	virtual void OnLeftButtonDown();
+	virtual void OnChar();
+#else
 	virtual void OnLeftButtonDown(int ctrl, int shift, int X, int Y);
 	virtual void OnChar(int ctrl, int shift, char keycode, int repeatcount);
-	//
-
+#endif
 	//Singleton
 	DesktopGUI();
 
