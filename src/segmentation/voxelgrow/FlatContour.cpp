@@ -1,5 +1,5 @@
 /*
-# $Id: FlatContour.cpp,v 1.2 2003/05/06 00:12:14 sebasfiorent Exp $
+# $Id: FlatContour.cpp,v 1.3 2004/09/01 11:48:48 nacholarrabide Exp $
 # SkullyDoo - Segmentador y visualizador de imagenes tridimensionales
 # (C) 2002 Sebasti†n Fiorentini / Ignacio Larrabide
 # Contact Info: sebasfiorent@yahoo.com.ar / nacholarrabide@yahoo.com
@@ -104,6 +104,7 @@ void FlatContour::Execute(){
 	
 	vtkMergePoints *mp=vtkMergePoints::New();
 	mp->InitPointInsertion(puntos,bounds,estimatedSize);
+//	mp->SetAutomatic(1);
 	vtkDataArray *scalars=input->GetPointData()->GetScalars();
 	//vtkFloatArray* normales=vtkFloatArray::New();
 	//normales->SetNumberOfComponents(3);
@@ -138,46 +139,65 @@ void FlatContour::Execute(){
 					UpdateProgress((float)actualpoint/(float)totalpoints);
 				}
 				
+				//recupero mi ubicacion actual
 				pos[0]=x;
 				pos[1]=y;
 				pos[2]=z;
 				
+				//calculo a que voxel del volumen pertenece ese punto
 				pointId = input->ComputePointId(pos);
+
+				//que color tiene?
 				marcaAct = scalars->GetComponent(pointId,0);
+				
+				//auxpos va a tomar los valores de las posiciones vecinas
 				int auxPos[3];
+				
+				//si estoy fuiera de mi dominio en x
+				//estoy afuera de mi reg de interes
 				marcaVecX = outsideValue;
-				//El vecino esta dentro
+				//El vecino en x esta dentro del volumen
 				if (pos[0]+1<input_dim[0]){
 					loadarr(auxPos,pos[0]+1,pos[1],pos[2]);
 					pointId = input->ComputePointId(auxPos);
 					marcaVecX = scalars->GetComponent(pointId,0);
 				}
+				//si estoy fuiera de mi dominio en y
+				//estoy afuera de mi reg de interes
 				marcaVecY = outsideValue;
+				//El vecino en y esta dentro del volumen
 				if (pos[1]+1<input_dim[1]){
 					loadarr(auxPos,pos[0],pos[1]+1,pos[2]);
 					pointId = input->ComputePointId(auxPos);
 					marcaVecY = scalars->GetComponent(pointId,0);
 				}
+				//si estoy fuiera de mi dominio en z
+				//estoy afuera de mi reg de interes
 				marcaVecZ = outsideValue;
+				//El vecino en x esta dentro del volumen
 				if (pos[2]+1<input_dim[2]){
 					loadarr(auxPos,pos[0],pos[1],pos[2]+1);
 					pointId = input->ComputePointId(auxPos);
 					marcaVecZ = scalars->GetComponent(pointId,0);
 				}
 				
-				
+				// seteo la posicion "real" del centro del voxel 
+				//que estoy analizando
 				float vox_pos[3];
 				vox_pos[0] = x*input_spacing[0];
 				vox_pos[1] = y*input_spacing[1];
 				vox_pos[2] = z*input_spacing[2];
 				
+				//Los 4 puntos con los que voy a crear mis 2 triangulos
 				float pt1[3];
 				float pt2[3];
 				float pt3[3];  
 				float pt4[3];
 				
+				//los id's de los puntos que forman la cara que estoy creando
 				int puntoscara[4];
 				
+				//los puntos que forman mis triangulos
 				int tri1[3];
 				int tri2[3];
 				//Fijarse si hay que generar la cara anterior
@@ -187,7 +207,8 @@ void FlatContour::Execute(){
 					loadarr(pt2,vox_pos[0]-offsX,vox_pos[1]-offsY,vox_pos[2]+offsZ);
 					loadarr(pt3,vox_pos[0]-offsX,vox_pos[1]+offsY,vox_pos[2]+offsZ);
 					loadarr(pt4,vox_pos[0]-offsX,vox_pos[1]+offsY,vox_pos[2]-offsZ);
-					// agrego los puntos en el resultado
+					// agrego cada punto y me retorna los ids con que fueron agregados
+					// para poder crear el triangulo
 					mp->InsertUniquePoint(pt1,puntoscara[0]);
 					mp->InsertUniquePoint(pt2,puntoscara[1]);
 					mp->InsertUniquePoint(pt3,puntoscara[2]);
@@ -209,8 +230,7 @@ void FlatContour::Execute(){
 				}
 				//Fijarse si hay que generar la cara anterior
 				if (y==0 && marcaAct!=outsideValue){
-					//creo los puntos de la cara anterior en X
-					//creo los puntos de la cara en Y
+					//creo los puntos de la cara anterior en Y
 					loadarr(pt1,vox_pos[0]+offsX,vox_pos[1]-offsY,vox_pos[2]-offsZ);
 					loadarr(pt2,vox_pos[0]+offsX,vox_pos[1]-offsY,vox_pos[2]+offsZ);
 					loadarr(pt3,vox_pos[0]-offsX,vox_pos[1]-offsY,vox_pos[2]+offsZ);
@@ -220,14 +240,15 @@ void FlatContour::Execute(){
 					mp->InsertUniquePoint(pt2,puntoscara[1]);
 					mp->InsertUniquePoint(pt3,puntoscara[2]);
 					mp->InsertUniquePoint(pt4,puntoscara[3]);
+
+					//si estoy adentro
 					tri1[0]=puntoscara[0];
 					tri1[1]=puntoscara[1];
 					tri1[2]=puntoscara[2];
-					
 					tri2[0]=puntoscara[2];
 					tri2[1]=puntoscara[3];
 					tri2[2]=puntoscara[0];
-					//si estoy adentro
+
 					float normal[3];
 					int cid=output->InsertNextCell(VTK_TRIANGLE,3,tri1);
 					vtkPolygon::ComputeNormal(puntos,3,tri1,normal);
@@ -250,6 +271,7 @@ void FlatContour::Execute(){
 					mp->InsertUniquePoint(pt2,puntoscara[1]);
 					mp->InsertUniquePoint(pt3,puntoscara[2]);
 					mp->InsertUniquePoint(pt4,puntoscara[3]);
+
 					//si estoy adentro
 					tri1[0]=puntoscara[0];
 					tri1[1]=puntoscara[1];
@@ -266,9 +288,7 @@ void FlatContour::Execute(){
 					vtkPolygon::ComputeNormal(puntos,3,tri2,normal);
 					//normales->InsertTuple(cid,normal);
 				}
-				
-				/**
-				*/
+
 				//si el vecino en x cambia y uno de los dos estﬂ seleccionado (es = a 1), genero la cara
 				if (marcaAct!=marcaVecX && (marcaAct==outsideValue || marcaVecX==outsideValue)){
 					//creo los puntos de la cara en X

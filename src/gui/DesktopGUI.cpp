@@ -1,5 +1,5 @@
 /*
-# $Id: DesktopGUI.cpp,v 1.6 2004/06/07 22:59:48 nacholarrabide Exp $
+# $Id: DesktopGUI.cpp,v 1.7 2004/09/01 11:48:47 nacholarrabide Exp $
 # SkullyDoo - Segmentador y visualizador de imagenes tridimensionales  
 # (C) 2002 Sebasti n Fiorentini / Ignacio Larrabide
 # Contact Info: sebasfiorent@yahoo.com.ar / nacholarrabide@yahoo.com
@@ -23,7 +23,6 @@
 
 #include "DesktopGUI.h"
 #include "common/Config.h"
-
 #include "io/SURFormatIO.h"
 
 #include "gui/ProgressWindowGUI.h"
@@ -73,6 +72,9 @@
 #include <vtkWindowedSincPolyDataFilter.h>
 #include <vtkPointData.h>
 #include <vtkProperty.h>
+#include <vtkTriangleFilter.h>
+#include <vtkSTLWriter.h>
+#include <vtkSTLReader.h>
 
 #include <FL/x.H>
 #ifdef _WIN32
@@ -279,7 +281,7 @@ ImageModel::Pointer DesktopGUI::getNamedImage(std::string name){
 	}
 	return 0;
 }
-
+ 
 void DesktopGUI::quit(){
 	window->hide();
 }
@@ -407,6 +409,7 @@ void DesktopGUI::seedFocusChanged(){
 	redrawVtk3D();
 }
 
+//Que hace este metodo??
 void DesktopGUI::imageSelected(){
 	ImageModel::Pointer vol=getSelectedImage();
 	if (!vol.GetPointer()) return;
@@ -429,7 +432,7 @@ void DesktopGUI::imageSelected(){
 	vtkvol->GetScalarRange(scalarRange);
 	sprintf(lblHolderColorRange,"%4.2f - %4.2f",scalarRange[0],scalarRange[1]);
 	lblColorRange->label(lblHolderColorRange);
-	lblColorRange->redraw();
+	lblColorRange->redraw(); 
 	VoxelModel focus=pipeline->getImageSegment(currentVolume)->getFocusedSeed();
 	focusSeed(focus);
 	resetCamera();
@@ -591,6 +594,13 @@ void DesktopGUI::doSegmentation(){
 		ImageModel::Pointer smout=seg->getImage();
 		smout->setLabel(rl);
 		addImage(smout);
+		VoxelModel vm;
+		int dims[3];
+		smout->getFilteredVtkVolume()->GetDimensions(dims);
+		vm.x = dims[0]/2;
+		vm.y = dims[1]/2;
+		vm.z = dims[2]/2;
+		pipeline->getImageSegment(smout)->focusSeed(vm);		
 	}
 	if (seg->haveSurface()){
 		SurfaceModel::Pointer smout=seg->getSurface();
@@ -951,8 +961,6 @@ void DesktopGUI::showDICOMBrowser(){
 		ok = dicomB->exec();
 		if (ok){
 			ImageModel::Pointer vol=dicomB->readVolume();
-			// esto de aca es una chanchada provisoria..:D
-			vol->getInputVtkVolume()->SetSpacing(1.0 , 1.0 , 3.0);
 			if (vol.GetPointer()) addImage(vol);
 		}
 	}
@@ -1047,6 +1055,20 @@ void DesktopGUI::importSURSurface(){
 	}
 }
 
+void DesktopGUI::importSTLSurface(){
+	const char* fcr=fl_file_chooser(_("Import .STL"),"*.stl","",0);
+	if (!fcr) return;
+	SurfaceModel::Pointer surface=SurfaceModel::New();
+	vtkSTLReader *wrt = vtkSTLReader::New();
+	if (!fcr)return;
+	wrt->SetFileName(fcr);
+	wrt->SetOutput( surface->getInputPolyData());
+	surface->setLabel(fl_filename_name(fcr));
+	addSurface(surface);
+	wrt->Modified();
+	wrt->Delete();
+}
+
 void DesktopGUI::exportSURSurface(){
 	SurfaceModel::Pointer sm=getSelectedSurface();
 	if (sm.GetPointer()==0) return;
@@ -1057,6 +1079,26 @@ void DesktopGUI::exportSURSurface(){
 		std::string error=std::string(_("Error saving file "))+fname;
 		fl_alert(error.c_str());
 	}
+}
+
+void DesktopGUI::exportSTLSurface(){
+	SurfaceModel::Pointer sm=getSelectedSurface();
+	vtkTriangleFilter *triFilter = vtkTriangleFilter::New();
+	if (sm.GetPointer()==0) return;
+	char* fname="";
+	fname=fl_file_chooser(_("Export .STL"),"*.stl","");
+	triFilter->SetInput(sm->getFilteredPolyData());
+	vtkSTLWriter *wrt = vtkSTLWriter::New();
+	wrt->SetInput(triFilter->GetOutput());
+	wrt->SetFileName(fname);
+	if (!fname) return;
+	wrt->Write();
+	if (false){
+		std::string error=std::string(_("Error saving file "))+fname;
+		fl_alert(error.c_str());
+	}
+	triFilter->Delete();
+	wrt->Delete();
 }
 
 void DesktopGUI::takeScreenSnapshot(){

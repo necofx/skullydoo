@@ -1,5 +1,5 @@
 /*
-# $Id: VoxelGrowSegmentation.cpp,v 1.2 2003/05/23 18:53:58 sebasfiorent Exp $
+# $Id: VoxelGrowSegmentation.cpp,v 1.3 2004/09/01 11:48:48 nacholarrabide Exp $
 # SkullyDoo - Segmentador y visualizador de imagenes tridimensionales  
 # (C) 2002 Sebasti n Fiorentini / Ignacio Larrabide
 # Contact Info: sebasfiorent@yahoo.com.ar / nacholarrabide@yahoo.com
@@ -52,20 +52,20 @@ void VoxelGrowSegmentation::execute(ImageModel::Pointer vol,Segmentation::Pointe
 	vg->setStretchRadius(stretchradius);
 	vg->setConfig(config);
 	ProgressWindowGUI::Instance()->Observe(vg,_("Executing VoxelGrow Segmentation"),vol->getLabel());
-	/* Removed beacuse it´s dubious utility
+	/* Removed beacuse it´s dubious utility*/
 	Healer *h= new Healer();
 	h->SetInput(vg->GetOutput());
 	h->SetOutput(result->getImage()->getInputVtkVolume());
 	ProgressWindowGUI::Instance()->Observe(h,_("Eliminando casos patologicos"),vol->getLabel());
 	h->Update();
-	*/
 	vtkImageData* fake=vtkImageData::New();
-	//h->SetOutput(fake);
-	vg->SetOutput(fake);
+	h->SetOutput(fake);
+	//vg->SetOutput(fake);
+	//vg->Update();
 	fake->Delete();
 	vg->Delete();
 	result->setHaveImage(true);
-	//h->Delete();
+	h->Delete();
 }
 
 void VoxelGrowSegmentation::setConfig(VoxelGrow::ConfigVector config){

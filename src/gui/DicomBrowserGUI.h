@@ -4,7 +4,7 @@
 #include "common/ImageModel.h"
 #include "pipeline/ItkVtk.h"
 
-#include <itkDicomImageIO.h>
+#include <itkDICOMImageIO2.h>
 #include <itkDICOMSeriesFileNames.h> 
 #include <itkImageSeriesReader.h>
 #include <itkImage.h>
@@ -19,7 +19,7 @@ class DicomBrowserGUI :
 {
 public:
 	//crea la instancia que va a leer
-	typedef itk::DicomImageIO			DICOMIO;
+	typedef itk::DICOMImageIO2			DICOMIO;
 	typedef itk::DICOMSeriesFileNames	DICOMFileNames;
 	typedef itk::ImageSeriesReader<ItkVtk::itkImageType>		ImageSeriesReader;
 	

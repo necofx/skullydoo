@@ -1,5 +1,5 @@
 /*
-# $Id: DesktopGUI.h,v 1.6 2004/06/07 22:59:48 nacholarrabide Exp $
+# $Id: DesktopGUI.h,v 1.7 2004/09/01 11:48:47 nacholarrabide Exp $
 # SkullyDoo - Segmentador y visualizador de imagenes tridimensionales  
 # (C) 2002 Sebasti n Fiorentini / Ignacio Larrabide
 # Contact Info: sebasfiorent@yahoo.com.ar / nacholarrabide@yahoo.com
@@ -159,7 +159,11 @@ protected:
 
 	virtual void importSURSurface();
 
+	virtual void importSTLSurface();
+
 	virtual void exportSURSurface();
+
+	virtual void exportSTLSurface();
 
 	virtual void takeScreenSnapshot();
 

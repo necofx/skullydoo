@@ -1,5 +1,5 @@
 /*
-# $Id: ImageSegment.cpp,v 1.3 2003/05/23 19:18:59 sebasfiorent Exp $
+# $Id: ImageSegment.cpp,v 1.4 2004/09/01 11:48:48 nacholarrabide Exp $
 # SkullyDoo - Segmentador y visualizador de imagenes tridimensionales  
 # (C) 2002 Sebasti n Fiorentini / Ignacio Larrabide
 # Contact Info: sebasfiorent@yahoo.com.ar / nacholarrabide@yahoo.com
@@ -243,22 +243,22 @@ void ImageSegment::focusSeed(VoxelModel focus){
 	voxelPos->SetFocalPoint(origin[0]+(focus.x*spacing[0]),origin[1]+(focus.y*spacing[1]),origin[2]+(focus.z*spacing[2]));
 
 	eXY->SetVOI(0,dims[0]-1,0,dims[1]-1,focus.z-extents[4],focus.z-extents[4]);
-	eXY->Update();
 	pXY->SetPoint1(bounds[1],bounds[2],origin[2]+(focus.z*spacing[2]));
 	pXY->SetPoint2(bounds[0],bounds[3],origin[2]+(focus.z*spacing[2]));
 	pXY->SetOrigin(bounds[0],bounds[2],origin[2]+(focus.z*spacing[2]));
+	eXY->Modified();
 
 	eXZ->SetVOI(0,dims[0]-1,focus.y-extents[2],focus.y-extents[2],0,dims[2]-1);
-	eXZ->Update();
 	pXZ->SetPoint1(bounds[1],origin[1]+(focus.y*spacing[1]),bounds[4]);
 	pXZ->SetPoint2(bounds[0],origin[1]+(focus.y*spacing[1]),bounds[5]);
 	pXZ->SetOrigin(bounds[0],origin[1]+(focus.y*spacing[1]),bounds[4]);
+	eXZ->Modified();
 
 	eYZ->SetVOI(focus.x-extents[0],focus.x-extents[2],0,dims[1]-1,0,dims[2]-1);
-	eYZ->Update();
 	pYZ->SetPoint1(origin[0]+(focus.x*spacing[0]),bounds[3],bounds[4]);
 	pYZ->SetPoint2(origin[0]+(focus.x*spacing[0]),bounds[2],bounds[5]);
 	pYZ->SetOrigin(origin[0]+(focus.x*spacing[0]),bounds[2],bounds[4]);
+	eYZ->Modified();
 
 	aXY->Modified();
 	aXZ->Modified();

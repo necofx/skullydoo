@@ -11,6 +11,9 @@ DicomBrowserGUI::DicomBrowserGUI(const std::string &dir){
 }
 
 DicomBrowserGUI::~DicomBrowserGUI(void){
+//	filesNamesFinder->Delete();
+//	dicomReader->Delete();
+//	seriesReader->Delete();
 }
 
 bool DicomBrowserGUI::exec(void){
@@ -71,6 +74,7 @@ void DicomBrowserGUI::loadFile(void){
 	seriesReader->SetFileNames(seriesFilesNames);
 	try	{ 
 		seriesReader->Update();
+		dicomReader->ReadImageInformation();
 	}catch( itk::ExceptionObject & excp ){
 		std::string msg = "Error reading series";
 		fl_alert("DICOM Error:\n%s",msg.c_str());

@@ -1,5 +1,5 @@
 /*
-# $Id: VolumeLoaderGUI.cpp,v 1.3 2003/05/23 18:58:03 sebasfiorent Exp $
+# $Id: VolumeLoaderGUI.cpp,v 1.4 2004/09/01 11:48:47 nacholarrabide Exp $
 # SkullyDoo - Segmentador y visualizador de imagenes tridimensionales
 # (C) 2002 Sebasti n Fiorentini / Ignacio Larrabide
 # Contact Info: sebasfiorent@yahoo.com.ar / nacholarrabide@yahoo.com
@@ -287,6 +287,7 @@ ImageModel::Pointer VolumeLoaderGUI::readVolume(){
 			else{
 				imr->SetFileName(filename.c_str());
 			}
+			cout << "error: " << imr->GetErrorCode() << ". \n";
 		}
 		else{
 			imr=vtkImageReader::New();

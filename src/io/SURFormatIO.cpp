@@ -1,5 +1,5 @@
 /*
-# $Id: SURFormatIO.cpp,v 1.3 2003/05/23 19:18:59 sebasfiorent Exp $
+# $Id: SURFormatIO.cpp,v 1.4 2004/09/01 11:48:47 nacholarrabide Exp $
 # SkullyDoo - Segmentador y visualizador de imagenes tridimensionales  
 # (C) 2002 Sebasti n Fiorentini / Ignacio Larrabide
 # Contact Info: sebasfiorent@yahoo.com.ar / nacholarrabide@yahoo.com
@@ -35,29 +35,29 @@ bool SURFormatIO::write(std::string filename,vtkPolyData* polydata){
 	STRVector cg;
 	STRVector fv;
 	float bounds[6];
-	fv.push_back("*FRONT_VOLUME");
+	fv.push_back("*FRONT_VOLUME \n");
 	std::string temp;
 	char holder[1024];
 	int i;
 	polydata->GetBounds(bounds);
-	sprintf(holder,"%6.10f %6.10f %6.10f %6.10f %6.10f %6.10f",bounds[0],bounds[1],bounds[2],bounds[3],bounds[4],bounds[5]);
+	sprintf(holder,"%6.10f %6.10f %6.10f %6.10f %6.10f %6.10f \n",bounds[0],bounds[1],bounds[2],bounds[3],bounds[4],bounds[5]);
 	fv.push_back(holder);
 	// 
 	ProgressWindowGUI::Instance()->doStartEvent(_("Saving .SUR file"));
 	//Elementos (triangulos)
-	eg.push_back("*ELEMENT GROUPS");
-	eg.push_back(" 1");
-	sprintf(holder,"%d",polydata->GetNumberOfCells());
-	temp = std::string("1 ") + std::string(holder)+" Tri3";
+	eg.push_back("*ELEMENT GROUPS \n");
+	eg.push_back(" 1 ");
+	sprintf(holder,"%d\n",polydata->GetNumberOfCells());
+	temp = std::string("1 ") + std::string(holder)+" Tri3 \n";
 	eg.push_back(temp);
 	//Incidencia (puntos de cada triangulo)
-	ig.push_back("*INCIDENCE");
+	ig.push_back("*INCIDENCE\n");
 	int nofcells=polydata->GetNumberOfCells();
 	for (i=0;i<nofcells;i++){
 		if (i%100==0){
 			ProgressWindowGUI::Instance()->doProgressEvent(((float)i/(float)nofcells)*0.33);
 		}
-		vtkCell* cell=polydata->GetCell(i);
+ 		vtkCell* cell=polydata->GetCell(i);
 		int t = cell->GetCellType();
 		//Solo escribo triangulos
 		if (t == VTK_TRIANGLE){
@@ -66,12 +66,13 @@ bool SURFormatIO::write(std::string filename,vtkPolyData* polydata){
 				sprintf(holder,"%d",cell->GetPointId(j)+1);
 				temp = temp + std::string(holder)+" ";
 			}
+			temp = temp + "\n";
 			ig.push_back(temp);
 		}
 	}
 	//Coordenadas
-	cg.push_back("*COORDINATES");
-	sprintf(holder,"%d",polydata->GetNumberOfPoints());
+	cg.push_back("*COORDINATES \n");
+	sprintf(holder,"%d \n",polydata->GetNumberOfPoints());
 	cg.push_back(holder);
 	int nop=polydata->GetNumberOfPoints();
 	for (i=0;i<nop;i++){
@@ -80,7 +81,7 @@ bool SURFormatIO::write(std::string filename,vtkPolyData* polydata){
 		}
 		float point[3];
 	    polydata->GetPoint(i,point);
-		sprintf(holder,"%d %6.10f %6.10f %6.10f",i+1,point[0],point[1],point[2]);
+		sprintf(holder,"%d %6.10f %6.10f %6.10f \n",i+1,point[0],point[1],point[2]);
 	    cg.push_back(holder);
 	}
 
