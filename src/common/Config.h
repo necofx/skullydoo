@@ -1,5 +1,5 @@
 /*
-# $Id: Config.h,v 1.1 2003/05/02 22:21:52 sebasfiorent Exp $
+# $Id: Config.h,v 1.2 2003/05/23 19:10:38 sebasfiorent Exp $
 # SkullyDoo - Segmentador y visualizador de imagenes tridimensionales  
 # (C) 2002 Sebasti n Fiorentini / Ignacio Larrabide
 # Contact Info: sebasfiorent@yahoo.com.ar / nacholarrabide@yahoo.com
@@ -23,6 +23,9 @@
 
 #ifndef _Config_h_
 #define _Config_h_
+#ifdef _MSC_VER
+	#pragma warning  ( disable : 4786 )
+#endif
 
 #include "tinyxml/tinyxml.h"
 #include <string>
