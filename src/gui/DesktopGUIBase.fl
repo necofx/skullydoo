@@ -8,13 +8,13 @@ class DesktopGUIBase {open
   } {
     Fl_Window window {
       label {SkullyDoo!} open
-      xywh {25 38 660 500} type Double resizable
+      xywh {90 116 660 500} type Double resizable
       code0 {\#include "gui/vtkFlRenderWindowInteractor.h"}
       code1 {\#include "common/Types.h"}
       code2 {\#include "tcl/TCLFilter.h"}
       code3 {o->size_range(660,500);} visible
     } {
-      Fl_Pack {} {open
+      Fl_Pack {} {
         xywh {0 0 665 500}
       } {
         Fl_Menu_Bar menu {
@@ -28,6 +28,11 @@ class DesktopGUIBase {open
               label {&Load 3D Image}
               callback {load3DImage();}
               xywh {5 5 100 20} shortcut 0x4006f
+            }
+            menuitem {} {
+              label {Load DICOM}
+              callback {showDICOMBrowser();}
+              xywh {0 0 100 20}
             }
             menuitem {} {
               label {Load Surface}
@@ -156,11 +161,11 @@ class DesktopGUIBase {open
             }
           }
         }
-        Fl_Pack {} {
+        Fl_Pack {} {open
           xywh {0 25 660 30} type HORIZONTAL box UP_FRAME
         } {
           Fl_Group toolBar {open
-            xywh {0 25 535 30}
+            xywh {0 25 590 30}
           } {
             Fl_Button btnResetCamera {
               callback {resetCamera();}
@@ -254,9 +259,14 @@ class DesktopGUIBase {open
                 code0 {o->value("0");}
               }
             }
+            Fl_Button btnDICOM {
+              label DICOM
+              callback {showDICOMBrowser();}
+              xywh {535 30 55 20} labelfont 1
+            }
           }
           Fl_Group {} {open
-            xywh {535 25 125 30} resizable
+            xywh {590 25 70 30} resizable
           } {}
         }
         Fl_Pack {} {
@@ -303,7 +313,7 @@ class DesktopGUIBase {open
                 } {
                   Fl_Value_Slider seedX {
                     label {X:}
-                    callback {seedFocusChanged();}
+                    callback {seedFocusChanged();} selected
                     xywh {25 105 135 15} type {Horz Knob} align 4 step 1
                   }
                   Fl_Value_Slider seedY {
@@ -663,7 +673,7 @@ class DesktopGUIBase {open
   } {}
   Function {seedFocusChanged()} {open return_type {virtual void}
   } {}
-  Function {imageSelected()} {open selected return_type {virtual void}
+  Function {imageSelected()} {open return_type {virtual void}
   } {}
   Function {deleteImage()} {open return_type {virtual void}
   } {}
@@ -695,17 +705,17 @@ class DesktopGUIBase {open
   } {}
   Function {editSurfaceFilters()} {open return_type {virtual void}
   } {}
-  Function {editSurfaceSceneFilters()} {return_type {virtual void}
+  Function {editSurfaceSceneFilters()} {open return_type {virtual void}
   } {}
-  Function {changeWireframeSurfaceProperty()} {return_type {virtual void}
+  Function {changeWireframeSurfaceProperty()} {open return_type {virtual void}
   } {}
-  Function {changeVisibleSurfaceProperty()} {return_type {virtual void}
+  Function {changeVisibleSurfaceProperty()} {open return_type {virtual void}
   } {}
-  Function {changeColorSurfaceProperty()} {return_type {virtual void}
+  Function {changeColorSurfaceProperty()} {open return_type {virtual void}
   } {}
-  Function {changeTransparencySurfaceProperty()} {return_type {virtual void}
+  Function {changeTransparencySurfaceProperty()} {open return_type {virtual void}
   } {}
-  Function {surfaceSelected()} {return_type {virtual void}
+  Function {surfaceSelected()} {open return_type {virtual void}
   } {}
   Function {FMSeedSelected()} {open return_type {virtual void}
   } {}
@@ -747,6 +757,8 @@ class DesktopGUIBase {open
   } {}
   Function {showAbout()} {open return_type {virtual void}
   } {}
+  Function {showDICOMBrowser()} {open return_type {virtual void}
+  } {}
 } 
 
 Function {makeSplashScreen()} {open
@@ -755,7 +767,7 @@ Function {makeSplashScreen()} {open
     xywh {300 134 255 320} type Double modal noborder visible
   } {
     Fl_Box {} {
-      image {./images/splash.gif} xywh {0 0 255 320}
+      image {./images/splash.gif} xywh {510 100 255 320}
     }
   }
 } 

@@ -1,5 +1,5 @@
 /*
-# $Id: DesktopGUI.h,v 1.3 2003/05/23 19:18:58 sebasfiorent Exp $
+# $Id: DesktopGUI.h,v 1.4 2004/06/07 22:24:35 nacholarrabide Exp $
 # SkullyDoo - Segmentador y visualizador de imagenes tridimensionales  
 # (C) 2002 Sebasti n Fiorentini / Ignacio Larrabide
 # Contact Info: sebasfiorent@yahoo.com.ar / nacholarrabide@yahoo.com
@@ -31,6 +31,7 @@
 #include "segmentation/SegmentationMethod.h"
 #include "segmentation/voxelgrow/VoxelGrow.h"
 #include "tcl/TCLFilter.h"
+#include "gui/DicomBrowserGUI.h"
 #include "DesktopGUIBase.h"
 #include <vtkRenderer.h>
 #include <vtkRenderWindow.h>
@@ -145,6 +146,8 @@ protected:
 	virtual void editSurfaceSceneFilters();
 
 	virtual void load3DImage();
+	//cargaríamos imagenes DICOM.
+	virtual void showDICOMBrowser();
 
 	virtual void save3DImage();
 

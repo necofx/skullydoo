@@ -1,5 +1,5 @@
 /*
-# $Id: DesktopGUI.cpp,v 1.3 2003/05/23 19:18:58 sebasfiorent Exp $
+# $Id: DesktopGUI.cpp,v 1.4 2004/06/07 22:24:34 nacholarrabide Exp $
 # SkullyDoo - Segmentador y visualizador de imagenes tridimensionales  
 # (C) 2002 Sebasti n Fiorentini / Ignacio Larrabide
 # Contact Info: sebasfiorent@yahoo.com.ar / nacholarrabide@yahoo.com
@@ -165,7 +165,6 @@ DesktopGUI::DesktopGUI():DesktopGUIBase(),vtkInteractorStyleSwitch(){
 }
 
 DesktopGUI::~DesktopGUI(){
-	
 }
 
 void DesktopGUI::redrawVtk3D(){
@@ -262,7 +261,11 @@ void DesktopGUI::addImage(ImageModel::Pointer img){
 	float scalarRange[2];
 	vol->GetScalarRange(scalarRange);
 	//Seteo rainbow
-	img->setLUTGamma(7,scalarRange[0],scalarRange[1]-scalarRange[0]);
+	if (scalarRange[0]>=0) {
+		img->setLUTGamma(7,scalarRange[0],scalarRange[1]-scalarRange[0]);
+	}else{
+		img->setLUTGamma(7,0,scalarRange[1]);
+	}
 	pipeline->addVolume(img,win3D);
 	browserImages->add(img->getLabel().c_str(),img.GetPointer());
 	browserImages->value(browserImages->size());
@@ -401,6 +404,7 @@ void DesktopGUI::seedFocusChanged(){
 	seedGradient->value(gmag);
 	//
 	focusSeed(focus);
+	redrawVtk3D();
 }
 
 void DesktopGUI::imageSelected(){
@@ -937,6 +941,24 @@ void DesktopGUI::load3DImage(){
 	ProgressWindowGUI::Instance()->doEndEvent();
 }
 
+
+void DesktopGUI::showDICOMBrowser(){
+	const char* dcr=fl_dir_chooser(_("Load DICOM"),NULL,0);
+	DicomBrowserGUI *dicomB=new DicomBrowserGUI(dcr);
+	bool ok;
+	if (!dcr) return;
+	else{
+		ok = dicomB->exec();
+		if (ok){
+			ImageModel::Pointer vol=dicomB->readVolume();
+			// esto de aca es una chanchada provisoria..:D
+			vol->getInputVtkVolume()->SetSpacing(1.0 , 1.0 , 3.0);
+			if (vol.GetPointer()) addImage(vol);
+		}
+	}
+	delete dicomB;
+}
+
 void DesktopGUI::save3DImage(){
 	ImageModel::Pointer vol=getSelectedImage();
 	if (!vol.GetPointer()) return;
@@ -962,7 +984,8 @@ void DesktopGUI::save3DImage(){
 }
 
 void DesktopGUI::loadSurface(){
-	const char* fcr=fl_file_chooser(_("Load Surface"),_("Surfaces (*.{pdb,pdt,pd})"),"",0);
+	char* fcr=fl_file_chooser(_("Load Surface"),_("Surfaces (*.{pdb,pdt,pd})"),"",0);
+	//char* fcr = "E:/SkullyDoo/Data/ct1-skull.pdb";
 	if (!fcr) return;
 	vtkPolyDataReader* dsr=vtkPolyDataReader::New();
 	SurfaceModel::Pointer surface=SurfaceModel::New();
@@ -1203,6 +1226,7 @@ void DesktopGUI::exec(){
 //	window->icon((char *)p);
 #endif
 	window->show(0,0);
+//	window->show();
 	redrawVtk3D();
 }
 
