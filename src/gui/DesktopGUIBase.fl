@@ -1,5 +1,5 @@
 # data file for the Fltk User Interface Designer (fluid)
-version 1.0100 
+version 1.0104 
 header_name {.h} 
 code_name {.cxx}
 class DesktopGUIBase {open
@@ -7,7 +7,7 @@ class DesktopGUIBase {open
   Function {DesktopGUIBase()} {open
   } {
     Fl_Window window {
-      label {Skully-Doo!} open
+      label {SkullyDoo!} open
       xywh {25 38 660 500} type Double resizable
       code0 {\#include "gui/vtkFlRenderWindowInteractor.h"}
       code1 {\#include "common/Types.h"}
@@ -21,142 +21,142 @@ class DesktopGUIBase {open
           xywh {0 0 660 25}
         } {
           submenu {} {
-            label {&Archivo} open
+            label {&File} open
             xywh {5 5 100 20}
           } {
             menuitem {} {
-              label {&Cargar Imagen 3D}
+              label {&Load 3D Image}
               callback {load3DImage();}
               xywh {5 5 100 20} shortcut 0x4006f
             }
             menuitem {} {
-              label {Cargar Superficie}
+              label {Load Surface}
               callback {loadSurface();}
               xywh {0 0 100 20} divider
             }
             menuitem {} {
-              label {&Grabar Imagen 3D}
+              label {&Save 3D Image}
               callback {save3DImage();}
               xywh {0 0 100 20}
             }
             menuitem {} {
-              label {Grabar Superficie}
+              label {Save Surface}
               callback {saveSurface();}
               xywh {0 0 100 20} divider
             }
             submenu {} {
-              label {&Importar} open
+              label {&Import} open
               xywh {0 0 100 20}
             } {
               menuitem {} {
-                label {Imagen 3D}
+                label {3D Image}
                 callback {import3DImage();}
                 xywh {0 0 100 20}
               }
               menuitem {} {
-                label {Superficie .SUR}
+                label {.SUR Surface}
                 callback {importSURSurface();}
                 xywh {0 0 100 20}
               }
             }
             submenu {} {
-              label {&Exportar} open
+              label {&Export} open
               xywh {5 5 100 20} divider
             } {
               menuitem {} {
-                label {Superfice .SUR}
+                label {.SUR Surface}
                 callback {exportSURSurface();}
                 xywh {10 10 100 20}
               }
             }
             menuitem {} {
-              label {Grabar Snapshot}
+              label {Take Snapshot to file}
               callback {takeScreenSnapshot();}
               xywh {0 0 100 20} shortcut 0x40070 divider
             }
             menuitem {} {
-              label {&Salir}
+              label {&Quit}
               callback {quit();}
               xywh {0 0 100 20} shortcut 0x40078
             }
           }
           submenu {} {
-            label {&Vista} open
+            label {&View} open
             xywh {0 0 100 20}
           } {
             submenu imageViewMenu {
-              label {Imagen 3D} open
+              label {3D Image} open
               xywh {0 0 100 20}
             } {
               menuitem imageViewMenuXYItem {
-                label {Corte XY}
+                label {XY Cut}
                 callback {setCutPlaneVisibility(PLANE_XY,o->value());}
                 xywh {0 0 100 20} type Toggle
               }
               menuitem imageViewMenuXZItem {
-                label {Corte XZ}
+                label {XZ Cut}
                 callback {setCutPlaneVisibility(PLANE_XZ,o->value());}
                 xywh {0 0 100 20} type Toggle
               }
               menuitem imageViewMenuYZItem {
-                label {Corte YZ}
+                label {YZ Cut}
                 callback {setCutPlaneVisibility(PLANE_YZ,o->value());}
                 xywh {0 0 100 20} type Toggle divider
               }
               menuitem {} {
-                label {Plug In's...}
+                label {Plug ins...}
                 callback {editImageSceneFilters();}
                 xywh {10 10 100 20}
               }
             }
             submenu surfaceViewMenu {
-              label Superficie open
+              label Surface open
               xywh {0 0 100 20}
             } {
               menuitem {} {
-                label {Plug In's...}
+                label {Plug ins...}
                 callback {editSurfaceSceneFilters();}
                 xywh {10 10 100 20}
               }
             }
           }
           submenu {} {
-            label {&Filtros} open
+            label {&Filters} open
             xywh {0 0 100 20}
           } {
             submenu filterImage3DMenu {
-              label {&Imagen 3D} open
+              label {3D &Image} open
               xywh {0 0 100 20}
             } {
               menuitem {} {
-                label {Filtros aplicados...}
+                label {Applied filters...}
                 callback {editImageFilters();}
                 xywh {0 0 100 20} divider
               }
             }
             submenu filterSurfaceMenu {
-              label {&Superficie} open
+              label {&Surface} open
               xywh {0 0 100 20}
             } {
               menuitem {} {
-                label {Filtros aplicados...}
+                label {Applied filters...}
                 callback {editSurfaceFilters();}
                 xywh {0 0 100 20} divider
               }
             }
           }
           submenu {} {
-            label {&Ayuda} open
+            label {&Help} open
             xywh {0 0 100 20}
           } {
             menuitem {} {
-              label {Acerca...}
+              label {About...}
               callback {showAbout();}
               xywh {0 0 100 20}
             }
           }
         }
-        Fl_Pack {} {open
+        Fl_Pack {} {
           xywh {0 25 660 30} type HORIZONTAL box UP_FRAME
         } {
           Fl_Group toolBar {open
@@ -164,7 +164,7 @@ class DesktopGUIBase {open
           } {
             Fl_Button btnResetCamera {
               callback {resetCamera();}
-              tooltip {Resetear la camara de la visualización} image {./images/resetcam.gif} xywh {505 30 25 20}
+              tooltip {Resetear la camara de la visualizacion} image {./images/resetcam.gif} xywh {505 30 25 20}
             }
             Fl_Button {} {
               callback {load3DImage();}
@@ -202,38 +202,38 @@ class DesktopGUIBase {open
               }
               Fl_Button btnShowContour {
                 callback {showContour(o->value());}
-                tooltip {Marcar contorno con el color de la selección} image {./images/pencil.gif} xywh {445 30 25 20} type Toggle
+                tooltip {Marcar contorno con el color de la seleccion} image {./images/pencil.gif} xywh {445 30 25 20} type Toggle
               }
               Fl_Choice cbImageLUT {
                 callback {changeImageLUT();}
                 xywh {205 30 65 20} down_box BORDER_BOX align 20
               } {
                 menuitem {} {
-                  label Grises
+                  label Grays
                   image {./images/gama-grises.gif} xywh {25 25 100 20}
                 }
                 menuitem {} {
-                  label {Rojo-Cyan}
+                  label {Red-Cyan}
                   image {./images/gama-RojoCyan.gif} xywh {35 35 100 20}
                 }
                 menuitem {} {
-                  label {Rojo-Magenta-Blanco}
+                  label {Red-Magenta-White}
                   image {./images/gama-nRojoMagentab.gif} xywh {85 85 100 20}
                 }
                 menuitem {} {
-                  label {Rojo-Amarillo-Blanco}
+                  label {Red-Yellow-White}
                   image {./images/gama-nRojoAmarillob.gif} xywh {65 65 100 20}
                 }
                 menuitem {} {
-                  label {Rojo-Azul-Blanco}
+                  label {Red-Blue-White}
                   image {./images/gama-nRojoAzulb.gif} xywh {75 75 100 20}
                 }
                 menuitem {} {
-                  label {Azul-Cyan-Blanco}
+                  label {Blue-Cyan-White}
                   image {./images/gama-nAzulCyanb.gif} xywh {55 55 100 20}
                 }
                 menuitem {} {
-                  label {Azul-Cyan-Verde-Amarillo}
+                  label {Blue-Cyan-Green-Yellow}
                   image {./images/gama-nAzulCyanVerdeAmarillob.gif} xywh {45 45 100 20}
                 }
                 menuitem {} {
@@ -242,13 +242,13 @@ class DesktopGUIBase {open
                 }
               }
               Fl_Input imageLUTLevels {
-                label Niv
+                label Lev
                 callback {changeImageLUT();}
                 xywh {295 30 55 20} type Int labelsize 12 when 8 textsize 11
                 code0 {o->value("16");}
               }
               Fl_Input imageLUTStart {
-                label Primero
+                label First
                 callback {changeImageLUT();}
                 xywh {400 30 35 20} type Int labelsize 12 when 8 textsize 11
                 code0 {o->value("0");}
@@ -266,17 +266,17 @@ class DesktopGUIBase {open
             xywh {0 55 285 25}
           } {
             Fl_Button btnImage3DTab {
-              label {Imagen 3D}
+              label {3D Image}
               callback {showDesktopTab(0);}
               xywh {0 60 75 20} type Radio value 1 labeltype EMBOSSED_LABEL
             }
             Fl_Button btnSegmentationTab {
-              label {Segmentación}
+              label Segmentation
               callback {showDesktopTab(1);}
               xywh {75 60 105 20} type Radio labeltype EMBOSSED_LABEL
             }
             Fl_Button btnSurfacesTab {
-              label Superficies
+              label Surfaces
               callback {showDesktopTab(2);}
               xywh {180 60 105 20} type Radio labeltype EMBOSSED_LABEL
             }
@@ -298,7 +298,7 @@ class DesktopGUIBase {open
                 xywh {0 80 170 400}
               } {
                 Fl_Group grSeedSelection {
-                  label {Selección}
+                  label Selection
                   xywh {5 100 160 90} box PLASTIC_UP_FRAME labelsize 11 align 5
                 } {
                   Fl_Value_Slider seedX {
@@ -317,16 +317,16 @@ class DesktopGUIBase {open
                     xywh {25 135 135 15} type {Horz Knob} align 4 step 1
                   }
                   Fl_Value_Input seedIntensity {
-                    label {Intensidad:}
+                    label {Intensity:}
                     xywh {85 155 75 15} deactivate
                   }
                   Fl_Value_Input seedGradient {
-                    label {Gradiente:}
+                    label {Gradient:}
                     xywh {85 170 75 15} deactivate
                   }
                 }
                 Fl_Menu_Button {} {
-                  label {Reconstruir Superficie}
+                  label {Surface Reconstruction}
                   xywh {5 460 160 20} labelsize 12
                 } {
                   menuitem {} {
@@ -335,7 +335,7 @@ class DesktopGUIBase {open
                     xywh {25 25 100 20}
                   }
                   menuitem {} {
-                    label {Flat Contour}
+                    label FlatContour
                     callback {createFlatContourSurface();}
                     xywh {25 25 100 20}
                   }
@@ -351,17 +351,17 @@ class DesktopGUIBase {open
                     xywh {5 280 165 160}
                   } {
                     Fl_Button btnRenameImage {
-                      label Renombrar
+                      label Rename
                       callback {renameImage();}
                       image {./images/rename.gif} xywh {5 285 75 35} labelsize 11
                     }
                     Fl_Button btnDeleteImage {
-                      label Borrar
+                      label Delete
                       callback {deleteImage();}
                       image {./images/erase.gif} xywh {95 285 70 35} labelsize 11 align 16
                     }
                     Fl_Button {} {
-                      label {Filtros...}
+                      label {Filters...}
                       callback {editImageFilters();}
                       xywh {5 330 160 30} labelsize 12
                     }
@@ -371,7 +371,7 @@ class DesktopGUIBase {open
                   xywh {5 195 165 260} labelsize 10 align 5 hide
                 } {
                   Fl_Choice comboSegMethods {
-                    label {Metodo:}
+                    label {Method:}
                     callback {segmentationMethodChanged();}
                     xywh {10 205 160 20} down_box BORDER_BOX labelsize 10 align 5
                   } {}
@@ -382,7 +382,7 @@ class DesktopGUIBase {open
                       xywh {10 230 160 195} hide
                     } {
                       Fl_Browser browserVGSeeds {
-                        label {Semillas:}
+                        label {Seeds:}
                         callback {VGSeedSelected();}
                         xywh {10 275 130 80} type Hold labelsize 10 align 5 when 3 resizable
                       }
@@ -397,43 +397,43 @@ class DesktopGUIBase {open
                         xywh {145 300 25 20} deactivate
                       }
                       Fl_Group grVGConfig {
-                        label {Configuración de semilla} open
+                        label {Seed configuration} open
                         xywh {10 375 160 45} box BORDER_BOX labelsize 10 align 5 deactivate
                       } {
                         Fl_Input VGDelta {
-                          label {Umbral:}
+                          label {Threshold:}
                           callback {VGUpdateConfig();}
                           xywh {15 390 45 20} type Float labelsize 10 align 5 when 1
                         }
                         Fl_Choice VGType {
-                          label {Tipo:}
+                          label {Type:}
                           callback {VGUpdateConfig();} open
                           xywh {70 390 95 20} down_box BORDER_BOX labelsize 10 align 5
                         } {
                           menuitem {} {
-                            label Semilla
+                            label Seed
                             user_data {(void*)0}
                             xywh {30 30 100 20}
                           }
                           menuitem {} {
-                            label Vecino
+                            label Neighbor
                             user_data {(void*)1}
                             xywh {30 30 100 20}
                           }
                           menuitem {} {
-                            label Gradiente
+                            label Gradient
                             user_data {(void*)2}
                             xywh {30 30 100 20}
                           }
                         }
                       }
                       Fl_Input VGRadius {
-                        label {Radio:}
+                        label {Radius:}
                         xywh {15 240 45 20} type Int labelsize 10 align 5 textsize 12
                         code0 {o->value("2");}
                       }
                       Fl_Input VGStretchRadius {
-                        label {Radio estiramiento:}
+                        label {Stretching radius:}
                         xywh {75 240 95 20} type Int labelsize 10 align 5 textsize 12
                         code0 {o->value("7");}
                       }
@@ -447,7 +447,7 @@ class DesktopGUIBase {open
                         code0 {o->value("1.0");}
                       }
                       Fl_Browser browserFMSeeds {
-                        label {Semillas:}
+                        label {Seeds:}
                         callback {FMSeedSelected();}
                         xywh {10 295 130 120} type Hold labelsize 10 align 5 when 3 resizable
                       }
@@ -471,16 +471,16 @@ class DesktopGUIBase {open
                         code0 {o->value("0.01");}
                       }
                       Fl_Input ACBinaryImageName {
-                        label {Imagen Binaria:}
+                        label {Binary image:}
                         xywh {15 245 75 20} labelsize 10 align 5
                       }
                       Fl_Input ACBinaryObjVal {
-                        label {Valor obj. bin:}
+                        label {Binary obj val:}
                         xywh {95 245 70 20} type Int labelsize 10 align 5
                         code0 {o->value("255");}
                       }
                       Fl_Input ACRadius {
-                        label {Radio:}
+                        label {Radius:}
                         xywh {15 280 50 20} type Float labelsize 10 align 5
                         code0 {o->value("2.5");}
                       }
@@ -507,7 +507,7 @@ class DesktopGUIBase {open
                         xywh {125 350 40 20} type Float labelsize 10 align 5
                       }
                       Fl_Input ACIterations {
-                        label {Iteraciones max:}
+                        label {Max Iterations:}
                         xywh {75 315 50 20} type Int labelsize 10 align 5
                         code0 {o->value("150");}
                       }
@@ -517,7 +517,7 @@ class DesktopGUIBase {open
                     }
                   }
                   Fl_Button btnSegmentate {
-                    label Segmentar
+                    label Segmentate
                     callback {doSegmentation();}
                     xywh {30 430 125 20} box UP_FRAME align 32
                   }
@@ -537,14 +537,14 @@ class DesktopGUIBase {open
                     xywh {175 85 420 20} box THIN_DOWN_FRAME
                   } {
                     Fl_Box {} {
-                      label {Rango colores:}
+                      label {Color range:}
                       xywh {180 90 75 10} labelsize 10 align 20
                     }
                     Fl_Box lblColorRange {
                       xywh {260 90 125 10} labelsize 9 align 80
                     }
                     Fl_Box {} {
-                      label {Dimensiones:}
+                      label {Dimensions:}
                       xywh {400 90 75 10} labelsize 9 align 20
                     }
                     Fl_Box lblDimensions {
@@ -569,7 +569,7 @@ class DesktopGUIBase {open
               xywh {0 80 170 405}
             } {
               Fl_Browser browserSurfaces {
-                label {Superficies:}
+                label {Surfaces:}
                 callback {surfaceSelected();}
                 xywh {5 100 160 90} type Hold align 5 resizable
               }
@@ -577,7 +577,7 @@ class DesktopGUIBase {open
                 xywh {5 195 160 260}
               } {
                 Fl_Group {} {
-                  label Propiedades open
+                  label Properties open
                   xywh {10 285 155 110} box PLASTIC_UP_FRAME labelsize 10 align 5
                 } {
                   Fl_Check_Button cbVisibleSurface {
@@ -596,33 +596,33 @@ class DesktopGUIBase {open
                     xywh {15 300 50 15} labelsize 11 align 5
                   }
                   Fl_Slider sliderSurfaceTransparency {
-                    label Transparencia
+                    label Transparence
                     callback {changeTransparencySurfaceProperty();}
                     xywh {90 300 70 15} type Horizontal labelsize 11 align 5 when 4 step 0.01
                   }
                   Fl_Group {} {
-                    label Textura open
+                    label Texture open
                     xywh {15 350 145 40} box PLASTIC_UP_FRAME labelsize 10 align 5
                   } {
                     Fl_Button btnSetSurfaceTexture {
-                      label Asignar
+                      label Assign
                       callback {setSurfaceTexture();}
                       xywh {25 360 55 20} labelsize 10
                     }
                     Fl_Button btnClearSurfaceTexture {
-                      label Eliminar
+                      label Remove
                       callback {clearSurfaceTexture();}
                       xywh {90 360 65 20} labelsize 10
                     }
                   }
                 }
                 Fl_Button {} {
-                  label Borrar
+                  label Remove
                   callback {deleteSurface();}
                   image {./images/erase.gif} xywh {95 195 70 35} labelsize 10
                 }
                 Fl_Button {} {
-                  label Renombrar
+                  label Rename
                   callback {renameSurface();}
                   image {./images/rename.gif} xywh {5 195 70 35} labelsize 10
                 }
@@ -632,7 +632,7 @@ class DesktopGUIBase {open
                   image {./images/report.gif} xywh {5 235 160 35} labelsize 10
                 }
                 Fl_Button {} {
-                  label {Filtros...}
+                  label {Filters...}
                   callback {editSurfaceFilters();}
                   xywh {10 405 155 35} labelsize 11
                 }
@@ -663,7 +663,7 @@ class DesktopGUIBase {open
   } {}
   Function {seedFocusChanged()} {open return_type {virtual void}
   } {}
-  Function {imageSelected()} {open return_type {virtual void}
+  Function {imageSelected()} {open selected return_type {virtual void}
   } {}
   Function {deleteImage()} {open return_type {virtual void}
   } {}
@@ -745,7 +745,7 @@ class DesktopGUIBase {open
   } {}
   Function {showContour(bool show)} {open return_type {virtual void}
   } {}
-  Function {showAbout()} {open selected return_type {virtual void}
+  Function {showAbout()} {open return_type {virtual void}
   } {}
 } 
 

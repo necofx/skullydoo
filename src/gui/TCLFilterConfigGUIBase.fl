@@ -1,14 +1,5 @@
 # data file for the Fltk User Interface Designer (fluid)
-#***********************************************************************
-#* SkullyDoo - Segmentador y visualizador de imagenes tridimensionales  
-#* CVS Id: $Id: TCLFilterConfigGUIBase.fl,v 1.1 2003/05/02 22:21:53 sebasfiorent Exp $														
-#* Donado a la comunidad Open Source									
-#* (c) 2002 Software del Centro http://www.softwaredelcentro.com.ar		
-#* Sebastián Fiorentini (sebas@softwaredelcentro.com.ar)				
-#* Ignacio Larrabide (nacho@softwaredelcentro.com.ar)					
-#* Argentina															
-#***********************************************************************
-version 1.0100 
+version 1.0104 
 header_name {.h} 
 code_name {.cxx}
 class TCLFilterConfigGUIBase {open
@@ -16,11 +7,11 @@ class TCLFilterConfigGUIBase {open
   Function {TCLFilterConfigGUIBase()} {open
   } {
     Fl_Window window {
-      label {Configuación de filtro} open selected
+      label {Filter configuration} open selected
       xywh {390 83 350 350} type Double modal visible
     } {
       Fl_Scroll scroll {
-        label {Parámetros del filtro} open
+        label {Filter parameters} open
         xywh {5 20 340 275} type VERTICAL box BORDER_BOX align 5
       } {
         Fl_Pack packEditors {open
@@ -31,13 +22,13 @@ class TCLFilterConfigGUIBase {open
         } {}
       }
       Fl_Return_Button {} {
-        label Aceptar
+        label Accept
         callback {window->user_data((void*)1);
 window->hide();}
         xywh {165 309 79 25} shortcut 0xd align 16
       }
       Fl_Button {} {
-        label Cancelar
+        label Cancel
         callback {window->user_data((void*)0);
 window->hide();}
         xywh {263 309 79 25}

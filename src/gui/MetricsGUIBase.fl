@@ -7,33 +7,33 @@ class MetricsGUIBase {open
   Function {MetricsGUIBase()} {open
   } {
     Fl_Window window {
-      label Metricas open selected
+      label Metrics open selected
       xywh {232 198 384 170} type Double modal visible
     } {
       Fl_Button {} {
-        label Cerrar
+        label Close
         callback {window->hide();}
         xywh {135 140 125 20}
       }
       Fl_Group {} {
-        label {Razon de aspecto} open
+        label {Aspect ratio} open
         xywh {10 20 365 55} box BORDER_BOX labelfont 1 labelsize 9 align 5
       } {
         Fl_Input ipromrazonradiotriangulos {
-          label {Indicador proemdio triangulos:}
+          label {Mean triangle measure:}
           xywh {210 25 160 20}
         }
         Fl_Input iminimorazonradiotriangulos {
-          label {Indicador minimo triangulos:}
+          label {Worst triangle measure:}
           xywh {210 50 160 20}
         }
       }
       Fl_Input itriangulos {
-        label {Cantidad triangulos:}
+        label {Triangle count:}
         xywh {210 85 160 20}
       }
       Fl_Input ipuntos {
-        label {Cantidad puntos:}
+        label {Point count:}
         xywh {210 110 160 20}
       }
     }

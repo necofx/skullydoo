@@ -1,14 +1,5 @@
 # data file for the Fltk User Interface Designer (fluid)
-#***********************************************************************
-#* SkullyDoo - Segmentador y visualizador de imagenes tridimensionales  
-#* CVS Id: $Id: TCLFilterPipelineConfigGUIBase.fl,v 1.1 2003/05/02 22:21:53 sebasfiorent Exp $														
-#* Donado a la comunidad Open Source									
-#* (c) 2002 Software del Centro http://www.softwaredelcentro.com.ar		
-#* Sebastián Fiorentini (sebas@softwaredelcentro.com.ar)				
-#* Ignacio Larrabide (nacho@softwaredelcentro.com.ar)					
-#* Argentina															
-#***********************************************************************
-version 1.0100 
+version 1.0104 
 header_name {.h} 
 code_name {.cxx}
 class TCLFilterPipelineConfigGUIBase {open
@@ -16,11 +7,11 @@ class TCLFilterPipelineConfigGUIBase {open
   Function {TCLFilterPipelineConfigGUIBase()} {open
   } {
     Fl_Window window {
-      label Filtros open
+      label Filters open
       xywh {42 118 692 326} type Double modal visible
     } {
       Fl_Group {} {
-        label {Filtros disponibles:}
+        label {Available filters:}
         xywh {5 20 298 260} box PLASTIC_UP_FRAME align 5
       } {
         Fl_Browser browserAvailableFilters {
@@ -39,7 +30,7 @@ class TCLFilterPipelineConfigGUIBase {open
         xywh {310 135 30 25}
       }
       Fl_Group {} {
-        label {Filtros aplicados (en orden de ejecución)} selected
+        label {Applied filters (in execution order)} selected
         xywh {345 20 335 260} box PLASTIC_UP_FRAME align 5
       } {
         Fl_Browser browserFilterPipeline {
@@ -57,13 +48,13 @@ class TCLFilterPipelineConfigGUIBase {open
           xywh {650 140 20 35}
         }
         Fl_Button btnConfigure {
-          label {Configurar...}
+          label {Config...}
           callback {configureFilter();}
           xywh {550 245 93 25}
         }
       }
       Fl_Return_Button btnCerrar {
-        label Cerrar
+        label Close
         callback {window->hide();}
         xywh {580 290 100 25} shortcut 0xd
       }

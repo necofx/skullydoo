@@ -1,5 +1,5 @@
 /*
-# $Id: ImageModel.cpp,v 1.3 2003/05/06 00:12:14 sebasfiorent Exp $
+# $Id: ImageModel.cpp,v 1.4 2003/05/23 19:16:09 sebasfiorent Exp $
 # SkullyDoo - Segmentador y visualizador de imagenes tridimensionales
 # (C) 2002 Sebasti n Fiorentini / Ignacio Larrabide
 # Contact Info: sebasfiorent@yahoo.com.ar / nacholarrabide@yahoo.com
@@ -29,7 +29,7 @@
 
 ImageModel::ImageModel(){
 	inputvolume=vtkStructuredPoints::New();
-	label="SinNombre";
+	label=_("Unnamed");
 	scenepipeline=TCLFilterPipeline::New();
 	scenepipeline->setInputOutputType("ImageScene","ImageScene");
 	lut=vtkLookupTable::New();
