@@ -1,5 +1,5 @@
 /*
-# $Id: ItkVtk.cpp,v 1.2 2003/05/06 00:12:14 sebasfiorent Exp $
+# $Id: ItkVtk.cpp,v 1.3 2004/06/07 22:33:29 nacholarrabide Exp $
 # SkullyDoo - Segmentador y visualizador de imagenes tridimensionales  
 # (C) 2002 Sebasti n Fiorentini / Ignacio Larrabide
 # Contact Info: sebasfiorent@yahoo.com.ar / nacholarrabide@yahoo.com
@@ -60,8 +60,8 @@ ItkVtk::~ItkVtk(){
 void ItkVtk::setup(ItkVtk::itkImageType* input,vtkImageData* output){
 	vtkImageImporter->SetOutput(output);
 	itkImageExporter->SetInput(input);
-	const double* spacing=input->GetSpacing();
-	const double* origin=input->GetOrigin();
+	const itk::ImageBase<3>::SpacingType spacing=input->GetSpacing();
+	const itk::ImageBase<3>::PointType origin=input->GetOrigin();
 	output->SetSpacing(spacing[0],spacing[1],spacing[2]);
 	output->SetOrigin(origin[0],origin[1],origin[2]);
 }

@@ -1,5 +1,5 @@
 # data file for the Fltk User Interface Designer (fluid)
-version 1.0104 
+version 1.0100 
 header_name {.h} 
 code_name {.cxx}
 class TCLFilterPipelineConfigGUIBase {open
@@ -8,7 +8,7 @@ class TCLFilterPipelineConfigGUIBase {open
   } {
     Fl_Window window {
       label Filters open
-      xywh {42 118 692 326} type Double modal visible
+      xywh {354 230 692 326} type Double modal visible
     } {
       Fl_Group {} {
         label {Available filters:}

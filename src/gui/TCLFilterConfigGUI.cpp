@@ -1,5 +1,5 @@
 /*
-# $Id: TCLFilterConfigGUI.cpp,v 1.1 2003/05/02 22:21:53 sebasfiorent Exp $
+# $Id: TCLFilterConfigGUI.cpp,v 1.2 2004/06/07 22:33:29 nacholarrabide Exp $
 # SkullyDoo - Segmentador y visualizador de imagenes tridimensionales  
 # (C) 2002 Sebasti n Fiorentini / Ignacio Larrabide
 # Contact Info: sebasfiorent@yahoo.com.ar / nacholarrabide@yahoo.com
@@ -130,7 +130,6 @@ void TCLFilterConfigGUI::buildEditWidget(TCLFilterStringParameter::Pointer param
 	label->labelsize(10);
 	packLabels->add(label);
 }
-
 
 void TCLFilterConfigGUI::buildEditWidgets(){
 	TCLFilterParameter::Vector params=filter->getParameters();

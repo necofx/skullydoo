@@ -1,5 +1,5 @@
 /*
-# $Id: DesktopGUI.h,v 1.4 2004/06/07 22:24:35 nacholarrabide Exp $
+# $Id: DesktopGUI.h,v 1.5 2004/06/07 22:33:28 nacholarrabide Exp $
 # SkullyDoo - Segmentador y visualizador de imagenes tridimensionales  
 # (C) 2002 Sebasti n Fiorentini / Ignacio Larrabide
 # Contact Info: sebasfiorent@yahoo.com.ar / nacholarrabide@yahoo.com
