@@ -1,5 +1,5 @@
 /*
-# $Id: TCLFilter.cpp,v 1.1 2003/05/02 22:21:59 sebasfiorent Exp $
+# $Id: TCLFilter.cpp,v 1.2 2004/06/07 22:59:49 nacholarrabide Exp $
 # SkullyDoo - Segmentador y visualizador de imagenes tridimensionales  
 # (C) 2002 Sebasti n Fiorentini / Ignacio Larrabide
 # Contact Info: sebasfiorent@yahoo.com.ar / nacholarrabide@yahoo.com
@@ -221,8 +221,8 @@ bool TCLFilter::initialize(){
 		for (std::vector<std::string>::iterator i=vtkObjects.begin();i!=vtkObjects.end();i++){
 			std::string varname=(*i);
 			//Si fue exitoso, renombre, sino, borro
-			TCLGlobals::PredefinedObjectsMapType::iterator i=TCLGlobals::PredefinedObjectsMap.find(varname);
-			if (i==TCLGlobals::PredefinedObjectsMap.end() &&
+			TCLGlobals::PredefinedObjectsMapType::iterator it=TCLGlobals::PredefinedObjectsMap.find(varname);
+			if (it==TCLGlobals::PredefinedObjectsMap.end() &&
 				varname.find("vtkTemp")!=0 &&
 				varname.find("filterTemp")!=0){
 				if (ok){

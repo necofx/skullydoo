@@ -1,5 +1,5 @@
 # data file for the Fltk User Interface Designer (fluid)
-version 1.0104 
+version 1.0100 
 header_name {.h} 
 code_name {.cxx}
 class DesktopGUIBase {open
@@ -8,7 +8,7 @@ class DesktopGUIBase {open
   } {
     Fl_Window window {
       label {SkullyDoo!} open
-      xywh {90 116 660 500} type Double resizable
+      xywh {208 148 660 500} type Double resizable
       code0 {\#include "gui/vtkFlRenderWindowInteractor.h"}
       code1 {\#include "common/Types.h"}
       code2 {\#include "tcl/TCLFilter.h"}
@@ -17,7 +17,7 @@ class DesktopGUIBase {open
       Fl_Pack {} {
         xywh {0 0 665 500}
       } {
-        Fl_Menu_Bar menu {
+        Fl_Menu_Bar menu {selected
           xywh {0 0 660 25}
         } {
           submenu {} {
@@ -313,7 +313,7 @@ class DesktopGUIBase {open
                 } {
                   Fl_Value_Slider seedX {
                     label {X:}
-                    callback {seedFocusChanged();} selected
+                    callback {seedFocusChanged();}
                     xywh {25 105 135 15} type {Horz Knob} align 4 step 1
                   }
                   Fl_Value_Slider seedY {
@@ -767,7 +767,7 @@ Function {makeSplashScreen()} {open
     xywh {300 134 255 320} type Double modal noborder visible
   } {
     Fl_Box {} {
-      image {./images/splash.gif} xywh {510 100 255 320}
+      image {./images/splash.gif} xywh {0 0 255 320}
     }
   }
 } 

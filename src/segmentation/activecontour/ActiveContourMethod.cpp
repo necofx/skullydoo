@@ -1,5 +1,5 @@
 /*
-# $Id: ActiveContourMethod.cpp,v 1.1 2003/05/02 22:21:59 sebasfiorent Exp $
+# $Id: ActiveContourMethod.cpp,v 1.2 2004/06/07 22:59:49 nacholarrabide Exp $
 # SkullyDoo - Segmentador y visualizador de imagenes tridimensionales  
 # (C) 2002 Sebasti n Fiorentini / Ignacio Larrabide
 # Contact Info: sebasfiorent@yahoo.com.ar / nacholarrabide@yahoo.com
@@ -31,6 +31,7 @@
 #include <itkGradientToMagnitudeImageFilter.h>
 #include <itkBinaryMask3DMeshSource.h>
 #include <itkDeformableMesh3DFilter.h>
+#include <itkImageBase.h>
 
 ActiveContourMethod::ActiveContourMethod(){
 }
@@ -87,7 +88,7 @@ ActiveContourMethod::DMeshType::Pointer ActiveContourMethod::getOutput(){
 	dfilter->SetInput(meshsource->GetOutput());
 	ImageType::IndexType center;
 	center[0]=0;center[1]=0;center[2]=0;
-	dfilter->SetCenter(center);
+	//dfilter->SetCenter(center);
 	dfilter->SetGradient(gfilter->GetOutput());
 	dfilter->SetStepThreshold(100);   // based on he application, usually less than 150
 	meshsource->SetBinaryImage(binaryImage);
@@ -96,17 +97,20 @@ ActiveContourMethod::DMeshType::Pointer ActiveContourMethod::getOutput(){
 	resolution[0]=100;
 	resolution[1]=100;
 	resolution[2]=100;
-	dfilter->SetResolution(resolution);
+	//dfilter->SetResolution(resolution);
 	double2DVector m_stiff;
 	m_stiff[0] = 0.00001;
 	m_stiff[1] = 0.04;
 	dfilter->SetStiffness(m_stiff);
 	dfilter->SetTimeStep(0.01);         // Typical value: 0.01
-	const double* spacing=input->GetSpacing();
+	const itk::ImageBase<3>::SpacingType spacing=input->GetSpacing();
 	double3DVector m_scale;
 	m_scale[0] = spacing[0];
 	m_scale[1] = spacing[1];
 	m_scale[2] = spacing[2];
+//	m_scale[0] = 1;
+//	m_scale[1] = 1;
+//	m_scale[2] = 1;
 	dfilter->SetScale(m_scale);
 	dfilter->Update();
 	return dfilter->GetOutput();

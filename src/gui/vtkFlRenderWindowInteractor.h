@@ -21,7 +21,7 @@
 * 
 * See the .cxx for more notes.
 * 
-* $Id: vtkFlRenderWindowInteractor.h,v 1.3 2004/06/07 22:33:29 nacholarrabide Exp $
+* $Id: vtkFlRenderWindowInteractor.h,v 1.4 2004/06/07 22:59:48 nacholarrabide Exp $
 */
 
 #ifndef _vtkFlRenderWindowInteractor_h
