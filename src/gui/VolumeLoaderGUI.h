@@ -1,5 +1,5 @@
 /*
-# $Id: VolumeLoaderGUI.h,v 1.1 2003/05/02 22:21:53 sebasfiorent Exp $
+# $Id: VolumeLoaderGUI.h,v 1.2 2003/05/23 18:55:37 sebasfiorent Exp $
 # SkullyDoo - Segmentador y visualizador de imagenes tridimensionales  
 # (C) 2002 Sebasti n Fiorentini / Ignacio Larrabide
 # Contact Info: sebasfiorent@yahoo.com.ar / nacholarrabide@yahoo.com
@@ -23,6 +23,9 @@
 
 #ifndef _VolumeLoaderGUI_h_
 #define _VolumeLoaderGUI_h_
+#ifdef _MSC_VER
+	#pragma warning  ( disable : 4786 )
+#endif
 
 #include "VolumeLoaderGUIBase.h"
 #include "common/ImageModel.h"

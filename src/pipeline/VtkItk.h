@@ -1,5 +1,5 @@
 /*
-# $Id: VtkItk.h,v 1.1 2003/05/02 22:21:59 sebasfiorent Exp $
+# $Id: VtkItk.h,v 1.2 2003/05/23 18:50:40 sebasfiorent Exp $
 # SkullyDoo - Segmentador y visualizador de imagenes tridimensionales  
 # (C) 2002 Sebasti n Fiorentini / Ignacio Larrabide
 # Contact Info: sebasfiorent@yahoo.com.ar / nacholarrabide@yahoo.com
@@ -23,6 +23,9 @@
 
 #ifndef _VtkItk_h_
 #define _VtkItk_h_
+#ifdef _MSC_VER
+	#pragma warning  ( disable : 4786 )
+#endif
 
 #include <vtkImageExport.h>
 #include <itkVTKImageImport.h>

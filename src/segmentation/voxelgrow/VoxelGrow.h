@@ -1,5 +1,5 @@
 /*
-# $Id: VoxelGrow.h,v 1.1 2003/05/02 22:21:59 sebasfiorent Exp $
+# $Id: VoxelGrow.h,v 1.2 2003/05/23 18:52:52 sebasfiorent Exp $
 # SkullyDoo - Segmentador y visualizador de imagenes tridimensionales  
 # (C) 2002 Sebasti n Fiorentini / Ignacio Larrabide
 # Contact Info: sebasfiorent@yahoo.com.ar / nacholarrabide@yahoo.com
@@ -23,10 +23,12 @@
 
 #ifndef _VoxelGrowH_
 #define _VoxelGrowH_
+#ifdef _MSC_VER
+	#pragma warning  ( disable : 4786 )
+#endif
 
 #include "common/VoxelModel.h"
 #include "VoxelProcessor.h"
-
 #include <vtkImageData.h>
 #include <vtkPointSet.h>
 #include <vtkSimpleImageToImageFilter.h>
