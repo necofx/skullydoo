@@ -1,0 +1,76 @@
+# data file for the Fltk User Interface Designer (fluid)
+version 1.0100 
+header_name {.h} 
+code_name {.cxx}
+class DicomBrowserGUIBase {open
+} {
+  Function {DicomBrowserGUIBase()} {open
+  } {
+    Fl_Window window {
+      label {DICOM Browser} open selected
+      xywh {399 107 519 477} type Double resizable visible
+    } {
+      Fl_Browser uIDsBrowser {
+        label { Select DICOM Series}
+        callback {seriesSelected()}
+        xywh {10 20 500 135} type Hold align 5
+      }
+      Fl_Return_Button btnLoad {
+        label {Load file(s)}
+        callback {window->user_data((void*)1);
+window->hide();}
+        xywh {265 409 245 25} deactivate
+      }
+      Fl_Button {} {
+        label Cancel
+        callback {window->user_data((void*)0);
+window->hide();}
+        xywh {265 443 245 25}
+      }
+      Fl_Button chDir {
+        label {Change directory}
+        callback {changeDir()}
+        xywh {265 377 245 25} align 144
+      }
+      Fl_Browser seriesFilesBrowser {
+        xywh {10 174 500 186} align 5
+      }
+      Fl_Pack {} {open
+        xywh {10 385 209 85}
+      } {
+        Fl_Group grFilesSort {
+          label {Load files sorted by:} open
+          xywh {15 385 204 85} box THIN_UP_BOX align 5
+        } {
+          Fl_Round_Button btnImageNumber {
+            label {Image number}
+            callback {sortByImageNumber();}
+            xywh {20 410 119 30} type Radio down_box ROUND_DOWN_BOX
+          }
+          Fl_Round_Button btnSliceLocation {
+            label {Slice location}
+            callback {sortBySliceLocation();}
+            xywh {20 385 120 33} type Radio down_box ROUND_DOWN_BOX value 1
+          }
+          Fl_Round_Button btnImagePositionPatient {
+            label {Image position patient}
+            callback {sortByImagePositionPatient();}
+            xywh {20 438 154 25} type Radio down_box ROUND_DOWN_BOX
+          }
+        }
+      }
+    }
+  }
+  Function {changeDir()} {open return_type {virtual void}
+  } {}
+  Function {seriesSelected()} {open return_type {virtual void}
+  } {}
+  Function {loadFile()} {open return_type {virtual void}
+  } {}
+  Function {sortBySliceLocation()} {open return_type {virtual void}
+  } {}
+  Function {sortByImageNumber()} {open return_type {virtual void}
+  } {}
+  Function {sortByImagePositionPatient()} {open return_type {virtual void}
+  } {}
+} 
