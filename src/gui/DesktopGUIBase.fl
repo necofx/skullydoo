@@ -8,11 +8,11 @@ class DesktopGUIBase {open
   } {
     Fl_Window window {
       label {SkullyDoo!} open
-      xywh {359 23 660 499} type Double resizable
+      xywh {359 30 660 499} type Double hide resizable
       code0 {\#include "gui/vtkFlRenderWindowInteractor.h"}
       code1 {\#include "common/Types.h"}
       code2 {\#include "tcl/TCLFilter.h"}
-      code3 {o->size_range(660,500);} visible
+      code3 {o->size_range(660,500);}
     } {
       Fl_Pack {} {open
         xywh {0 0 665 500}
@@ -535,7 +535,7 @@ class DesktopGUIBase {open
                         xywh {10 375 160 40} resizable
                       } {}
                     }
-                    Fl_Group grTD {selected
+                    Fl_Group grTD {open selected
                       xywh {10 225 160 190} hide
                     } {
                       Fl_Value_Slider sldRho {
@@ -584,7 +584,7 @@ class DesktopGUIBase {open
                       }
                       Fl_Browser brsClasses {
                         label Classes
-                        xywh {14 337 150 75} type Hold align 5
+                        xywh {14 337 150 75} type Hold align 5 resizable
                       }
                     }
                   }

@@ -1,5 +1,5 @@
 /*
-# $Id: DesktopGUI.cpp,v 1.8 2005/05/09 16:20:41 nacholarrabide Exp $
+# $Id: DesktopGUI.cpp,v 1.9 2005/05/09 17:11:40 nacholarrabide Exp $
 # SkullyDoo - Segmentador y visualizador de imagenes tridimensionales  
 # (C) 2002 Sebasti n Fiorentini / Ignacio Larrabide
 # Contact Info: sebasfiorent@yahoo.com.ar / nacholarrabide@yahoo.com
@@ -1012,7 +1012,7 @@ void DesktopGUI::load3DImage(){
 	addImage(vol);
 	dsr->Delete();
 	ProgressWindowGUI::Instance()->doEndEvent();
-	showDesktopTab(1);
+//	showDesktopTab(1);
 }
 
 
