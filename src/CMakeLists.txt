@@ -1,4 +1,4 @@
-# $Id: CMakeLists.txt,v 1.4 2004/06/07 23:21:27 nacholarrabide Exp $
+# $Id: CMakeLists.txt,v 1.5 2005/05/09 16:20:41 nacholarrabide Exp $
 # SkullyDoo - Segmentador y visualizador de imagenes tridimensionales  
 # (C) 2002 Sebasti n Fiorentini / Ignacio Larrabide
 # Contact Info: sebasfiorent@yahoo.com.ar / nacholarrabide@yahoo.com
@@ -86,9 +86,9 @@ LINK_LIBRARIES(
   vtkFiltering
   vtkCommon
   vtkPatented
-  vtkpng
-  vtkjpeg
-  vtkzlib
+#  vtkpng
+#  vtkjpeg
+#  vtkzlib
   vtkImagingTCL
   vtkGraphicsTCL
   vtkIOTCL
@@ -147,6 +147,7 @@ AUX_SOURCE_DIRECTORY(segmentation SkullyDoo_SRCS)
 AUX_SOURCE_DIRECTORY(segmentation/activecontour SkullyDoo_SRCS)
 AUX_SOURCE_DIRECTORY(segmentation/fastmarching SkullyDoo_SRCS)
 AUX_SOURCE_DIRECTORY(segmentation/voxelgrow SkullyDoo_SRCS)
+AUX_SOURCE_DIRECTORY(segmentation/topologicalderivative SkullyDoo_SRCS)
 AUX_SOURCE_DIRECTORY(tcl SkullyDoo_SRCS)
 
 SET(GUIBase_GUISRCS

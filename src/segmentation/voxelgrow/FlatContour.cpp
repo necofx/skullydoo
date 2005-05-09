@@ -1,5 +1,5 @@
 /*
-# $Id: FlatContour.cpp,v 1.3 2004/09/01 11:48:48 nacholarrabide Exp $
+# $Id: FlatContour.cpp,v 1.4 2005/05/09 16:20:41 nacholarrabide Exp $
 # SkullyDoo - Segmentador y visualizador de imagenes tridimensionales
 # (C) 2002 Sebasti n Fiorentini / Ignacio Larrabide
 # Contact Info: sebasfiorent@yahoo.com.ar / nacholarrabide@yahoo.com
@@ -95,16 +95,26 @@ void FlatContour::Execute(){
 
 	float bounds[6];
 	input->GetBounds(bounds);
-	bounds[0]=bounds[0]-offsX;
-	bounds[1]=bounds[1]+offsX;
-	bounds[2]=bounds[2]-offsY;
-	bounds[3]=bounds[3]+offsY;
-	bounds[4]=bounds[4]-offsZ;
-	bounds[5]=bounds[5]+offsZ;
+	//bounds[0]=bounds[0]-offsX;
+	//bounds[1]=bounds[1]+offsX;
+	//bounds[2]=bounds[2]-offsY;
+	//bounds[3]=bounds[3]+offsY;
+	//bounds[4]=bounds[4]-offsZ;
+	//bounds[5]=bounds[5]+offsZ;
+	bounds[0]=bounds[0]-bounds[1];
+	bounds[1]=bounds[1]+bounds[1];
+	bounds[2]=bounds[2]-bounds[3];
+	bounds[3]=bounds[3]+bounds[3];
+	bounds[4]=bounds[4]-bounds[5];
+	bounds[5]=bounds[5]+bounds[5];
 	
 	vtkMergePoints *mp=vtkMergePoints::New();
 	mp->InitPointInsertion(puntos,bounds,estimatedSize);
-//	mp->SetAutomatic(1);
+	mp->AutomaticOff();
+
+	//recover de original bounds
+	input->GetBounds(bounds);
+
 	vtkDataArray *scalars=input->GetPointData()->GetScalars();
 	//vtkFloatArray* normales=vtkFloatArray::New();
 	//normales->SetNumberOfComponents(3);

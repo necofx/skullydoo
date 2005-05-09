@@ -1,5 +1,5 @@
 /*
-# $Id: VoxelGrowSegmentation.h,v 1.2 2003/05/23 18:52:52 sebasfiorent Exp $
+# $Id: VoxelGrowSegmentation.h,v 1.3 2005/05/09 16:20:41 nacholarrabide Exp $
 # SkullyDoo - Segmentador y visualizador de imagenes tridimensionales  
 # (C) 2002 Sebasti n Fiorentini / Ignacio Larrabide
 # Contact Info: sebasfiorent@yahoo.com.ar / nacholarrabide@yahoo.com
@@ -44,6 +44,5 @@ public:
 	void setStretchRadius(int stretchradius);
 	void setConfig(VoxelGrow::ConfigVector config);
 };
-
 
 #endif

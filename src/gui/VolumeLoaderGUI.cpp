@@ -1,5 +1,5 @@
 /*
-# $Id: VolumeLoaderGUI.cpp,v 1.4 2004/09/01 11:48:47 nacholarrabide Exp $
+# $Id: VolumeLoaderGUI.cpp,v 1.5 2005/05/09 16:20:41 nacholarrabide Exp $
 # SkullyDoo - Segmentador y visualizador de imagenes tridimensionales
 # (C) 2002 Sebasti n Fiorentini / Ignacio Larrabide
 # Contact Info: sebasfiorent@yahoo.com.ar / nacholarrabide@yahoo.com
@@ -274,22 +274,41 @@ ImageModel::Pointer VolumeLoaderGUI::readVolume(){
 	if (f==FORMAT_BMP || f==FORMAT_PPM || f==FORMAT_RAW){
 		vtkImageReader* imr;
 		if (f!=FORMAT_RAW){
-			if (f==FORMAT_BMP) imr=vtkBMPReader::New();
-			if (f==FORMAT_PPM) imr=vtkPNMReader::New();
-			if (rbSliceFile->value()){
-				imr->SetNumberOfScalarComponents(1);
-				imr->SetDataExtent(0,0,0,0,0,atoi(sliceNum->value())-1);
-				imr->SetFilePattern(editMask->value());
-				imr->SetFilePrefix(fnamePrefix->value());
-				imr->SetFileNameSliceOffset(atoi(sliceStart->value()));
-				imr->SetFileNameSliceSpacing(atoi(sliceSep->value()));
+			if (f==FORMAT_BMP){
+				vtkBMPReader* imr2 = vtkBMPReader::New();
+				if (rbSliceFile->value()){
+					imr2->Allow8BitBMPOn();
+					imr2->SetNumberOfScalarComponents(1);
+					int s=atoi(sliceStart->value());
+					int e=atoi(sliceStart->value())+atoi(sliceNum->value())-1;
+					imr2->SetDataExtent(0,0,0,0,s-1,e-1);
+					imr2->SetFilePattern(editMask->value());
+					imr2->SetFilePrefix(fnamePrefix->value());
+					imr2->SetFileNameSliceOffset(atoi(sliceStart->value()));
+					imr2->SetFileNameSliceSpacing(atoi(sliceSep->value()));
+				}else {
+					imr2->SetFileName(filename.c_str());
+				}
+				imr = imr2;
 			}
-			else{
-				imr->SetFileName(filename.c_str());
+			if (f==FORMAT_PPM){
+				vtkPNMReader* imr2 = vtkPNMReader::New();
+				if (rbSliceFile->value()){
+					imr2->SetNumberOfScalarComponents(1);
+					int s=atoi(sliceStart->value());
+					int e=atoi(sliceStart->value())+atoi(sliceNum->value())-1;
+					imr2->SetDataExtent(0,0,0,0,s-1,e-1);
+					imr2->SetFilePattern(editMask->value());
+					imr2->SetFilePrefix(fnamePrefix->value());
+					imr2->SetFileNameSliceOffset(atoi(sliceStart->value()));
+					imr2->SetFileNameSliceSpacing(atoi(sliceSep->value()));
+				}else{
+					imr2->SetFileName(filename.c_str());
+				}
+				imr = imr2;
 			}
 			cout << "error: " << imr->GetErrorCode() << ". \n";
-		}
-		else{
+		}else{
 			imr=vtkImageReader::New();
 			if (rb8bit->value()) imr->SetDataScalarType(VTK_UNSIGNED_CHAR);
 			if (rb12bit->value()){

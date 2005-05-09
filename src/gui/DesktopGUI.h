@@ -1,5 +1,5 @@
 /*
-# $Id: DesktopGUI.h,v 1.7 2004/09/01 11:48:47 nacholarrabide Exp $
+# $Id: DesktopGUI.h,v 1.8 2005/05/09 16:20:41 nacholarrabide Exp $
 # SkullyDoo - Segmentador y visualizador de imagenes tridimensionales  
 # (C) 2002 Sebasti n Fiorentini / Ignacio Larrabide
 # Contact Info: sebasfiorent@yahoo.com.ar / nacholarrabide@yahoo.com
@@ -30,6 +30,7 @@
 #include "pipeline/Pipeline.h"
 #include "segmentation/SegmentationMethod.h"
 #include "segmentation/voxelgrow/VoxelGrow.h"
+#include "segmentation/topologicalderivative/TDMethod.h"
 #include "tcl/TCLFilter.h"
 #include "gui/DicomBrowserGUI.h"
 #include "DesktopGUIBase.h"
@@ -57,6 +58,7 @@ protected:
 	ImageModel::Pointer currentVolume;
 	VoxelModel currentSeed;
 	std::string lastImageVolumeFile;
+	TDMethod::ClassesVector currentTDClassesVector;
 	VoxelGrow::ConfigVector currentVGConfigVector;
 	Fl_Group* currentSegmentationPanel;
 
@@ -108,6 +110,14 @@ protected:
 	virtual void VGRemoveSeed();
 
 	virtual void VGUpdateConfig();
+
+	virtual void TDaddClass();
+
+	virtual void TDremoveClass();
+
+	virtual void TDsegmentationDirection(int dir);
+
+	virtual void TDrhoChanged();
 
 	virtual void doSegmentation();
 

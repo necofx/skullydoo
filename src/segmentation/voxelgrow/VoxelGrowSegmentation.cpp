@@ -1,5 +1,5 @@
 /*
-# $Id: VoxelGrowSegmentation.cpp,v 1.3 2004/09/01 11:48:48 nacholarrabide Exp $
+# $Id: VoxelGrowSegmentation.cpp,v 1.4 2005/05/09 16:20:41 nacholarrabide Exp $
 # SkullyDoo - Segmentador y visualizador de imagenes tridimensionales  
 # (C) 2002 Sebasti n Fiorentini / Ignacio Larrabide
 # Contact Info: sebasfiorent@yahoo.com.ar / nacholarrabide@yahoo.com
@@ -31,6 +31,9 @@
 #include "FlatContour.h"
 #include <vtkWindowedSincPolyDataFilter.h>
 
+
+#include "segmentation/topologicalderivative/TDMethod.h"
+
 VoxelGrowSegmentation::VoxelGrowSegmentation():SegmentationMethod(){
 }
 
@@ -46,13 +49,13 @@ void VoxelGrowSegmentation::setStretchRadius(int stretchradius){
 }
 
 void VoxelGrowSegmentation::execute(ImageModel::Pointer vol,Segmentation::Pointer result){
-	VoxelGrow* vg=new VoxelGrow();
+/**/	VoxelGrow* vg=new VoxelGrow();
 	vg->SetInput(vol->getFilteredVtkVolume());
 	vg->setRadius(radius);
 	vg->setStretchRadius(stretchradius);
 	vg->setConfig(config);
 	ProgressWindowGUI::Instance()->Observe(vg,_("Executing VoxelGrow Segmentation"),vol->getLabel());
-	/* Removed beacuse it´s dubious utility*/
+	// Removed beacuse it´s dubious utility
 	Healer *h= new Healer();
 	h->SetInput(vg->GetOutput());
 	h->SetOutput(result->getImage()->getInputVtkVolume());
@@ -66,9 +69,33 @@ void VoxelGrowSegmentation::execute(ImageModel::Pointer vol,Segmentation::Pointe
 	vg->Delete();
 	result->setHaveImage(true);
 	h->Delete();
+/*	*/
+/*	TDMethod* tder = new TDMethod();
+	//	TDMethod* tder=TDMethod::New();
+	tder->SetInput(vol->getFilteredVtkVolume());
+	TDMethod::ClassesVector classes;
+	classes.push_back(0.0);
+	classes.push_back(100.0);
+	tder->setClasses(classes);
+	tder->setRho(0.5);
+	int activeDirections[3];
+	//segmentate in the xy direction
+	activeDirections[0] = activeDirections[1] = 1;
+	activeDirections[2] = 0;
+	tder->setActiveDirections(activeDirections);
+	tder->SetOutput(result->getImage()->getInputVtkVolume());
+	ProgressWindowGUI::Instance()->Observe(tder,_("Executing Topological Derivative Segmentation"),vol->getLabel());
+	tder->Update();
+	vtkImageData* fake=vtkImageData::New();
+	tder->SetOutput(fake);
+	//vg->SetOutput(fake);
+	//vg->Update();
+	fake->Delete();
+	result->setHaveImage(true);
+	//	tder->Delete();
+*/
 }
 
 void VoxelGrowSegmentation::setConfig(VoxelGrow::ConfigVector config){
 	this->config=config;
 }
-

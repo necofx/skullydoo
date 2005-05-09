@@ -8,7 +8,7 @@ class DesktopGUIBase {open
   } {
     Fl_Window window {
       label {SkullyDoo!} open
-      xywh {258 127 660 500} type Double resizable
+      xywh {359 23 660 499} type Double resizable
       code0 {\#include "gui/vtkFlRenderWindowInteractor.h"}
       code1 {\#include "common/Types.h"}
       code2 {\#include "tcl/TCLFilter.h"}
@@ -17,7 +17,7 @@ class DesktopGUIBase {open
       Fl_Pack {} {open
         xywh {0 0 665 500}
       } {
-        Fl_Menu_Bar menu {open
+        Fl_Menu_Bar menu {
           xywh {0 0 660 25}
         } {
           submenu {} {
@@ -37,7 +37,7 @@ class DesktopGUIBase {open
             menuitem {} {
               label {Load Surface}
               callback {loadSurface();}
-              xywh {0 0 100 20} divider
+              xywh {0 0 100 20}
             }
             menuitem {} {
               label {&Save 3D Image}
@@ -47,7 +47,7 @@ class DesktopGUIBase {open
             menuitem {} {
               label {Save Surface}
               callback {saveSurface();}
-              xywh {0 0 100 20} divider
+              xywh {0 0 100 20}
             }
             submenu {} {
               label {&Import} open
@@ -71,7 +71,7 @@ class DesktopGUIBase {open
             }
             submenu {} {
               label {&Export} open
-              xywh {5 5 100 20} divider
+              xywh {5 5 100 20}
             } {
               menuitem {} {
                 label {.SUR Surface}
@@ -87,7 +87,7 @@ class DesktopGUIBase {open
             menuitem {} {
               label {Take Snapshot to file}
               callback {takeScreenSnapshot();}
-              xywh {0 0 100 20} shortcut 0x40070 divider
+              xywh {0 0 100 20} shortcut 0x40070
             }
             menuitem {} {
               label {&Quit}
@@ -116,7 +116,7 @@ class DesktopGUIBase {open
               menuitem imageViewMenuYZItem {
                 label {YZ Cut}
                 callback {setCutPlaneVisibility(PLANE_YZ,o->value());}
-                xywh {0 0 100 20} type Toggle divider
+                xywh {0 0 100 20} type Toggle
               }
               menuitem {} {
                 label {Plug ins...}
@@ -146,7 +146,7 @@ class DesktopGUIBase {open
               menuitem {} {
                 label {Applied filters...}
                 callback {editImageFilters();}
-                xywh {0 0 100 20} divider
+                xywh {0 0 100 20}
               }
             }
             submenu filterSurfaceMenu {
@@ -156,7 +156,7 @@ class DesktopGUIBase {open
               menuitem {} {
                 label {Applied filters...}
                 callback {editSurfaceFilters();}
-                xywh {0 0 100 20} divider
+                xywh {0 0 100 20}
               }
             }
           }
@@ -171,7 +171,7 @@ class DesktopGUIBase {open
             }
           }
         }
-        Fl_Pack {} {
+        Fl_Pack {} {open
           xywh {0 25 660 30} type HORIZONTAL box UP_FRAME
         } {
           Fl_Group toolBar {
@@ -193,7 +193,7 @@ class DesktopGUIBase {open
               callback {takeScreenSnapshot();}
               tooltip {Grabar imagen de lo que se esta visualizando} image {./images/snapshot.gif} xywh {475 30 25 20}
             }
-            Fl_Group grImageToolbar {open
+            Fl_Group grImageToolbar {
               xywh {85 30 385 20}
             } {
               Fl_Button imageViewXYButton {
@@ -275,7 +275,7 @@ class DesktopGUIBase {open
               xywh {535 30 55 20} labelfont 1
             }
           }
-          Fl_Group {} {open
+          Fl_Group {} {
             xywh {590 25 70 30} resizable
           } {}
         }
@@ -305,20 +305,20 @@ class DesktopGUIBase {open
             xywh {285 55 375 25} resizable
           } {}
         }
-        Fl_Group {} {
+        Fl_Group {} {open
           xywh {0 80 665 405} resizable
         } {
-          Fl_Pack grImage {
+          Fl_Pack grImage {open
             xywh {0 80 660 405} type HORIZONTAL resizable
           } {
             Fl_Group {} {open
-              xywh {0 80 170 405}
+              xywh {0 80 175 405}
             } {
               Fl_Group {} {open
-                xywh {0 80 170 400}
+                xywh {0 80 175 400}
               } {
                 Fl_Group grSeedSelection {
-                  label Selection
+                  label Selection open
                   xywh {5 100 160 90} box PLASTIC_UP_FRAME labelsize 11 align 5
                 } {
                   Fl_Value_Slider seedX {
@@ -388,18 +388,18 @@ class DesktopGUIBase {open
                   }
                 }
                 Fl_Group grSegmentation {open
-                  xywh {5 195 165 260} labelsize 10 align 5 hide
+                  xywh {5 195 170 260} labelsize 10 align 5
                 } {
                   Fl_Choice comboSegMethods {
                     label {Method:}
                     callback {segmentationMethodChanged();}
-                    xywh {10 205 160 20} down_box BORDER_BOX labelsize 10 align 5
+                    xywh {10 203 160 20} down_box BORDER_BOX labelsize 10 align 5
                   } {}
-                  Fl_Group {} {
-                    xywh {10 230 160 195} resizable
+                  Fl_Group {} {open
+                    xywh {9 225 161 200} resizable
                   } {
                     Fl_Group grVG {
-                      xywh {10 230 160 195} hide
+                      xywh {10 230 160 190} hide
                     } {
                       Fl_Browser browserVGSeeds {
                         label {Seeds:}
@@ -534,6 +534,58 @@ class DesktopGUIBase {open
                       Fl_Group {} {open
                         xywh {10 375 160 40} resizable
                       } {}
+                    }
+                    Fl_Group grTD {selected
+                      xywh {10 225 160 190} hide
+                    } {
+                      Fl_Value_Slider sldRho {
+                        label {Rho:}
+                        callback {TDrhoChanged();}
+                        xywh {44 232 121 15} type {Horz Knob} align 4 minimum 1 maximum 0 value 1
+                      }
+                      Fl_Group grSegmDirection {
+                        xywh {28 254 130 24} labeltype NO_LABEL
+                      } {
+                        Fl_Button btnTDxy {
+                          label xy
+                          callback {TDsegmentationDirection(0);}
+                          xywh {28 254 20 20} type Radio value 1 labelsize 12
+                        }
+                        Fl_Button btnTDxz {
+                          label xz
+                          callback {TDsegmentationDirection(1);}
+                          xywh {59 254 20 20} type Radio labelsize 12
+                        }
+                        Fl_Button btnTDyz {
+                          label yz
+                          callback {TDsegmentationDirection(2);}
+                          xywh {93 254 20 20} type Radio labelsize 12
+                        }
+                        Fl_Button btnTD3d {
+                          label 3D
+                          callback {TDsegmentationDirection(3);}
+                          xywh {124 254 20 20} type Radio labelsize 12
+                        }
+                      }
+                      Fl_Input clsValue {
+                        label {Value:}
+                        xywh {66 276 85 20} type Float when 1
+                        code0 {o->value("0.0");}
+                      }
+                      Fl_Button btnAdd {
+                        label Add
+                        callback {TDaddClass();}
+                        xywh {29 300 53 20} align 32
+                      }
+                      Fl_Button btnRemove {
+                        label Remove
+                        callback {TDremoveClass();}
+                        xywh {89 300 66 20} align 32
+                      }
+                      Fl_Browser brsClasses {
+                        label Classes
+                        xywh {14 337 150 75} type Hold align 5
+                      }
                     }
                   }
                   Fl_Button btnSegmentate {
@@ -771,7 +823,15 @@ class DesktopGUIBase {open
   } {}
   Function {exportSTLSurface()} {open return_type {virtual void}
   } {}
-  Function {importSTLSurface()} {open selected return_type {virtual void}
+  Function {importSTLSurface()} {open return_type {virtual void}
+  } {}
+  Function {TDaddClass()} {open return_type {virtual void}
+  } {}
+  Function {TDremoveClass()} {open return_type {virtual void}
+  } {}
+  Function {TDsegmentationDirection(int dir)} {open return_type {virtual void}
+  } {}
+  Function {TDrhoChanged()} {open return_type {virtual void}
   } {}
 } 
 
@@ -781,7 +841,7 @@ Function {makeSplashScreen()} {open
     xywh {300 134 255 320} type Double modal noborder visible
   } {
     Fl_Box {} {
-      image {./images/splash.gif} xywh {0 0 255 320}
+      image {E:/SkullyDoo/src/gui/images/splash.gif} xywh {0 0 255 320}
     }
   }
 } 

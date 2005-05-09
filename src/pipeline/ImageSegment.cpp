@@ -1,5 +1,5 @@
 /*
-# $Id: ImageSegment.cpp,v 1.4 2004/09/01 11:48:48 nacholarrabide Exp $
+# $Id: ImageSegment.cpp,v 1.5 2005/05/09 16:20:41 nacholarrabide Exp $
 # SkullyDoo - Segmentador y visualizador de imagenes tridimensionales  
 # (C) 2002 Sebasti n Fiorentini / Ignacio Larrabide
 # Contact Info: sebasfiorent@yahoo.com.ar / nacholarrabide@yahoo.com
@@ -34,6 +34,7 @@ ImageSegment::ImageSegment():PipelineSegment(){
 	eXY=vtkExtractVOI::New();
 	textureXY=vtkTexture::New();
 	textureXY->SetInterpolate(false);
+///	textureXY->SetInterpolate(1);
 	textureXY->MapColorScalarsThroughLookupTableOn();
 	textureXY->SetInput(eXY->GetOutput());
 	pXY=vtkPlaneSource::New();
@@ -56,6 +57,7 @@ ImageSegment::ImageSegment():PipelineSegment(){
 	eXZ=vtkExtractVOI::New();
 	textureXZ=vtkTexture::New();
 	textureXZ->SetInterpolate(false);
+//	textureXZ->SetInterpolate(1);
 	textureXZ->MapColorScalarsThroughLookupTableOn();
 	textureXZ->SetInput(eXZ->GetOutput());
 	pXZ=vtkPlaneSource::New();
@@ -76,6 +78,7 @@ ImageSegment::ImageSegment():PipelineSegment(){
 	eYZ=vtkExtractVOI::New();
 	textureYZ=vtkTexture::New();
 	textureYZ->SetInterpolate(false);
+//	textureYZ->SetInterpolate(1);
 	textureYZ->MapColorScalarsThroughLookupTableOn();
 	textureYZ->SetInput(eYZ->GetOutput());
 	pYZ=vtkPlaneSource::New();

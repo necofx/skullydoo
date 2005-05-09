@@ -1,5 +1,5 @@
 /*
-# $Id: SegmentationMethod.cpp,v 1.1 2003/05/02 22:21:59 sebasfiorent Exp $
+# $Id: SegmentationMethod.cpp,v 1.2 2005/05/09 16:20:41 nacholarrabide Exp $
 # SkullyDoo - Segmentador y visualizador de imagenes tridimensionales  
 # (C) 2002 Sebasti n Fiorentini / Ignacio Larrabide
 # Contact Info: sebasfiorent@yahoo.com.ar / nacholarrabide@yahoo.com
@@ -49,4 +49,3 @@ Segmentation::Pointer SegmentationMethod::segmentate(ImageModel::Pointer vol){
 	finalize(vol,result);
 	return result;
 }
-

@@ -1,5 +1,5 @@
 /*
-# $Id: Application.cpp,v 1.2 2003/05/23 19:18:59 sebasfiorent Exp $
+# $Id: Application.cpp,v 1.3 2005/05/09 16:20:41 nacholarrabide Exp $
 # SkullyDoo - Segmentador y visualizador de imagenes tridimensionales  
 # (C) 2002 Sebasti n Fiorentini / Ignacio Larrabide
 # Contact Info: sebasfiorent@yahoo.com.ar / nacholarrabide@yahoo.com
@@ -55,7 +55,7 @@ int Tcl_AppInit(Tcl_Interp *interp){
 		int sw=(Fl::w()-splash->w())/2;
 		int sh=(Fl::h()-splash->h())/2;
 		splash->position(sw,sh);
-		Fl::add_timeout(3,(Fl_Timeout_Handler)hideSplash,splash);
+		Fl::add_timeout(0,(Fl_Timeout_Handler)hideSplash,splash);
 		splash->show();
 		Fl::run();
 		TCLGlobals::PredefinedObjectsMap.clear();

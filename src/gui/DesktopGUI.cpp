@@ -1,5 +1,5 @@
 /*
-# $Id: DesktopGUI.cpp,v 1.7 2004/09/01 11:48:47 nacholarrabide Exp $
+# $Id: DesktopGUI.cpp,v 1.8 2005/05/09 16:20:41 nacholarrabide Exp $
 # SkullyDoo - Segmentador y visualizador de imagenes tridimensionales  
 # (C) 2002 Sebasti n Fiorentini / Ignacio Larrabide
 # Contact Info: sebasfiorent@yahoo.com.ar / nacholarrabide@yahoo.com
@@ -43,6 +43,7 @@
 #include "segmentation/voxelgrow/GradientProcessor.h"
 #include "segmentation/voxelgrow/NeighborDeltaProcessor.h"
 #include "segmentation/voxelgrow/SeedDeltaProcessor.h"
+#include "segmentation/topologicalderivative/TDSegmentation.h"
 
 #include <FL/fl_ask.H>
 #include <FL/fl_draw.H>
@@ -75,6 +76,7 @@
 #include <vtkTriangleFilter.h>
 #include <vtkSTLWriter.h>
 #include <vtkSTLReader.h>
+#include <algorithm>
 
 #include <FL/x.H>
 #ifdef _WIN32
@@ -110,6 +112,7 @@ DesktopGUI::DesktopGUI():DesktopGUIBase(),vtkInteractorStyleSwitch(){
 #else
 	this->SetCurrentStyleToTrackballActor();
 #endif
+	this->SetCurrentStyleToTrackballActor();
 
 	win3D=vtkRenderWindow::New();
 	vtkRenderer* rr=vtkRenderer::New();
@@ -159,9 +162,11 @@ DesktopGUI::DesktopGUI():DesktopGUIBase(),vtkInteractorStyleSwitch(){
 	smMap[grVG]=VoxelGrowSegmentation::New();
 	smMap[grFM]=FastMarchingSegmentation::New();
 	smMap[grAC]=ActiveContourSegmentation::New();
+	smMap[grTD]=TDSegmentation::New();
 	comboSegMethods->add(_("VoxelGrow"),0,0,grVG);
 	comboSegMethods->add(_("FastMarching"),0,0,grFM);
 	comboSegMethods->add(_("Active Contours"),0,0,grAC);
+	comboSegMethods->add(_("Topological Derivative"),0,0,grTD);
 	vtkObject::GlobalWarningDisplayOff();
 	showDesktopTab(0);
 }
@@ -212,6 +217,10 @@ void DesktopGUI::updateSegmentationMethodParams(){
 		if (biimg.GetPointer()){
 			ac->setBinaryImage(biimg,atoi(ACBinaryObjVal->value()));
 		}
+	}
+	if (currentSegmentationPanel==grTD){
+		TDSegmentation::Pointer tder=(TDSegmentation*)sm;
+		tder->setClasses(currentTDClassesVector);
 	}
 }
 
@@ -520,8 +529,11 @@ void DesktopGUI::editImageSceneFilters(){
 }
 
 void DesktopGUI::segmentationMethodChanged(){
+	//if current panel is active, hide it.
 	if (currentSegmentationPanel) currentSegmentationPanel->hide();
+	//get the selected panel.
 	currentSegmentationPanel=(Fl_Group*)comboSegMethods->mvalue()->user_data();
+	//show it.
 	currentSegmentationPanel->show();
 }
 
@@ -579,6 +591,52 @@ void DesktopGUI::VGUpdateConfig(){
 	currentVGConfigVector[v-1]=cfg;
 }
 
+void DesktopGUI::TDaddClass(){
+	char holder[10];
+	float cls = atof(clsValue->value());
+	TDMethod::ClassesVector::iterator it = find(currentTDClassesVector.begin(),currentTDClassesVector.end(),cls);
+	if (it==currentTDClassesVector.end()){
+		currentTDClassesVector.push_back(cls);
+		sprintf(holder,"%5.4f",cls);
+		brsClasses->add(holder);
+	}
+}
+
+void DesktopGUI::TDremoveClass(){
+	int val = brsClasses->value();
+	TDMethod::ClassesVector::iterator it = currentTDClassesVector.begin() + val - 1;
+	if (val){
+		brsClasses->remove(val);
+		currentTDClassesVector.erase(it);
+	}
+}
+
+void DesktopGUI::TDsegmentationDirection(int dir){
+	SegmentationMethod* sm=smMap[currentSegmentationPanel].GetPointer();
+	TDSegmentation::Pointer tder=(TDSegmentation*)sm;
+	//segmentation is done in 2d or 3d
+	switch(dir) {
+	case 0:
+		tder->setDirection(TDSegmentation::xy);
+		break;
+	case 1:
+		tder->setDirection(TDSegmentation::xz);
+		break;
+	case 2:
+		tder->setDirection(TDSegmentation::yz);
+		break;
+    default:
+		tder->setDirection(TDSegmentation::td);
+    }	
+}
+
+void DesktopGUI::TDrhoChanged(){
+	SegmentationMethod* sm=smMap[currentSegmentationPanel].GetPointer();
+	TDSegmentation::Pointer tder=(TDSegmentation*)sm;
+	tder->setRho((float)sldRho->value());
+}
+
+
 void DesktopGUI::doSegmentation(){
 	ImageModel::Pointer vol=getSelectedImage();
 	if (!vol.GetPointer()) return;
@@ -600,7 +658,7 @@ void DesktopGUI::doSegmentation(){
 		vm.x = dims[0]/2;
 		vm.y = dims[1]/2;
 		vm.z = dims[2]/2;
-		pipeline->getImageSegment(smout)->focusSeed(vm);		
+		pipeline->getImageSegment(smout)->focusSeed(vm);
 	}
 	if (seg->haveSurface()){
 		SurfaceModel::Pointer smout=seg->getSurface();
@@ -937,10 +995,15 @@ void DesktopGUI::editSurfaceSceneFilters(){
 }
 
 void DesktopGUI::load3DImage(){
-	const char* fcr=fl_file_chooser(_("Load 3D Image"),_("3D Images(*.{spb,spt,sp})"),lastImageVolumeFile.c_str(),0);
+	const char* fcr;
+	fcr=fl_file_chooser(_("Load 3D Image"),_("3D Images(*.{spb,spt,sp})"),lastImageVolumeFile.c_str(),0);
 	if (!fcr) return;
 	vtkStructuredPointsReader* dsr=vtkStructuredPointsReader::New();
 	dsr->SetFileName(fcr);
+	/*
+	vtkStructuredPointsReader* dsr=vtkStructuredPointsReader::New();
+	dsr->SetFileName("E:\\Skullydoo\\Data\\test3.spt");
+	/*/	
 	ProgressWindowGUI::Instance()->doStartEvent(_("Reading 3D Image..."));
 	ImageModel::Pointer vol=ImageModel::New();
 	vol->setLabel(fl_filename_name(fcr));
@@ -949,6 +1012,7 @@ void DesktopGUI::load3DImage(){
 	addImage(vol);
 	dsr->Delete();
 	ProgressWindowGUI::Instance()->doEndEvent();
+	showDesktopTab(1);
 }
 
 
